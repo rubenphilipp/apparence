@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  18:26:46 Fri Feb 23 2024 CET
+;;; $$ Last modified:  19:46:16 Fri Feb 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -35,7 +35,9 @@
 ;;; 
 (defparameter *apparence-config-data*
   '(;; the default fps
-    (:fps . 25)))
+    (:fps . 25)
+    ;; verbose mode?
+    (:verbose . nil)))
 ;;; ****
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

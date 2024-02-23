@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  19:30:39 Fri Feb 23 2024 CET
+;;; $$ Last modified:  20:46:18 Fri Feb 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -53,6 +53,8 @@
 ;;;   between 0.0 and 1.0.  Default = 0.5
 ;;; - :canvas-color. The rgb(a)-background color of the canvas.
 ;;;   Default = (make-color 255 255 255 0)
+;;; - :verbose. A boolean value. When T, then some information is printed during
+;;;   the process.  Default = (get-apr-config :verbose)
 ;;; 
 ;;; 
 ;;; RETURN VALUE
@@ -73,7 +75,8 @@
                               (canvas-height 2000)
                               (canvas-origin 0.0)
                               (image-origin 0.5)
-                              (canvas-color (make-color 255 255 255 0)))
+                              (canvas-color (make-color 255 255 255 0))
+                              (verbose (get-apr-config :verbose)))
   ;;; ****
   ;;; sanity checks
   (unless (and (<= 0.0 image-origin) (>= 1.0 image-origin))
@@ -113,7 +116,8 @@
                           :dest-y y))
       ((and (> 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
-       (print "left->right")
+       (when verbose
+         (print "left->right"))
        ;; wrap left->right
        ;; starting with the "left" part (i.e. the right part of the img)
        (copy canvas image :width (second image-x-coords)
@@ -127,7 +131,8 @@
                           :dest-y y))
       ((and (<= 0 (first image-x-coords))
             (< canvas-width (second image-x-coords)))
-       (print "right->left")
+       (when verbose
+         (print "right->left"))
        ;; wrap right->left
        ;; starting with the right part (the left part of the img)
        (copy canvas image :width (- canvas-width
