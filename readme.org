@@ -4,7 +4,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  18:03:05 Fri Feb 23 2024 CET
+$$ Last modified:  18:05:03 Fri Feb 23 2024 CET
 #+end_comment
 
 *apparence* (nicknamed ~apr~) is a Common Lisp package aimed at working with
