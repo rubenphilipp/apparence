@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  18:22:06 Fri Feb 23 2024 CET
+;;; $$ Last modified:  18:48:27 Fri Feb 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -177,7 +177,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* system-open-file
+;;; ****f* utilities/system-open-file
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
