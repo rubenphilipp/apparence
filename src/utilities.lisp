@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  18:48:27 Fri Feb 23 2024 CET
+;;; $$ Last modified:  18:59:47 Fri Feb 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -199,6 +199,30 @@
   (shell "/usr/bin/open" file))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/aspect-ratio
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-23
+;;; 
+;;; DESCRIPTION
+;;; Returns the aspect-ratio (w/h) of a given image. 
+;;;
+;;; ARGUMENTS
+;;; An image object. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; none
+;;; 
+;;; RETURN VALUE
+;;; The aspect ratio. 
+;;;
+;;; SYNOPSIS
+(defun aspect-ratio (image)
+  (/ (image-width image)
+     (image-height image)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF utilities.lisp
