@@ -1,0 +1,14 @@
+# -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "en") -*-
+#+title: apparence
+#+author: Ruben Philipp
+#+startup: showall 
+
+#+begin_comment
+$$ Last modified:  18:03:05 Fri Feb 23 2024 CET
+#+end_comment
+
+*apparence* (nicknamed ~apr~) is a Common Lisp package aimed at working with
+(moving) images, based on [[https://github.com/tokenrove/imago][imago]]. 
+
+As of now, it still is in a very early stage of development. 
+
