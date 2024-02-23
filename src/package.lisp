@@ -13,7 +13,7 @@
 ;;; Package definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  18:17:30 Fri Feb 23 2024 CET
+;;; $$ Last modified:  18:32:41 Fri Feb 23 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -21,7 +21,10 @@
 
 (defpackage :apparence
   (:use :common-lisp :imago)
-  (:nicknames :apr))
+  (:nicknames :apr)
+  (:import-from
+   :alexandria
+   :assoc-value))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF package.lisp
