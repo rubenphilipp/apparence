@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  18:13:08 Fri Feb 23 2024 CET
+;;; $$ Last modified:  19:36:42 Fri Feb 23 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -57,7 +57,15 @@
 |#
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
+;;; test circular projection
+;;; RP  Fri Feb 23 19:31:49 2024
+(test test-circular-projection
+  (let* ((img (apparence::make-rgb-image 500 400
+                                         (apparence::make-color 233 200 188)))
+         (result
+           (apparence::circular-projection img 350 0)))
+    (apparence::write-png result "/tmp/test.png"))
+  (is (probe-file "/tmp/test.png")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
