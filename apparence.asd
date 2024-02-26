@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  15:33:56 Mon Feb 26 2024 CET
+;;; $$ Last modified:  17:59:44 Mon Feb 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -34,7 +34,9 @@
                (:file "named-object")
                (:file "utilities")
                (:file "globals")
-               (:file "projection")))
+               (:file "projection")
+               ;; export needs to be done lastly
+               (:file "export")))
 
 
 ;;; regression tests
@@ -48,6 +50,17 @@
   :perform (test-op (o c) (symbol-call :apparence.tests :run-tests))
   :components ((:file "tests")))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Export all symbols
+;;; RP  Mon Feb 26 17:56:11 2024
+
+;; (let ((package (find-package :apparence)))
+;;   (do-all-symbols (symb package)
+;;     (when (and (or (find-class symb nil)
+;;                    (fboundp symb))
+;;                (eql (symbol-package symb) package))
+;;       (export symb package))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF apparence.asd
