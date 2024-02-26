@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  18:59:47 Fri Feb 23 2024 CET
+;;; $$ Last modified:  14:47:34 Mon Feb 26 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -55,7 +55,7 @@
 ;;; 2023-07-09
 ;;; 
 ;;; DESCRIPTION
-;;; This function returns the full path to a file reilative to the directory of
+;;; This function returns the full path to a file relative to the directory of
 ;;; the current lisp file.
 ;;; NB: This function is borrowed from Michael Edwards's slippery-chicken.
 ;;; NB2: This function does not work with files which have been loaded via
@@ -75,6 +75,30 @@
                (trailing-slash
                 (directory-namestring (truename *load-pathname*)))
                file))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/load-from-same-dir
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-26
+;;; 
+;;; DESCRIPTION
+;;; This function loads a lisp file from the file relative to the directory of
+;;; the current file (cf. path-from-same-dir).
+;;;
+;;; ARGUMENTS
+;;; - A string indicating the filename (or pathname) to the file relative to
+;;;   the current lisp file.
+;;; 
+;;; RETURN VALUE
+;;; The result of the #'load call.
+;;;
+;;; SYNOPSIS
+(defun load-from-same-dir (file)
+  ;;; ****
+  (load (path-from-same-dir file)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

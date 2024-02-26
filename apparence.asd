@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  19:30:58 Fri Feb 23 2024 CET
+;;; $$ Last modified:  15:33:56 Mon Feb 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -31,6 +31,7 @@
                "imago/jpeg-turbo")
   :pathname "src/"
   :components ((:file "package")
+               (:file "named-object")
                (:file "utilities")
                (:file "globals")
                (:file "projection")))
