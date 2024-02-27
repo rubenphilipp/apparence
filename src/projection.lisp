@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  20:46:18 Fri Feb 23 2024 CET
+;;; $$ Last modified:  00:02:35 Wed Feb 28 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -28,7 +28,8 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;; 
-;;; DESCRIPTION This function projects an image onto a circularly folded canvas
+;;; DESCRIPTION
+;;; This function projects an image onto a circularly folded canvas
 ;;; (i.e. the lateral surface / mantle of a cylinder). The circular
 ;;; position/azimuth of the source image can be defined by a degree offset from
 ;;; the center-origin on the canvas (which is relative to the width of the
