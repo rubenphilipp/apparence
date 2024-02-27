@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  00:02:35 Wed Feb 28 2024 CET
+;;; $$ Last modified:  00:04:54 Wed Feb 28 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -33,7 +33,7 @@
 ;;; (i.e. the lateral surface / mantle of a cylinder). The circular
 ;;; position/azimuth of the source image can be defined by a degree offset from
 ;;; the center-origin on the canvas (which is relative to the width of the
-;;; unfolded, plane mantle).
+;;; unfolded, flat mantle).
 ;;;
 ;;; ARGUMENTS
 ;;; - The image to be projected, as an imago image object.
