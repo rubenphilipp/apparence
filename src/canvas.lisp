@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  22:46:26 Wed Feb 28 2024 CET
+;;; $$ Last modified:  22:59:20 Wed Feb 28 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -62,8 +62,7 @@
 (defmethod set-color ((cv canvas) &rest ignore)
   (declare (ignore ignore))
   (let ((c (color cv)))
-    (unless (and (listp c) (<= 3 (length c)) (>= 4 (length c))
-                 (every #'numberp c))
+    (unless (or (rgb-p c) (rgba-p c))
       (error "canvas::(setf color): The :color is not a valid color list"))
     (setf (slot-value cv 'color) (apply #'make-color c))))
 
@@ -107,6 +106,50 @@
     ;; initialize canvas data
     (setf (slot-value cv 'data) (make-rgb-image (width cv) (height cv)
                                                 (color cv)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* canvas/make-canvas
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; This function creates a canvas object. 
+;;;
+;;; ARGUMENTS
+;;; - The width of the canvas (number).
+;;; - The height of the canvas (number). 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :color. A three- or four-item list of rgb(a) values determining the canvas
+;;;   background color.  Default = '(0 0 0 0)
+;;; - :id. The id of the canvas. 
+;;; 
+;;; RETURN VALUE
+;;; The canvas object. 
+;;;
+;;; EXAMPLE
+#|
+(make-canvas 100 200)
+;; =>
+CANVAS: width: 100, height: 200, color: (0 0 0 0)
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #<RGB-IMAGE (100x200) {70170E8EA3}>
+|#
+;;; SYNOPSIS
+(defun make-canvas (width height &key
+                                   (color '(0 0 0 0))
+                                   id)
+  ;;; ****
+  (make-instance 'canvas :width width
+                         :height height
+                         :color color
+                         :id id))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

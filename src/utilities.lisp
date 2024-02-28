@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  19:38:00 Wed Feb 28 2024 CET
+;;; $$ Last modified:  22:58:31 Wed Feb 28 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -341,6 +341,72 @@
   (let ((10^-digits (expt 10 (- digits))))
     (* (fround v 10^-digits)
        10^-digits)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/rgb-p
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; Tests if a given value is of type rgb-list. 
+;;;
+;;; ARGUMENTS
+;;; The object to test. 
+;;; 
+;;; RETURN VALUE
+;;; Either T or NIL. 
+;;;
+;;; EXAMPLE
+#|
+(rgb-p '(255 125 254))
+;; => T
+|#
+;;; SYNOPSIS
+(defun rgb-p (thing)
+  ;;; ****
+  (and (listp thing) (= 3 (length thing))
+       (every #'integerp thing)
+       (every #'(lambda (x)
+                  (and (<= 0 x)
+                       (>= 255 x)))
+              thing)))
+       
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/rgba-p
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; Tests if a given value is of type rgba-list. 
+;;;
+;;; ARGUMENTS
+;;; The object to test. 
+;;; 
+;;; RETURN VALUE
+;;; Either T or NIL. 
+;;;
+;;; EXAMPLE
+#|
+(rgba-p '(255 125 254))
+;; => NIL
+(rgba-p '(125 222 2 230))
+;; => T
+|#
+;;; SYNOPSIS
+(defun rgba-p (thing)
+  ;;; ****
+  (and (listp thing) (= 4 (length thing))
+       (every #'integerp thing)
+       (every #'(lambda (x)
+                  (and (<= 0 x)
+                       (>= 255 x)))
+              thing)))
   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
