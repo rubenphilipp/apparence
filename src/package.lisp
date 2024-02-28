@@ -13,15 +13,25 @@
 ;;; Package definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  16:20:43 Wed Feb 28 2024 CET
+;;; $$ Last modified:  16:57:08 Wed Feb 28 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :cl-user)
 
 (defpackage :apparence
-  (:use :common-lisp :imago)
+  (:use :common-lisp)
   (:nicknames :apr)
+  (:import-from
+   :imago
+   :image
+   :make-color
+   :image-width
+   :image-height
+   :copy
+   :make-rgb-image
+   :write-png
+   )
   (:import-from
    :cm
    :rescale

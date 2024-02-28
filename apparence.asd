@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  16:29:40 Wed Feb 28 2024 CET
+;;; $$ Last modified:  16:40:24 Wed Feb 28 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -22,7 +22,7 @@
   :version "0.0.1"
   :author "Ruben Philipp <me@rubenphilipp.com>"
   :license "GPL Version 2.0 or later"
-  :serial nil ;; could also be T; TODO: test/elaborate
+  :serial t 
   :in-order-to ((test-op (test-op "apparence/tests")))
   :depends-on ("alexandria"
                "cl-ppcre"
