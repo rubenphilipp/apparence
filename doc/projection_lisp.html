@@ -27,7 +27,7 @@
 <div id="content">
 <hr />
 <a name="projection2fcircular2dprojection"></a>
-<a name="robo5"></a><h2>projection/circular-projection [ Functions ]</h2>
+<a name="robo8"></a><h2>projection/circular-projection [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -35,12 +35,13 @@
 </pre>
 <p class="item_name">CREATED</p>
 <pre> 2024-02-23
- 
- DESCRIPTION This function projects an image onto a circularly folded canvas
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function projects an image onto a circularly folded <a href="./canvas_lisp.html#robo2">canvas</a>
  (i.e. the lateral surface / mantle of a cylinder). The circular
  position/azimuth of the source image can be defined by a degree offset from
- the center-origin on the canvas (which is relative to the width of the
- unfolded, plane mantle).
+ the center-origin on the <a href="./canvas_lisp.html#robo2">canvas</a> (which is relative to the width of the
+ unfolded, flat mantle).
 </pre>
 <p class="item_name">ARGUMENTS</p>
 <pre> - The image to be projected, as an imago image object.
@@ -49,20 +50,20 @@
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
- - :canvas-width. The width of the canvas (i.e. the mantle) in px.
+ - :<a href="./canvas_lisp.html#robo2">canvas</a>-width. The width of the <a href="./canvas_lisp.html#robo2">canvas</a> (i.e. the mantle) in px.
    Default = 4000
- - :canvas-height. The height of the canvas/mantle in px.
+ - :<a href="./canvas_lisp.html#robo2">canvas</a>-height. The height of the <a href="./canvas_lisp.html#robo2">canvas</a>/mantle in px.
    Default = 2000
- - :canvas-origin. The horizontal position of the origin (i.e. the center) on
-   the canvas. This value is relative to the width of the canvas and must be
+ - :<a href="./canvas_lisp.html#robo2">canvas</a>-origin. The horizontal position of the origin (i.e. the center) on
+   the <a href="./canvas_lisp.html#robo2">canvas</a>. This value is relative to the width of the <a href="./canvas_lisp.html#robo2">canvas</a> and must be
    a number between 0.0 and 1.0.  Default = 0.0
  - :image-origin. The horizontal position of the origin on the image to be
    projected. This value is relative to the image width and must be a number
    between 0.0 and 1.0.  Default = 0.5
- - :canvas-color. The rgb(a)-background color of the canvas.
+ - :<a href="./canvas_lisp.html#robo2">canvas</a>-color. The rgb(a)-background color of the <a href="./canvas_lisp.html#robo2">canvas</a>.
    Default = (make-color 255 255 255 0)
  - :verbose. A boolean value. When T, then some information is printed during
-   the process.  Default = (<a href="./globals_lisp.html#robo3">get-apr-config</a> :verbose)
+   the process.  Default = (<a href="./globals_lisp.html#robo6">get-apr-config</a> :verbose)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> An image object. 
@@ -72,22 +73,22 @@
        (result
          (<strong>circular-projection</strong> img 350 0)))
   (write-png result "/tmp/test.png")
-  (<a href="./utilities_lisp.html#robo11">system-open-file</a> "/tmp/test.png"))
+  (<a href="./utilities_lisp.html#robo19">system-open-file</a> "/tmp/test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defun <strong>circular-projection</strong> (image azimuth y
                             &amp;key
-                              (canvas-width 4000)
-                              (canvas-height 2000)
-                              (canvas-origin 0.0)
+                              (<a href="./canvas_lisp.html#robo2">canvas</a>-width 4000)
+                              (<a href="./canvas_lisp.html#robo2">canvas</a>-height 2000)
+                              (<a href="./canvas_lisp.html#robo2">canvas</a>-origin 0.0)
                               (image-origin 0.5)
-                              (canvas-color (make-color 255 255 255 0))
-                              (verbose (<a href="./globals_lisp.html#robo3">get-apr-config</a> :verbose)))
+                              (<a href="./canvas_lisp.html#robo2">canvas</a>-color (make-color 255 255 255 0))
+                              (verbose (<a href="./globals_lisp.html#robo6">get-apr-config</a> :verbose)))
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-26 15:34:44</p>
+<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-28 23:00:45</p>
 </div> <!-- footer -->
 </body>
 </html>
