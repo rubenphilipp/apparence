@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  23:08:18 Wed Feb 28 2024 CET
+;;; $$ Last modified:  00:09:47 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -188,6 +188,59 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
   (let ((img (data cv)))
     (imago::write-png img outfile)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* canvas/put-it
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; This method puts an (imago) image object on top of the canvas.
+;;;
+;;; ARGUMENTS
+;;; - The canvas object.
+;;; - The image object. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :height. Cf. imago::copy.
+;;; - :width. Cf. imago::copy.
+;;; - :src-y. Cf. imago::copy.  Default = 0.
+;;; - :src-x. Cf. imago::copy.  Default = 0.
+;;; - :dest-y. Cf. imago::copy.  Default = 0.
+;;; - :dest-x. Cf. imago::copy.  Default = 0.
+;;; 
+;;; RETURN VALUE
+;;; Cf. imago::copy.
+;;;
+;;; EXAMPLE
+#|
+(let ((cv (make-instance 'canvas :width 300 :height 200
+                                 :color '(255 255 255 0)))
+      (img (make-rgb-image 50 100 (make-color 100 233 90))))
+  (put-it cv img :dest-x 0)
+  (write-png cv :outfile "~/Downloads/cv-test.png"))
+|#
+;;; SYNOPSIS
+(defmethod put-it ((cv canvas) (img image)
+                   &key
+                     height
+                     width
+                     (src-y 0)
+                     (src-x 0)
+                     (dest-y 0)
+                     (dest-x 0))
+  ;;; ****
+  (copy (data cv) img :height height
+                      :width width
+                      :src-y src-y
+                      :src-x src-x
+                      :dest-y dest-y
+                      :dest-x dest-x))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF canvas.lisp
