@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  22:01:36 Wed Feb 28 2024 CET
+;;; $$ Last modified:  23:18:41 Wed Feb 28 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -64,7 +64,7 @@
                                          (apparence::make-color 233 200 188)))
          (result
            (apparence::circular-projection img 350 0)))
-    (apparence::write-png result "/tmp/test.png"))
+    (imago::write-png result "/tmp/test.png"))
   (is (probe-file "/tmp/test.png")))
 
 ;;; test-canvas-simple
@@ -72,6 +72,17 @@
 (test test-canvas-simple
   (let ((cv (make-instance 'canvas :width 100 :height 200)))
     (is (= 100 (width cv)))))
+
+;;; test-write-png-simple
+;;; RP  Wed Feb 28 23:08:43 2024
+(test test-write-png-simple
+  (let ((cv (make-instance 'canvas :width 300 :height 200
+                                   :color '(255 255 255)))
+        (img (apparence::make-rgb-image 50 100
+                                        (apparence::make-color 100 233 90))))
+    (imago::copy (data cv) img)
+    (write-png cv :outfile "/tmp/test-canvas.png"))
+  (is (probe-file "/tmp/test-canvas.png")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp

@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  22:59:20 Wed Feb 28 2024 CET
+;;; $$ Last modified:  23:08:18 Wed Feb 28 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -150,6 +150,43 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
                          :height height
                          :color color
                          :id id))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* canvas/write-png
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; This method writes a canvas to a png-file. 
+;;;
+;;; ARGUMENTS
+;;; A canvas object.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :outfile. The output location for the png-file.
+;;;   Default = "/tmp/canvas.png"
+;;; 
+;;; RETURN VALUE
+;;; cf. imago::write-png
+;;;
+;;; EXAMPLE
+#|
+(let ((cv (make-instance 'canvas :width 300 :height 200 :color '(255 255 255)))
+      (img (make-rgb-image 50 100 (make-color 100 233 90))))
+  (copy (data cv) img)
+  (write-png cv :outfile "~/Downloads/cv-test.png"))
+|#
+;;; SYNOPSIS
+(defmethod write-png ((cv canvas) &key (outfile "/tmp/canvas.png"))
+  ;;; ****
+  (let ((img (data cv)))
+    (imago::write-png img outfile)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
