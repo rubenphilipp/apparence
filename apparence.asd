@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  16:40:24 Wed Feb 28 2024 CET
+;;; $$ Last modified:  21:29:16 Wed Feb 28 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -35,6 +35,7 @@
                (:file "named-object")
                (:file "utilities")
                (:file "globals")
+               (:file "canvas")
                (:file "projection")
                ;; export needs to be done lastly
                (:file "export")))
