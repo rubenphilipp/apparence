@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  14:47:34 Mon Feb 26 2024 CET
+;;; $$ Last modified:  19:38:00 Wed Feb 28 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -247,6 +247,101 @@
 (defun aspect-ratio (image)
   (/ (image-width image)
      (image-height image)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/degrees->radians
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; This function converts a value in degrees to its radian counterpart. 
+;;;
+;;; ARGUMENTS
+;;; The value (degrees) to be converted. 
+;;; 
+;;; RETURN VALUE
+;;; The value in radians. 
+;;;
+;;; EXAMPLE
+#|
+(degrees->radians -30)
+;; => -0.5235987755982988d0
+|#
+;;; SYNOPSIS
+(defun degrees->radians (degrees)
+  ;;; ****
+  (* pi (/ degrees 180)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/radians->degrees
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; This function converts radians to degrees.
+;;;
+;;; ARGUMENTS
+;;; The radian value to convert. 
+;;; 
+;;; RETURN VALUE
+;;; The value in degrees. 
+;;;
+;;; EXAMPLE
+#|
+(radians->degrees (degrees->radians -90))
+;; => -90.0
+|#
+;;; SYNOPSIS
+(defun radians->degrees (rad)
+  ;;; ****
+  (* rad (/ 180 pi)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/fround-to-digits
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; This function (f)rounds a floating point number to the given amount of
+;;; digits.
+;;;
+;;; ARGUMENTS
+;;; - The floating point number.
+;;;
+;;; OPTIONAL ARGUMENTS.
+;;; - An integer indicating the number of digits to be frounded to. Default = 0
+;;; 
+;;; RETURN VALUE
+;;; The rounded float. 
+;;;
+;;; EXAMPLE
+#|
+(fround-to-digits 3.061616997868383 3)
+;; => 3.062
+|#
+;;; SYNOPSIS
+(defun fround-to-digits (v &optional (digits 0))
+  ;;; ****
+  (declare (type float v)
+           (type (integer 0) digits))
+  (let ((10^-digits (expt 10 (- digits))))
+    (* (fround v 10^-digits)
+       10^-digits)))
+  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF utilities.lisp
