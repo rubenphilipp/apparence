@@ -13,7 +13,7 @@
 ;;; Package definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  23:51:50 Tue Feb 27 2024 CET
+;;; $$ Last modified:  16:20:43 Wed Feb 28 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -22,6 +22,12 @@
 (defpackage :apparence
   (:use :common-lisp :imago)
   (:nicknames :apr)
+  (:import-from
+   :cm
+   :rescale
+   :rescale-envelope
+   :interp
+   :interpl)
   (:import-from
    :alexandria
    :assoc-value))

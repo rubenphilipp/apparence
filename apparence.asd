@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  17:59:44 Mon Feb 26 2024 CET
+;;; $$ Last modified:  16:07:02 Wed Feb 28 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -26,6 +26,7 @@
   :in-order-to ((test-op (test-op "apparence/tests")))
   :depends-on ("alexandria"
                "cl-ppcre"
+               "cm"
                "imago"
                "imago/pngload"
                "imago/jpeg-turbo")

@@ -1,10 +1,11 @@
+
 # -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "en") -*-
 #+title: apparence
 #+author: Ruben Philipp
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:22:33 Sat Feb 24 2024 CET
+$$ Last modified:  16:07:58 Wed Feb 28 2024 CET
 #+end_comment
 
 *apparence* (nicknamed ~apr~) is a Common Lisp package aimed at working with
@@ -26,3 +27,11 @@ adjust the dynamic heap size of SBCL, e.g.
 sbcl --dynamic-space-size 8192
 # this is setting the maximum heap size to 8192 MB
 #+end_src
+
+
+* Dependencies
+
+The major dependencies are:
+
+- [[https://github.com/tokenrove/imago][imago]]
+- [[https://github.com/ormf/cm][cm]]
