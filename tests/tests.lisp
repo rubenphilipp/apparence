@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:41:15 Thu Feb 29 2024 CET
+;;; $$ Last modified:  22:11:52 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -170,10 +170,9 @@
 ;;; test-write-png-image
 ;;; RP  Thu Feb 29 21:40:26 2024
 (test test-write-png-image
-  (let* ((img1 (make-instance 'apr:image
-                              :data (imago::make-rgb-image
-                                     200 200
-                                     (imago::make-color 232 130 232))))
+  (let* ((img1 (apr:make-rgb-image 200 200
+                                   :initial-color
+                                   (apr::make-color 232 130 232)))
          (img2 (apr:make-image (imago::make-rgb-image
                                 20 20
                                 (imago::make-color 0 0 0))))

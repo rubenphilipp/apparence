@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  21:13:11 Thu Feb 29 2024 CET
+;;; $$ Last modified:  21:50:39 Thu Feb 29 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -34,10 +34,12 @@
 ;;; A global holding information about the configuration of apparence. 
 ;;; 
 (defparameter *apparence-config-data*
-  '(;; the default fps
+  `(;; the default fps
     (:fps . 25)
-    ;;; default interpolation mode
+    ;; default interpolation mode
     (:default-interpolation . :nearest-neighbor)
+    ;; the default rgb-color
+    (:default-rgb . ,(make-color 0 0 0 0))
     ;; verbose mode?
     (:verbose . nil)))
 ;;; ****

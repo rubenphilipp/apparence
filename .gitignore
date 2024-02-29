@@ -138,6 +138,12 @@ flycheck_*.el
 *.3dm
 *.max
 
+################################################################################
+### excpetion for test images
+
+!/tests/image.jpg
+!/tests/image.png
+
 ### macOS ###
 # General
 .DS_Store

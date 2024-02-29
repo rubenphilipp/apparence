@@ -20,7 +20,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  21:38:52 Thu Feb 29 2024 CET
+;;; $$ Last modified:  22:24:05 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -78,7 +78,34 @@
           (slot-value img 'height) (imago::image-height image))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Make-functions
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* image/make-image
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-29
+;;; 
+;;; DESCRIPTION
+;;; This function instantiates an image object from the given data. 
+;;;
+;;; ARGUMENTS
+;;; - An imago::image object. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :id. The id of the image object.
+;;; - :default-interpolation. The default interpolation method (used e.g. when
+;;;   changing the image dimensions via the (setf ...) methods.
+;;;   Default = (get-apr-config :default-interpolation)
+;;; 
+;;; RETURN VALUE
+;;; An image object. 
+;;;
+;;; SYNOPSIS
 (defun make-image (data &key id
                           (default-interpolation
                            (get-apr-config :default-interpolation)))
@@ -86,6 +113,73 @@
   (make-instance 'image :data data
                         :id id
                         :default-interpolation default-interpolation))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* image/make-rgb-image
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-29
+;;; 
+;;; DESCRIPTION
+;;; This function creates a new imago::rgb-image. 
+;;;
+;;; ARGUMENTS
+;;; - thei width of the image
+;;; - the height of the image
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :initial-color. The initial/background color of the new rgb-image.
+;;;   Default = (get-apr-config :default-rgb)
+;;; - :id. The id of the new image object.
+;;; - :default-interpolation. The default interpolation method (used e.g. when
+;;;   changing the image dimensions via the (setf ...) methods.
+;;;   Default = (get-apr-config :default-interpolation)
+;;; 
+;;; RETURN VALUE
+;;; The new image object. 
+;;;
+;;; SYNOPSIS
+(defun make-rgb-image (width height
+                       &key
+                         (initial-color
+                          (get-apr-config :default-rgb))
+                         id
+                         (default-interpolation
+                          (get-apr-config :default-interpolation)))
+  ;;; ****
+  (let ((data (imago::make-rgb-image width height
+                                     initial-color)))
+    (make-image data :id id
+                     :default-interpolation default-interpolation)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(defun make-image-from-jpg (path &key
+                                   id
+                                   (default-interpolation
+                                    (get-apr-config :default-interpolation)))
+  ;;; ****
+  (let ((data (imago-jpeg-turbo::read-jpg path)))
+    (make-image data :id id
+                     :default-interpolation default-interpolation)))
+
+
+(defun make-image-from-png (path &key
+                                   id
+                                   (default-interpolation
+                                    (get-apr-config :default-interpolation)))
+  ;;; ****
+  (let ((data (imago-pngload::read-pngload path)))
+    (make-image data :id id
+                     :default-interpolation default-interpolation)))
+                             
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
