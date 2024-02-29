@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  14:39:04 Thu Feb 29 2024 CET
+;;; $$ Last modified:  14:41:17 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -115,6 +115,13 @@
   (let* ((ps (apr:make-projection-surface 200 300))
          (cv (apr:make-canvas-from-ps ps :factor 2.0)))
     (is (= (width cv) 400))))
+
+;;; test-make-canvas-from-cm
+;;; RP  Thu Feb 29 14:39:50 2024
+(test test-make-canvas-from-cm
+  (let* ((cm (apr:make-cylinder-mantle 200 :diameter 30.0))
+         (cv (apr:make-canvas-from-ps cm :destination-height 3000)))
+    (is (= (width cv) 1413))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
