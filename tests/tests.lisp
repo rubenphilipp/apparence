@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  14:41:17 Thu Feb 29 2024 CET
+;;; $$ Last modified:  14:43:18 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -122,6 +122,13 @@
   (let* ((cm (apr:make-cylinder-mantle 200 :diameter 30.0))
          (cv (apr:make-canvas-from-ps cm :destination-height 3000)))
     (is (= (width cv) 1413))))
+
+;;; test-get-coordinates
+;;; RP  Thu Feb 29 14:42:06 2024
+(test test-get-coordinates
+  (let* ((cm (apr:make-cylinder-mantle 10 :diameter 10))
+         (coords (apr:get-coordinates cm 90 :azimuth-origin-offset 0)))
+    (is (equal coords '(5.0d0 0.0d0)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
