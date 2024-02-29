@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  22:38:12 Thu Feb 29 2024 CET
+;;; $$ Last modified:  23:09:04 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -82,17 +82,20 @@
 (test test-write-png-simple
   (let ((cv (make-instance 'canvas :width 300 :height 200
                                    :color '(255 255 255)))
-        (img (imago::make-rgb-image 50 100
-                                    (imago::make-color 100 233 90))))
-    (imago::copy (data cv) img)
-    (write-png cv :outfile "/tmp/test-canvas.png"))
+        (img (apr::make-rgb-image 50 100
+                                  :initial-color
+                                  (imago::make-color 100 233 90))))
+    (apr:copy (data cv) img)
+    (apr:write-png cv :outfile "/tmp/test-canvas.png"))
   (is (probe-file "/tmp/test-canvas.png")))
 
 ;;; test-put-it-simple
 ;;; RP  Thu Feb 29 14:02:15 2024
 (test test-put-it-simple
   (let* ((cv (apr:make-canvas 300 200 :color '(0 0 0 0)))
-         (img (imago::make-rgb-image 50 100 (imago::make-color 100 233 90))))
+         (img (apr::make-rgb-image 50 100
+                                   :initial-color
+                                   (imago::make-color 100 233 90))))
     (apr:put-it cv img :dest-x 20)
     (apr:write-png cv :outfile "/tmp/cv-test.png"))
   (is (probe-file "/tmp/cv-test.png")))
@@ -138,9 +141,11 @@
 ;;; RP  Thu Feb 29 15:42:13 2024
 (test test-put-it-circular
   (let* ((cv (apr:make-canvas 1000 500 :color '(0 0 0 0)))
-         (img (imago::make-rgb-image 250 200 (imago::make-color 233 200 188))))
+         (img (apr:make-rgb-image 250 200
+                                  :initial-color
+                                  (apr::make-color 233 200 188))))
     (apr:put-it-circular cv img 350 0)
-    (is (typep (data cv) 'imago::image))))
+    (is (typep (data cv) 'apr:image))))
 
 ;;; test-image1
 ;;; RP  Thu Feb 29 21:19:14 2024

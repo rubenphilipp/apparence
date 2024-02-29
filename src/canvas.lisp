@@ -12,14 +12,14 @@
 ;;; PURPOSE
 ;;; Implementation of the canvas class. A canvas is (according to the metaphor
 ;;; linked to vis-arts) a surface other visual items will be added to.
-;;; Essentially, it holds an imago (rgb) image object in the data slot, which
-;;; is created during the initialization process with the given dimensions and
-;;; could be altered via several methods. 
+;;; Essentially, it holds an image object in the data slot, which is created
+;;; during the initialization process with the given dimensions and could be
+;;; altered via several methods.
 ;;;
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  20:40:11 Thu Feb 29 2024 CET
+;;; $$ Last modified:  22:56:56 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -79,8 +79,9 @@
     (error "canvas::set-width: The width is not a number > 0"))
   (warn "canvas::set-width: Altering the width of an existing canvas might ~
          cause the cutting of existing content.")
-  (let ((new (imago::make-rgb-image (width cv) (height cv) (color cv))))
-    (imago::copy new (data cv))
+  (let ((new (make-rgb-image (width cv) (height cv)
+                             :initial-color (color cv))))
+    (copy new (data cv))
     (setf (slot-value cv 'data) new)))
 
 (defmethod (setf height) :after (value (cv canvas))
@@ -93,8 +94,9 @@
     (error "canvas::set-height: The height is not a number > 0"))
   (warn "canvas::set-height: Altering the height of an existing canvas might ~
          cause the cutting of existing content.")
-  (let ((new (imago::make-rgb-image (width cv) (height cv) (color cv))))
-    (imago::copy new (data cv))
+  (let ((new (make-rgb-image (width cv) (height cv)
+                             :initial-color (color cv))))
+    (copy new (data cv))
     (setf (slot-value cv 'data) new)))
   
 
@@ -103,11 +105,12 @@
 (defmethod update ((cv canvas) &key ignore)
   (declare (ignore ignore))
   ;; when data is not an image, initialize
-  (unless (typep (data cv) 'imago::image)
+  (unless (typep (data cv) 'image)
     (set-color cv)
     ;; initialize canvas data
-    (setf (slot-value cv 'data) (imago::make-rgb-image (width cv) (height cv)
-                                                (color cv)))))
+    (setf (slot-value cv 'data)
+          (make-rgb-image (width cv) (height cv)
+                          :initial-color (color cv)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -188,7 +191,7 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
 (defmethod write-png ((cv canvas) &key (outfile "/tmp/canvas.png"))
   ;;; ****
   (let ((img (data cv)))
-    (imago::write-png img outfile)))
+    (write-png img :outfile outfile)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -209,15 +212,15 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
-;;; - :height. Cf. imago::copy.
-;;; - :width. Cf. imago::copy.
-;;; - :src-y. Cf. imago::copy.  Default = 0.
-;;; - :src-x. Cf. imago::copy.  Default = 0.
-;;; - :dest-y. Cf. imago::copy.  Default = 0.
-;;; - :dest-x. Cf. imago::copy.  Default = 0.
+;;; - :height. Cf. copy.
+;;; - :width. Cf. copy.
+;;; - :src-y. Cf. copy.  Default = 0.
+;;; - :src-x. Cf. copy.  Default = 0.
+;;; - :dest-y. Cf. copy.  Default = 0.
+;;; - :dest-x. Cf. copy.  Default = 0.
 ;;; 
 ;;; RETURN VALUE
-;;; Cf. imago::copy.
+;;; Cf. copy.
 ;;;
 ;;; EXAMPLE
 #|
@@ -239,12 +242,15 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
                      (dest-y 0)
                      (dest-x 0))
   ;;; ****
-  (imago::copy (data cv) img :height height
-                      :width width
-                      :src-y src-y
-                      :src-x src-x
-                      :dest-y dest-y
-                      :dest-x dest-x))
+  (unless (typep img 'image)
+    (error "canvas::put-it: The img must be of type image."))
+  (copy (data cv) img
+        :height height
+        :width width
+        :src-y src-y
+        :src-x src-x
+        :dest-y dest-y
+        :dest-x dest-x))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* canvas/put-it-circular
@@ -302,12 +308,12 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
   (when (>= y (height cv))
     (error "canvas::put-it-circular:  The y-coordinate is >= the height of ~
             the canvas."))
-  (unless (typep image 'imago::image)
-    (error "canvas::put-it-circular: The image is not an imago image, but ~a"
+  (unless (typep image 'image)
+    (error "canvas::put-it-circular: The image is not an image, but ~a"
            (type-of image)))
   (let* ((canvas (data cv))
          (canvas-width (width cv))
-         (img-width (imago::image-width image))
+         (img-width (width image))
          ;;(img-height (imago::image-height image))
          ;; anchor point (x-axis from left) on image, i.e. the origin x-coords
          (img-anchor (floor (* img-width image-origin)))
@@ -339,11 +345,11 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
          (print "left->right"))
        ;; wrap left->right
        ;; starting with the "left" part (i.e. the right part of the img)
-       (imago::copy canvas image :width (second image-x-coords)
+       (copy canvas image :width (second image-x-coords)
                           :src-x (abs (first image-x-coords))
                           :dest-y y)
        ;; now the "right" part
-       (imago::copy canvas image :width (abs (first image-x-coords))
+       (copy canvas image :width (abs (first image-x-coords))
                           :src-x 0
                           :dest-x (+ canvas-width
                                      (first image-x-coords))
@@ -354,13 +360,13 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
          (print "right->left"))
        ;; wrap right->left
        ;; starting with the right part (the left part of the img)
-       (imago::copy canvas image :width (- canvas-width
+       (copy canvas image :width (- canvas-width
                                     (first image-x-coords))
                           :src-x 0
                           :dest-x (first image-x-coords)
                           :dest-y y)
        ;; now the left part
-       (imago::copy canvas image :width (- (second image-x-coords)
+       (copy canvas image :width (- (second image-x-coords)
                                     canvas-width)
                           :src-x (- canvas-width
                                     (first image-x-coords))
