@@ -13,7 +13,7 @@
 ;;; Package definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  23:01:44 Wed Feb 28 2024 CET
+;;; $$ Last modified:  13:51:31 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -35,6 +35,8 @@
    :resize
    :scale
    :copy
+   :compose
+   :default-compose-operator
    :make-rgb-image
    )
   (:import-from

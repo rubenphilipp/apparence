@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  23:18:41 Wed Feb 28 2024 CET
+;;; $$ Last modified:  14:05:27 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -83,6 +83,15 @@
     (imago::copy (data cv) img)
     (write-png cv :outfile "/tmp/test-canvas.png"))
   (is (probe-file "/tmp/test-canvas.png")))
+
+;;; test-put-it-simple
+;;; RP  Thu Feb 29 14:02:15 2024
+(test test-put-it-simple
+  (let* ((cv (apr:make-canvas 300 200 :color '(0 0 0 0)))
+         (img (apr::make-rgb-image 50 100 (apr::make-color 100 233 90))))
+    (apr:put-it cv img :dest-x 20)
+    (apr:write-png cv :outfile "/tmp/cv-test.png"))
+  (is (probe-file "/tmp/cv-test.png")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp

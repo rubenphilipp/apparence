@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  00:28:10 Thu Feb 29 2024 CET
+;;; $$ Last modified:  14:01:52 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -243,6 +243,7 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
                       :src-x src-x
                       :dest-y dest-y
                       :dest-x dest-x))
+    
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF canvas.lisp
