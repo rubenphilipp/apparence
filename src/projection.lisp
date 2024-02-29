@@ -7,7 +7,9 @@
 ;;;
 ;;; DESCRIPTION
 ;;; Implementation of different approaches to project/map images on various
-;;; surfaces/planes. 
+;;; surfaces/planes.
+;;;
+;;; DEPRECATED !! 
 ;;;
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -15,7 +17,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  00:04:54 Wed Feb 28 2024 CET
+;;; $$ Last modified:  20:33:20 Thu Feb 29 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)

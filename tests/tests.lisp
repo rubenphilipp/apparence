@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  15:46:13 Thu Feb 29 2024 CET
+;;; $$ Last modified:  20:42:50 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -59,13 +59,17 @@
 
 ;;; test circular projection
 ;;; RP  Fri Feb 23 19:31:49 2024
+;;; removed (deprecated)
+;;; RP  Thu Feb 29 20:42:50 2024
+#|
 (test test-circular-projection
-  (let* ((img (apparence::make-rgb-image 500 400
-                                         (apparence::make-color 233 200 188)))
+  (let* ((img (imago::make-rgb-image 500 400
+                                     (imago::make-color 233 200 188)))
          (result
            (apparence::circular-projection img 350 0)))
     (imago::write-png result "/tmp/test.png"))
-  (is (probe-file "/tmp/test.png")))
+(is (probe-file "/tmp/test.png")))
+|#
 
 ;;; test-canvas-simple
 ;;; RP  Wed Feb 28 22:00:38 2024
@@ -78,8 +82,8 @@
 (test test-write-png-simple
   (let ((cv (make-instance 'canvas :width 300 :height 200
                                    :color '(255 255 255)))
-        (img (apparence::make-rgb-image 50 100
-                                        (apparence::make-color 100 233 90))))
+        (img (imago::make-rgb-image 50 100
+                                    (imago::make-color 100 233 90))))
     (imago::copy (data cv) img)
     (write-png cv :outfile "/tmp/test-canvas.png"))
   (is (probe-file "/tmp/test-canvas.png")))
@@ -88,7 +92,7 @@
 ;;; RP  Thu Feb 29 14:02:15 2024
 (test test-put-it-simple
   (let* ((cv (apr:make-canvas 300 200 :color '(0 0 0 0)))
-         (img (apr::make-rgb-image 50 100 (apr::make-color 100 233 90))))
+         (img (imago::make-rgb-image 50 100 (imago::make-color 100 233 90))))
     (apr:put-it cv img :dest-x 20)
     (apr:write-png cv :outfile "/tmp/cv-test.png"))
   (is (probe-file "/tmp/cv-test.png")))
@@ -134,9 +138,9 @@
 ;;; RP  Thu Feb 29 15:42:13 2024
 (test test-put-it-circular
   (let* ((cv (apr:make-canvas 1000 500 :color '(0 0 0 0)))
-         (img (imago::make-rgb-image 250 200 (apr::make-color 233 200 188))))
+         (img (imago::make-rgb-image 250 200 (imago::make-color 233 200 188))))
     (apr:put-it-circular cv img 350 0)
-    (is (typep (data cv) 'apr::image))))
+    (is (typep (data cv) 'imago::image))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp

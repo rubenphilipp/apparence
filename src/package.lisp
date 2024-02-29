@@ -13,7 +13,7 @@
 ;;; Package definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  19:00:05 Thu Feb 29 2024 CET
+;;; $$ Last modified:  20:30:54 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -24,20 +24,20 @@
   (:nicknames :apr)
   (:import-from
    :imago
-   :image
+   ;;:image
    :make-color
-   :image-width
-   :image-height
-   :color-red
-   :color-green
-   :color-blue
-   :color-alpha
-   :resize
-   :scale
-   :copy
-   :compose
-   :default-compose-operator
-   :make-rgb-image
+   ;;:image-width
+   ;;:image-height
+   ;;:color-red
+   ;;:color-green
+   ;;:color-blue
+   ;;:color-alpha
+   ;;:resize
+   ;;:scale
+   ;;:copy
+   ;;:compose
+   ;;:default-compose-operator
+   ;;:make-rgb-image
    )
   (:import-from
    :cm
