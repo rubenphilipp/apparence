@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  22:56:56 Thu Feb 29 2024 CET
+;;; $$ Last modified:  23:15:47 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -144,7 +144,10 @@
 ;; =>
 CANVAS: width: 100, height: 200, color: (0 0 0 0)
 NAMED-OBJECT: id: NIL, tag: NIL, 
-data: #<RGB-IMAGE (100x200) {70170E8EA3}>
+data: 
+IMAGE: width: 100, height: 200
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #<RGB-IMAGE (100x200) {700EE3E293}>
 |#
 ;;; SYNOPSIS
 (defun make-canvas (width height &key
@@ -182,9 +185,9 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
 ;;;
 ;;; EXAMPLE
 #|
-(let ((cv (make-instance 'canvas :width 300 :height 200 :color '(255 255 255)))
-      (img (imago::make-rgb-image 50 100 (make-color 100 233 90))))
-  (imago::copy (data cv) img)
+(let ((cv (make-instance 'canvas :width 300 :height 200 :color '(55 255 55)))
+      (img (make-rgb-image 50 100)))
+  (copy (data cv) img)
   (write-png cv :outfile "~/Downloads/cv-test.png"))
 |#
 ;;; SYNOPSIS
@@ -224,10 +227,9 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
 ;;;
 ;;; EXAMPLE
 #|
-(let ((cv (make-instance 'canvas :width 300 :height 200
-                                 :color '(255 255 255 0)))
-      (img (imago::make-rgb-image 50 100 (make-color 100 233 90)))
-      (img2 (imago::make-rgb-image 50 100 (make-color 80 133 90))))
+(let ((cv (make-canvas 300 200 :color '(255 255 255 0)))
+      (img (make-rgb-image 50 100 :initial-color (make-color 100 233 90)))
+      (img2 (make-rgb-image 50 100 :initial-color (make-color 80 133 90))))
   (put-it cv img :dest-x 0)
   (put-it cv img2 :dest-x 20)
   (write-png cv :outfile "~/Downloads/cv-test.png"))
@@ -289,7 +291,7 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
 ;;; EXAMPLE
 #|
 (let* ((cv (make-canvas 4000 2000 :color '(0 0 0 0)))
-       (img (imago::make-rgb-image 500 400 (make-color 233 200 188))))
+       (img (make-rgb-image 500 400 :initial-color (make-color 233 200 188))))
   (put-it-circular cv img 350 0)
   (write-png cv :outfile "/tmp/test.png")
   (system-open-file "/tmp/test.png"))
