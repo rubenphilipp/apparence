@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  20:42:50 Thu Feb 29 2024 CET
+;;; $$ Last modified:  21:41:15 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -141,6 +141,45 @@
          (img (imago::make-rgb-image 250 200 (imago::make-color 233 200 188))))
     (apr:put-it-circular cv img 350 0)
     (is (typep (data cv) 'imago::image))))
+
+;;; test-image1
+;;; RP  Thu Feb 29 21:19:14 2024
+(test test-image1
+  (let ((image (make-instance 'apr:image
+                              :data (imago::make-rgb-image 20 20))))
+    (setf (data image) (imago::make-rgb-image 20 50))
+    (setf (width image) 300)
+    (setf (height image) 100)
+    (is (and (= 300 (width image))
+             (= 100 (height image))
+             (= 300 (imago::image-width (data image)))
+             (= 100 (imago::image-height (data image)))))))
+
+;;; test-copy1
+;;; RP  Thu Feb 29 21:40:17 2024
+(test test-copy1
+  (let* ((img1 (make-instance 'apr:image
+                              :data (imago::make-rgb-image
+                                     200 200
+                                     (imago::make-color 232 130 232))))
+         (img2 (apr:make-image (imago::make-rgb-image 20 20
+                                                  (imago::make-color 0 0 0))))
+         (new (apr:copy img1 img2)))
+    (is (= 200 (imago::image-width (data new))))))
+
+;;; test-write-png-image
+;;; RP  Thu Feb 29 21:40:26 2024
+(test test-write-png-image
+  (let* ((img1 (make-instance 'apr:image
+                              :data (imago::make-rgb-image
+                                     200 200
+                                     (imago::make-color 232 130 232))))
+         (img2 (apr:make-image (imago::make-rgb-image
+                                20 20
+                                (imago::make-color 0 0 0))))
+         (new (apr:copy img1 img2 :dest-x 30)))
+    (apr:write-png new :outfile "/tmp/test.png")
+    (is (probe-file "/tmp/test.png"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
