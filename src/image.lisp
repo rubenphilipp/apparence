@@ -20,7 +20,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  22:24:05 Thu Feb 29 2024 CET
+;;; $$ Last modified:  22:36:59 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -179,6 +179,27 @@
   (let ((data (imago-pngload::read-pngload path)))
     (make-image data :id id
                      :default-interpolation default-interpolation)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; image from "arbitrary" (png or jpeg) file
+(defun make-image-from-file (path &key
+                                    id
+                                    (default-interpolation
+                                     (get-apr-config :default-interpolation)))
+  ;;; ****
+  (let ((type (pathname-type path)))
+    (cond ((equal "png" type)
+           (make-image-from-png path
+                                :id id
+                                :default-interpolation default-interpolation))
+          ((or (equal "jpg" type)
+               (equal "jpeg" type))
+           (make-image-from-jpg path
+                                :id id
+                                :default-interpolation default-interpolation))
+          (t (error "image::make-image-from-file: The file type ~a is not ~
+                     supported." type)))))
                              
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
