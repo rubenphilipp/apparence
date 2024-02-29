@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  00:09:47 Thu Feb 29 2024 CET
+;;; $$ Last modified:  00:28:10 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -221,8 +221,10 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
 #|
 (let ((cv (make-instance 'canvas :width 300 :height 200
                                  :color '(255 255 255 0)))
-      (img (make-rgb-image 50 100 (make-color 100 233 90))))
+      (img (make-rgb-image 50 100 (make-color 100 233 90)))
+      (img2 (make-rgb-image 50 100 (make-color 80 133 90))))
   (put-it cv img :dest-x 0)
+  (put-it cv img2 :dest-x 20)
   (write-png cv :outfile "~/Downloads/cv-test.png"))
 |#
 ;;; SYNOPSIS
