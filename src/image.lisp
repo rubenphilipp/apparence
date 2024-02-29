@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  22:43:18 Thu Feb 29 2024 CET
+;;; $$ Last modified:  23:23:23 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -237,7 +237,8 @@
                          (get-apr-config :default-interpolation)))
   ;;; ****
   (setf (data img) (imago::resize (data img) new-width new-height
-                                  :interpolation interpolation)))
+                                  :interpolation interpolation))
+  img)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -247,7 +248,8 @@
                         (get-apr-config :default-interpolation)))
   ;;; ****
   (setf (data img) (imago::scale (data img) width-factor height-factor
-                                 :interpolation interpolation)))
+                                 :interpolation interpolation))
+  img)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

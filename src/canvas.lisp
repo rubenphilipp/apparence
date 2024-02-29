@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  23:15:47 Thu Feb 29 2024 CET
+;;; $$ Last modified:  23:27:31 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -339,7 +339,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
     (cond
       ((and (<= 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
-       (imago::copy canvas image :dest-x (first image-x-coords)
+       (copy canvas image :dest-x (first image-x-coords)
                           :dest-y y))
       ((and (> 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
