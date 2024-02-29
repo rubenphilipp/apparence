@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  14:43:18 Thu Feb 29 2024 CET
+;;; $$ Last modified:  15:46:13 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -129,6 +129,14 @@
   (let* ((cm (apr:make-cylinder-mantle 10 :diameter 10))
          (coords (apr:get-coordinates cm 90 :azimuth-origin-offset 0)))
     (is (equal coords '(5.0d0 0.0d0)))))
+
+;;; test-put-it-circular
+;;; RP  Thu Feb 29 15:42:13 2024
+(test test-put-it-circular
+  (let* ((cv (apr:make-canvas 1000 500 :color '(0 0 0 0)))
+         (img (imago::make-rgb-image 250 200 (apr::make-color 233 200 188))))
+    (apr:put-it-circular cv img 350 0)
+    (is (typep (data cv) 'apr::image))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp

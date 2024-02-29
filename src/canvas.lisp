@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  14:01:52 Thu Feb 29 2024 CET
+;;; $$ Last modified:  15:43:57 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -243,6 +243,132 @@ data: #<RGB-IMAGE (100x200) {70170E8EA3}>
                       :src-x src-x
                       :dest-y dest-y
                       :dest-x dest-x))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* canvas/put-it-circular
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-29
+;;; 
+;;; DESCRIPTION
+;;; This method puts an (imago) image onto a circularly folded canvas (i.e. the
+;;; lateral surface / mantle of a cylinder). The circular position/azimuth of
+;;; the source image can be defined by a degree offset from the center-origin on
+;;; the canvas (which is relative to the width of the unfolded, flat mantle).
+;;;
+;;; ARGUMENTS
+;;; - The canvas object.
+;;; - The image object to be projected. 
+;;; - The azimuth angle for the projection.
+;;; - The vertical position of the image relative to the top of the canvas. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :canvas-origin. The horizontal position of the origin (i.e. the center) on
+;;;   the canvas. This value is relative to the width of the canvas and must be
+;;;   a number between 0.0 and 1.0.  Default = 0.0
+;;; - :image-origin. The horizontal position of the origin on the image to be
+;;;   projected. This value is relative to the image width and must be a number
+;;;   between 0.0 and 1.0.  Default = 0.5
+;;; - :verbose. A boolean value. When T, then some information is printed during
+;;;   the process.  Default = (get-apr-config :verbose)
+;;; 
+;;; RETURN VALUE
+;;; The modified canvas object. 
+;;;
+;;; EXAMPLE
+#|
+(let* ((cv (make-canvas 4000 2000 :color '(0 0 0 0)))
+       (img (make-rgb-image 500 400 (make-color 233 200 188))))
+  (put-it-circular cv img 350 0)
+  (write-png cv :outfile "/tmp/test.png")
+  (system-open-file "/tmp/test.png"))
+|#
+;;; SYNOPSIS
+(defmethod put-it-circular ((cv canvas) image azimuth y
+                            &key
+                              (canvas-origin 0.0)
+                              (image-origin 0.5)
+                              (verbose (get-apr-config :verbose)))
+  ;;; ****
+  (unless (and (<= 0.0 image-origin) (>= 1.0 image-origin))
+    (error "canvas::put-it-circular: The image-origin must >= 0.0 and <= 1.0"))
+  (unless (and (<= 0.0 canvas-origin) (>= 1.0 canvas-origin))
+    (error "canvas::put-it-circular: The canvas-origin must >= 0.0 and <= 1.0"))
+  (when (>= y (height cv))
+    (error "canvas::put-it-circular:  The y-coordinate is >= the height of ~
+            the canvas."))
+  (unless (typep image 'image)
+    (error "canvas::put-it-circular: The image is not an imago image, but ~a"
+           (type-of image)))
+  (let* ((canvas (data cv))
+         (canvas-width (width cv))
+         (img-width (image-width image))
+         ;;(img-height (image-height image))
+         ;; anchor point (x-axis from left) on image, i.e. the origin x-coords
+         (img-anchor (floor (* img-width image-origin)))
+         (rotation-angle (mod azimuth 360))
+         ;; the absolute canvas origin
+         (canvas-anchor (floor (* canvas-origin canvas-width)))
+         ;; rotation origin on the canvas
+         (rotation-origin (floor (+ (* (/ canvas-width 360)
+                                       rotation-angle)
+                                    canvas-anchor)))
+         ;; the x-coordinates for the image on the canvas (x-left x-right)
+         (image-x-coords (list
+                          ;; left
+                          (- rotation-origin img-anchor)
+                          ;; right
+                          (+ rotation-origin
+                             (- img-width img-anchor)))))
+    ;; project the image onto the cylindrical plane / mantle
+    ;; in case there is an overlap on either the left or right side of the
+    ;; canvas, wrap the image
+    (cond
+      ((and (<= 0 (first image-x-coords))
+            (>= canvas-width (second image-x-coords)))
+       (copy canvas image :dest-x (first image-x-coords)
+                          :dest-y y))
+      ((and (> 0 (first image-x-coords))
+            (>= canvas-width (second image-x-coords)))
+       (when verbose
+         (print "left->right"))
+       ;; wrap left->right
+       ;; starting with the "left" part (i.e. the right part of the img)
+       (copy canvas image :width (second image-x-coords)
+                          :src-x (abs (first image-x-coords))
+                          :dest-y y)
+       ;; now the "right" part
+       (copy canvas image :width (abs (first image-x-coords))
+                          :src-x 0
+                          :dest-x (+ canvas-width
+                                     (first image-x-coords))
+                          :dest-y y))
+      ((and (<= 0 (first image-x-coords))
+            (< canvas-width (second image-x-coords)))
+       (when verbose
+         (print "right->left"))
+       ;; wrap right->left
+       ;; starting with the right part (the left part of the img)
+       (copy canvas image :width (- canvas-width
+                                    (first image-x-coords))
+                          :src-x 0
+                          :dest-x (first image-x-coords)
+                          :dest-y y)
+       ;; now the left part
+       (copy canvas image :width (- (second image-x-coords)
+                                    canvas-width)
+                          :src-x (- canvas-width
+                                    (first image-x-coords))
+                          :dest-x 0 :dest-y y))
+      (t (error "the width of the image to be projected is greater than ~
+                 the width of the projection screen.")))
+    ;; finally, return the altered canvas object
+    cv))
+
+
     
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
