@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  17:52:34 Thu Feb 29 2024 CET
+;;; $$ Last modified:  18:44:31 Thu Feb 29 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -410,6 +410,33 @@
               thing)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Returns a list of xy-lists from an envelope.
+#|
+(env->xy-list '(0 20 20 -5 60 80 100 0))
+;; => ((0 20) (20 -5) (60 80) (100 0))
+|#
+(defun env->xy-list (env)
+  (unless (evenp (length env))
+    (error "utilities::env->xy-list: The envelope is malformed."))
+  (loop for x in env by #'cddr and y in (rest env) by #'cddr
+        collect (list x y)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Returns an envelope from a list of xy-lists.
+#|
+(xy-list->env '((0 1) (20 -5) (100 -80)))
+;; => (0 1 20 -5 100 -80)
+|#
+(defun xy-list->env (xy-list)
+  (unless (every #'(lambda (x)
+                     (and (listp x)
+                          (eq 2 (length x))))
+                 xy-list)
+    (error "utilities::xy-list->env: The xy-list is malformed."))
+  (loop for val in xy-list
+        append (list (first val) (second val))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****f* utilities/plot-envelope
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -418,42 +445,84 @@
 ;;; 2024-02-29
 ;;; 
 ;;; DESCRIPTION
-;;; This function plots an envelope via gnuplot. When no filename is given, the
-;;; result will be presented in a gnuplot window. If filename is given, the
-;;; gnuplot data will be stored in the respective file. 
+;;; This function plots an envelope via vgplot (gnuplot). 
 ;;;
 ;;; ARGUMENTS
 ;;; The envelope list to plot. 
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
-;;; - :outfile. When a file-path is specified, the gnuplot data will be stored
-;;;   here. When NIL, the plot will be displayed in a gnuplot window. 
+;;; - :label. A string used as a label for the plot. Could also contain
+;;;   formatting information (cf. vgplot API).
+;;; - :new-plot?. When T, a new plot will be created. 
 ;;; 
 ;;; RETURN VALUE
 ;;; none
 ;;;
 ;;; EXAMPLE
 #|
-(plot-envelope '(0 -100 30 0 60 40 70 40 85 0 100 10))
+(plot-envelope '(0 -100 30 0 60 40 70 40 85 0 100 10) :label "env1")
 |#
 ;;; SYNOPSIS
-(defun plot-envelope (env &key outfile)
+(defun plot-envelope (env &key label new-plot?)
   ;;; ****
-  (let ((gnuplot-data
-          (loop for x in env by #'cddr and y in (rest env) by #'cddr
-                collect (list x y))))
-    (if (stringp outfile)
-        (with-open-file (stream outfile
-                                :direction :output
-                                :if-exists :supersede
-                                :if-does-not-exist :create)
-          (loop for d in gnuplot-data
-                do
-                   (format stream "~a ~a ~%" (first d) (second d))))
-        (vgplot:plot (mapcar #'first gnuplot-data)
-                     (mapcar #'second gnuplot-data)))))
-      
+  (let ((gnuplot-data (env->xy-list env)))
+    (when new-plot? (new-plot))
+    (plot (mapcar #'first gnuplot-data)
+                 (mapcar #'second gnuplot-data)
+                 label)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/plot-envelopes
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-29
+;;; 
+;;; DESCRIPTION
+;;; This function plots multiple envelopes via vgplot (gnuplot). The envelopes
+;;; will be given as a list of envelope-lists. Additionally, a label can be
+;;; added to each envelope. The :labels have to be a list with vgplot
+;;; label-strings. 
+;;;
+;;; ARGUMENTS
+;;; The list of envelope lists to plot. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :labels. A list with label-strings (cf. vplot-API).
+;;; - :new-plot?. When T, a new plot will be created. 
+;;; 
+;;; RETURN VALUE
+;;; The result of the vgplot:plot process. 
+;;;
+;;; EXAMPLE
+#|
+(plot-envelopes '((0 -5 20 20 100 80)
+                  (0 -2.5 30 5 80 90 100 0)
+                  (0 -4 40 2 100 20.5))
+                :labels '("env1" "env2"))
+|#
+;;; SYNOPSIS
+(defun plot-envelopes (envelopes &key labels new-plot?)
+  ;;; ****
+  (unless (every #'listp envelopes)
+    (error "utilities::plot-envelopes: The envelopes must be a list of lists."))
+  (when (> (length labels) (length envelopes))
+    (warn "utilities::plot-envelopes: More labels than envelopes are given. ~
+           Remaining labels will be ignored."))
+  (let ((plot-data (loop for i from 0 to (1- (length envelopes))
+                         for env = (nth i envelopes)
+                         for label = (nth i labels)
+                         for env-data = (env->xy-list env)
+                         append
+                         (list (mapcar #'first env-data)
+                               (mapcar #'second env-data)
+                               (if label label "")))))
+    (when new-plot? (new-plot))
+    (apply #'plot plot-data)))
     
   
 
