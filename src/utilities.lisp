@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  14:22:56 Thu Feb 29 2024 CET
+;;; $$ Last modified:  17:52:34 Thu Feb 29 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -408,6 +408,53 @@
                   (and (<= 0 x)
                        (>= 255 x)))
               thing)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/plot-envelope
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-29
+;;; 
+;;; DESCRIPTION
+;;; This function plots an envelope via gnuplot. When no filename is given, the
+;;; result will be presented in a gnuplot window. If filename is given, the
+;;; gnuplot data will be stored in the respective file. 
+;;;
+;;; ARGUMENTS
+;;; The envelope list to plot. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :outfile. When a file-path is specified, the gnuplot data will be stored
+;;;   here. When NIL, the plot will be displayed in a gnuplot window. 
+;;; 
+;;; RETURN VALUE
+;;; none
+;;;
+;;; EXAMPLE
+#|
+(plot-envelope '(0 -100 30 0 60 40 70 40 85 0 100 10))
+|#
+;;; SYNOPSIS
+(defun plot-envelope (env &key outfile)
+  ;;; ****
+  (let ((gnuplot-data
+          (loop for x in env by #'cddr and y in (rest env) by #'cddr
+                collect (list x y))))
+    (if (stringp outfile)
+        (with-open-file (stream outfile
+                                :direction :output
+                                :if-exists :supersede
+                                :if-does-not-exist :create)
+          (loop for d in gnuplot-data
+                do
+                   (format stream "~a ~a ~%" (first d) (second d))))
+        (vgplot:plot (mapcar #'first gnuplot-data)
+                     (mapcar #'second gnuplot-data)))))
+      
+    
   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
