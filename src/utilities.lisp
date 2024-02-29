@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  22:58:31 Wed Feb 28 2024 CET
+;;; $$ Last modified:  14:22:56 Thu Feb 29 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -245,6 +245,7 @@
 ;;;
 ;;; SYNOPSIS
 (defun aspect-ratio (image)
+  ;;; ****
   (/ (image-width image)
      (image-height image)))
 
