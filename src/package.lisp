@@ -13,7 +13,7 @@
 ;;; Package definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  18:39:07 Thu Feb 29 2024 CET
+;;; $$ Last modified:  19:00:05 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -45,10 +45,6 @@
    :rescale-envelope
    :interp
    :interpl)
-  (:import-from
-   :vgplot
-   :new-plot
-   :plot)
   (:import-from
    :alexandria
    :assoc-value))

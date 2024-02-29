@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  18:51:04 Thu Feb 29 2024 CET
+;;; $$ Last modified:  19:00:03 Thu Feb 29 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -467,10 +467,10 @@
 (defun plot-envelope (env &key label new-plot?)
   ;;; ****
   (let ((gnuplot-data (env->xy-list env)))
-    (when new-plot? (new-plot))
-    (plot (mapcar #'first gnuplot-data)
-                 (mapcar #'second gnuplot-data)
-                 label)))
+    (when new-plot? (vgplot::new-plot))
+    (vgplot::plot (mapcar #'first gnuplot-data)
+                  (mapcar #'second gnuplot-data)
+                  label)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -530,8 +530,8 @@
                          (list (mapcar #'first env-data)
                                (mapcar #'second env-data)
                                (if label label "")))))
-    (when new-plot? (new-plot))
-    (apply #'plot plot-data)
+    (when new-plot? (vgplot::new-plot))
+    (apply #'vgplot::plot plot-data)
     (set-plot-axis-label :x-label x-axis-label
                          :y-label y-axis-label)))
 
@@ -543,8 +543,8 @@
 (defun set-plot-axis-label (&key
                               x-label
                               y-label)
-  (when x-label (vgplot:xlabel x-label))
-  (when y-label (vgplot:ylabel y-label)))
+  (when x-label (vgplot::xlabel x-label))
+  (when y-label (vgplot::ylabel y-label)))
     
   
 
