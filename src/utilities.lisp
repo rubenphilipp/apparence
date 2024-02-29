@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  18:44:31 Thu Feb 29 2024 CET
+;;; $$ Last modified:  18:51:04 Thu Feb 29 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -493,7 +493,9 @@
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
 ;;; - :labels. A list with label-strings (cf. vplot-API).
-;;; - :new-plot?. When T, a new plot will be created. 
+;;; - :new-plot?. When T, a new plot will be created.
+;;; - :x-axis-label. A label string for the x-axis.
+;;; - :y-axis-label. A label string for the y-axis. 
 ;;; 
 ;;; RETURN VALUE
 ;;; The result of the vgplot:plot process. 
@@ -503,10 +505,17 @@
 (plot-envelopes '((0 -5 20 20 100 80)
                   (0 -2.5 30 5 80 90 100 0)
                   (0 -4 40 2 100 20.5))
-                :labels '("env1" "env2"))
+                :labels '("env1" "env2")
+                :x-axis-label "time (s)"
+                :y-axis-label "intensity")
+
 |#
 ;;; SYNOPSIS
-(defun plot-envelopes (envelopes &key labels new-plot?)
+(defun plot-envelopes (envelopes &key
+                                   labels
+                                   new-plot?
+                                   x-axis-label
+                                   y-axis-label)
   ;;; ****
   (unless (every #'listp envelopes)
     (error "utilities::plot-envelopes: The envelopes must be a list of lists."))
@@ -522,7 +531,20 @@
                                (mapcar #'second env-data)
                                (if label label "")))))
     (when new-plot? (new-plot))
-    (apply #'plot plot-data)))
+    (apply #'plot plot-data)
+    (set-plot-axis-label :x-label x-axis-label
+                         :y-label y-axis-label)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Sets the plot-labels
+#|
+(set-plot-axis-label :x-label "secs")
+|#
+(defun set-plot-axis-label (&key
+                              x-label
+                              y-label)
+  (when x-label (vgplot:xlabel x-label))
+  (when y-label (vgplot:ylabel y-label)))
     
   
 
