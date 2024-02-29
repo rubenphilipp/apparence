@@ -126,8 +126,8 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (make-instance '<a href="#robo2">canvas</a> :width 300 :height 200
                                  :color '(255 255 255 0)))
-      (img (imago::<a href="./image_lisp.html#robo17">make-rgb-image</a> 50 100 (make-color 100 233 90)))
-      (img2 (imago::<a href="./image_lisp.html#robo17">make-rgb-image</a> 50 100 (make-color 80 133 90))))
+      (img (imago::<a href="./image_lisp.html#robo18">make-rgb-image</a> 50 100 (make-color 100 233 90)))
+      (img2 (imago::<a href="./image_lisp.html#robo18">make-rgb-image</a> 50 100 (make-color 80 133 90))))
   (<strong>put-it</strong> cv img :dest-x 0)
   (<strong>put-it</strong> cv img2 :dest-x 20)
   (<a href="#robo10">write-png</a> cv :outfile "~/Downloads/cv-test.png"))
@@ -182,10 +182,10 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let* ((cv (<a href="#robo7">make-canvas</a> 4000 2000 :color '(0 0 0 0)))
-       (img (imago::<a href="./image_lisp.html#robo17">make-rgb-image</a> 500 400 (make-color 233 200 188))))
+       (img (imago::<a href="./image_lisp.html#robo18">make-rgb-image</a> 500 400 (make-color 233 200 188))))
   (<strong>put-it-circular</strong> cv img 350 0)
   (<a href="#robo10">write-png</a> cv :outfile "/tmp/test.png")
-  (<a href="./utilities_lisp.html#robo35">system-open-file</a> "/tmp/test.png"))
+  (<a href="./utilities_lisp.html#robo36">system-open-file</a> "/tmp/test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmethod <strong>put-it-circular</strong> ((cv <a href="#robo2">canvas</a>) <a href="./image_lisp.html#robo4">image</a> azimuth y
@@ -222,7 +222,7 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (make-instance '<a href="#robo2">canvas</a> :width 300 :height 200 :color '(255 255 255)))
-      (img (imago::<a href="./image_lisp.html#robo17">make-rgb-image</a> 50 100 (make-color 100 233 90))))
+      (img (imago::<a href="./image_lisp.html#robo18">make-rgb-image</a> 50 100 (make-color 100 233 90))))
   (imago::copy (data cv) img)
   (<strong>write-png</strong> cv :outfile "~/Downloads/cv-test.png"))
 </pre>
@@ -232,7 +232,7 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 22:39:37</p>
+<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 22:41:14</p>
 </div> <!-- footer -->
 </body>
 </html>

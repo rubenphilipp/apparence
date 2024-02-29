@@ -53,7 +53,7 @@
 
 <hr />
 <a name="projection2dsurface2fderive2dcanvas2ddimensions"></a>
-<a name="robo18"></a><h2>projection-surface/derive-canvas-dimensions [ Methods ]</h2>
+<a name="robo19"></a><h2>projection-surface/derive-canvas-dimensions [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">projection-surface</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -83,7 +83,7 @@
 <pre> A two-item list with width and height of the <a href="./canvas_lisp.html#robo2">canvas</a> (in px). 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((ps (<a href="#robo20">make-projection-surface</a> 8.112149 8.373832)))
+<pre class="source">(let ((ps (<a href="#robo21">make-projection-surface</a> 8.112149 8.373832)))
   (<strong>derive-canvas-dimensions</strong> ps :destination-width 992))
 
 ;; =&gt; (992 1024.0)
@@ -98,7 +98,7 @@
 
 <hr />
 <a name="projection2dsurface2fmake2dcanvas2dfrom2dps"></a>
-<a name="robo19"></a><h2>projection-surface/make-canvas-from-ps [ Methods ]</h2>
+<a name="robo20"></a><h2>projection-surface/make-canvas-from-ps [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">projection-surface</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -110,7 +110,7 @@
 <p class="item_name">DESCRIPTION</p>
 <pre> This method creates a <a href="./canvas_lisp.html#robo2">canvas</a> object from a <a href="#robo6">projection-surface</a>. The
  dimensions of the <a href="./canvas_lisp.html#robo2">canvas</a> will be derived from the dimensions of the ps. This
- is done by internally applying <a href="#robo18">derive-canvas-dimensions</a>. Hence, it is
+ is done by internally applying <a href="#robo19">derive-canvas-dimensions</a>. Hence, it is
  mandatory to give exactly one of the three keyword-arguments (either
  :factor, :destination-width, or :destination-height) in order to get a
  properly scaled <a href="./canvas_lisp.html#robo2">canvas</a>. 
@@ -133,7 +133,7 @@
 <pre> The <a href="./canvas_lisp.html#robo2">canvas</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((ps (<a href="#robo20">make-projection-surface</a> 200 300)))
+<pre class="source">(let ((ps (<a href="#robo21">make-projection-surface</a> 200 300)))
   (<strong>make-canvas-from-ps</strong> ps :factor 2.5))
 
 ;; =&gt;
@@ -153,7 +153,7 @@ data: #&lt;RGB-IMAGE (500x750) {7015211513}&gt;
 
 <hr />
 <a name="projection2dsurface2fmake2dprojection2dsurface"></a>
-<a name="robo20"></a><h2>projection-surface/make-projection-surface [ Functions ]</h2>
+<a name="robo21"></a><h2>projection-surface/make-projection-surface [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">projection-surface</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -186,7 +186,7 @@ data: #&lt;RGB-IMAGE (500x750) {7015211513}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/projection-surface.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 22:39:37</p>
+<p>Generated from ./src/projection-surface.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 22:41:14</p>
 </div> <!-- footer -->
 </body>
 </html>

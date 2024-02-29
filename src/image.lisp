@@ -20,7 +20,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  22:36:59 Thu Feb 29 2024 CET
+;;; $$ Last modified:  22:41:06 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -128,7 +128,7 @@
 ;;; This function creates a new imago::rgb-image. 
 ;;;
 ;;; ARGUMENTS
-;;; - thei width of the image
+;;; - the width of the image
 ;;; - the height of the image
 ;;; 
 ;;; OPTIONAL ARGUMENTS
@@ -182,7 +182,31 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; image from "arbitrary" (png or jpeg) file
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* image/make-image-from-file
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-29
+;;; 
+;;; DESCRIPTION
+;;; This function makes an image object from an image file.
+;;; Currently supported are png and jpg/jpeg images. 
+;;;
+;;; ARGUMENTS
+;;; The path to the image file. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; - :id. The id of the new image object.
+;;; - :default-interpolation. The default interpolation method (used e.g. when
+;;;   changing the image dimensions via the (setf ...) methods.
+;;;   Default = (get-apr-config :default-interpolation)
+;;; 
+;;; RETURN VALUE
+;;; The new image object. 
+;;;
+;;; SYNOPSIS
 (defun make-image-from-file (path &key
                                     id
                                     (default-interpolation
