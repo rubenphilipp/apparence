@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  22:11:52 Thu Feb 29 2024 CET
+;;; $$ Last modified:  22:27:35 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -179,6 +179,16 @@
          (new (apr:copy img1 img2 :dest-x 30)))
     (apr:write-png new :outfile "/tmp/test.png")
     (is (probe-file "/tmp/test.png"))))
+
+;;; test-images-from-specific-files
+;;; RP  Thu Feb 29 22:25:15 2024
+(test test-images-from-specific-files
+  (let ((img-png (apr:make-image-from-png
+                  (test-pathname "image.png")))
+        (img-jpg (apr:make-image-from-jpg
+                  (test-pathname "image.jpg"))))
+    (is (and (typep img-png 'apr:image)
+             (typep img-jpg 'apr:image)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
