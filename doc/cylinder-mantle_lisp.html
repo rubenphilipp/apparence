@@ -44,14 +44,14 @@
 <pre> This class implements the cylinder mantle projection surface. 
 
  CLASS HIERARCHY
- <a href="./named-object_lisp.html#robo4">named-object</a> -&gt; <a href="./projection-surface_lisp.html#robo5">projection-surface</a> -&gt; <strong>cylinder-mantle</strong>
+ <a href="./named-object_lisp.html#robo5">named-object</a> -&gt; <a href="./projection-surface_lisp.html#robo6">projection-surface</a> -&gt; <strong>cylinder-mantle</strong>
 
  $$ Last modified:  14:20:31 Thu Feb 29 2024 CET
 </pre>
 
 <hr />
 <a name="cylinder2dmantle2fget2dcoordinates"></a>
-<a name="robo9"></a><h2>cylinder-mantle/get-coordinates [ Methods ]</h2>
+<a name="robo11"></a><h2>cylinder-mantle/get-coordinates [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo3">cylinder-mantle</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -87,7 +87,7 @@
 <pre> A list with the x and y coordinates of the location of the point (in m). 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((cm (<a href="#robo10">make-cylinder-mantle</a> 10 :diameter 10)))
+<pre class="source">(let ((cm (<a href="#robo12">make-cylinder-mantle</a> 10 :diameter 10)))
   (<strong>get-coordinates</strong> cm 90 :azimuth-origin-offset 0))
 ;; =&gt; (5.0d0 0.0d0)
 </pre>
@@ -102,7 +102,7 @@
 
 <hr />
 <a name="cylinder2dmantle2fmake2dcylinder2dmantle"></a>
-<a name="robo10"></a><h2>cylinder-mantle/make-cylinder-mantle [ Functions ]</h2>
+<a name="robo12"></a><h2>cylinder-mantle/make-cylinder-mantle [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo3">cylinder-mantle</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -113,7 +113,7 @@
 </pre>
 <p class="item_name">DESCRIPTION</p>
 <pre> Helper function to instantiate a <a href="#robo3">cylinder-mantle</a> object.
- A cylinder mantle is a specialized <a href="./projection-surface_lisp.html#robo5">projection-surface</a>. 
+ A cylinder mantle is a specialized <a href="./projection-surface_lisp.html#robo6">projection-surface</a>. 
  
  Please note that you cannot set both the diameter and the width (i.e. the
  circumference) value when instantiating the object. 
@@ -144,7 +144,7 @@ data: NIL
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/cylinder-mantle.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 14:39:17</p>
+<p>Generated from ./src/cylinder-mantle.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 22:39:37</p>
 </div> <!-- footer -->
 </body>
 </html>

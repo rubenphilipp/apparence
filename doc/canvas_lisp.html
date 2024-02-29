@@ -43,19 +43,19 @@
 <p class="item_name">PURPOSE</p>
 <pre> Implementation of the <strong>canvas</strong> class. A <strong>canvas</strong> is (according to the metaphor
  linked to vis-arts) a surface other visual items will be added to.
- Essentially, it holds an imago (rgb) image object in the data slot, which
+ Essentially, it holds an imago (rgb) <a href="./image_lisp.html#robo4">image</a> object in the data slot, which
  is created during the initialization process with the given dimensions and
  could be altered via several methods. 
 
  CLASS HIERARCHY
- <a href="./named-object_lisp.html#robo4">named-object</a> -&gt; <strong>canvas</strong>
+ <a href="./named-object_lisp.html#robo5">named-object</a> -&gt; <strong>canvas</strong>
 
- $$ Last modified:  14:01:52 Thu Feb 29 2024 CET
+ $$ Last modified:  20:40:11 Thu Feb 29 2024 CET
 </pre>
 
 <hr />
 <a name="canvas2fmake2dcanvas"></a>
-<a name="robo6"></a><h2>canvas/make-canvas [ Functions ]</h2>
+<a name="robo7"></a><h2>canvas/make-canvas [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">canvas</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -95,7 +95,7 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 
 <hr />
 <a name="canvas2fput2dit"></a>
-<a name="robo7"></a><h2>canvas/put-it [ Functions ]</h2>
+<a name="robo8"></a><h2>canvas/put-it [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">canvas</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -105,11 +105,11 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 <pre> 2024-02-28
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> This method puts an (imago) image object on top of the <a href="#robo2">canvas</a>.
+<pre> This method puts an (imago) <a href="./image_lisp.html#robo4">image</a> object on top of the <a href="#robo2">canvas</a>.
 </pre>
 <p class="item_name">ARGUMENTS</p>
 <pre> - The <a href="#robo2">canvas</a> object.
- - The image object. 
+ - The <a href="./image_lisp.html#robo4">image</a> object. 
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
@@ -126,14 +126,14 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (make-instance '<a href="#robo2">canvas</a> :width 300 :height 200
                                  :color '(255 255 255 0)))
-      (img (make-rgb-image 50 100 (make-color 100 233 90)))
-      (img2 (make-rgb-image 50 100 (make-color 80 133 90))))
+      (img (imago::<a href="./image_lisp.html#robo17">make-rgb-image</a> 50 100 (make-color 100 233 90)))
+      (img2 (imago::<a href="./image_lisp.html#robo17">make-rgb-image</a> 50 100 (make-color 80 133 90))))
   (<strong>put-it</strong> cv img :dest-x 0)
   (<strong>put-it</strong> cv img2 :dest-x 20)
-  (<a href="#robo8">write-png</a> cv :outfile "~/Downloads/cv-test.png"))
+  (<a href="#robo10">write-png</a> cv :outfile "~/Downloads/cv-test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
-<pre class="source">(defmethod <strong>put-it</strong> ((cv <a href="#robo2">canvas</a>) (img image)
+<pre class="source">(defmethod <strong>put-it</strong> ((cv <a href="#robo2">canvas</a>) img
                    &amp;key
                      height
                      width
@@ -144,8 +144,60 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 </pre>
 
 <hr />
+<a name="canvas2fput2dit2dcircular"></a>
+<a name="robo9"></a><h2>canvas/put-it-circular [ Methods ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">canvas</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-29
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This method puts an (imago) <a href="./image_lisp.html#robo4">image</a> onto a circularly folded <a href="#robo2">canvas</a> (i.e. the
+ lateral surface / mantle of a cylinder). The circular position/azimuth of
+ the source <a href="./image_lisp.html#robo4">image</a> can be defined by a degree offset from the center-origin on
+ the <a href="#robo2">canvas</a> (which is relative to the width of the unfolded, flat mantle).
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The <a href="#robo2">canvas</a> object.
+ - The <a href="./image_lisp.html#robo4">image</a> object to be projected. 
+ - The azimuth angle for the projection.
+ - The vertical position of the <a href="./image_lisp.html#robo4">image</a> relative to the top of the <a href="#robo2">canvas</a>. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :<a href="#robo2">canvas</a>-origin. The horizontal position of the origin (i.e. the center) on
+   the <a href="#robo2">canvas</a>. This value is relative to the width of the <a href="#robo2">canvas</a> and must be
+   a number between 0.0 and 1.0.  Default = 0.0
+ - :<a href="./image_lisp.html#robo4">image</a>-origin. The horizontal position of the origin on the <a href="./image_lisp.html#robo4">image</a> to be
+   projected. This value is relative to the <a href="./image_lisp.html#robo4">image</a> width and must be a number
+   between 0.0 and 1.0.  Default = 0.5
+ - :verbose. A boolean value. When T, then some information is printed during
+   the process.  Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :verbose)
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The modified <a href="#robo2">canvas</a> object. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let* ((cv (<a href="#robo7">make-canvas</a> 4000 2000 :color '(0 0 0 0)))
+       (img (imago::<a href="./image_lisp.html#robo17">make-rgb-image</a> 500 400 (make-color 233 200 188))))
+  (<strong>put-it-circular</strong> cv img 350 0)
+  (<a href="#robo10">write-png</a> cv :outfile "/tmp/test.png")
+  (<a href="./utilities_lisp.html#robo35">system-open-file</a> "/tmp/test.png"))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmethod <strong>put-it-circular</strong> ((cv <a href="#robo2">canvas</a>) <a href="./image_lisp.html#robo4">image</a> azimuth y
+                            &amp;key
+                              (<a href="#robo2">canvas</a>-origin 0.0)
+                              (<a href="./image_lisp.html#robo4">image</a>-origin 0.5)
+                              (verbose (<a href="./globals_lisp.html#robo14">get-apr-config</a> :verbose)))
+</pre>
+
+<hr />
 <a name="canvas2fwrite2dpng"></a>
-<a name="robo8"></a><h2>canvas/write-png [ Methods ]</h2>
+<a name="robo10"></a><h2>canvas/write-png [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">canvas</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -170,8 +222,8 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (make-instance '<a href="#robo2">canvas</a> :width 300 :height 200 :color '(255 255 255)))
-      (img (make-rgb-image 50 100 (make-color 100 233 90))))
-  (copy (data cv) img)
+      (img (imago::<a href="./image_lisp.html#robo17">make-rgb-image</a> 50 100 (make-color 100 233 90))))
+  (imago::copy (data cv) img)
   (<strong>write-png</strong> cv :outfile "~/Downloads/cv-test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
@@ -180,7 +232,7 @@ data: #&lt;RGB-IMAGE (100x200) {70170E8EA3}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 14:39:17</p>
+<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 22:39:37</p>
 </div> <!-- footer -->
 </body>
 </html>
