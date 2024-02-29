@@ -48,7 +48,7 @@
  CLASS HIERARCHY
  <a href="./named-object_lisp.html#robo4">named-object</a> -&gt; <strong>projection-surface</strong>
 
- $$ Last modified:  14:19:55 Thu Feb 29 2024 CET
+ $$ Last modified:  14:37:22 Thu Feb 29 2024 CET
 </pre>
 
 <hr />
@@ -83,7 +83,7 @@
 <pre> A two-item list with width and height of the <a href="./canvas_lisp.html#robo2">canvas</a> (in px). 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((ps (<a href="#robo15">make-projection-surface</a> 8.112149 8.373832)))
+<pre class="source">(let ((ps (<a href="#robo16">make-projection-surface</a> 8.112149 8.373832)))
   (<strong>derive-canvas-dimensions</strong> ps :destination-width 992))
 
 ;; =&gt; (992 1024.0)
@@ -97,8 +97,63 @@
 </pre>
 
 <hr />
+<a name="projection2dsurface2fmake2dcanvas2dfrom2dps"></a>
+<a name="robo15"></a><h2>projection-surface/make-canvas-from-ps [ Methods ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">projection-surface</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-29
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This method creates a <a href="./canvas_lisp.html#robo2">canvas</a> object from a <a href="#robo5">projection-surface</a>. The
+ dimensions of the <a href="./canvas_lisp.html#robo2">canvas</a> will be derived from the dimensions of the ps. This
+ is done by internally applying <a href="#robo14">derive-canvas-dimensions</a>. Hence, it is
+ mandatory to give exactly one of the three keyword-arguments (either
+ :factor, :destination-width, or :destination-height) in order to get a
+ properly scaled <a href="./canvas_lisp.html#robo2">canvas</a>. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - A <a href="#robo5">projection-surface</a> object.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+   Give exactly one of these three arguments, leave the other to at NIL.
+ - :factor. A scaling factor (number) for width and height.
+ - :destination-width. A pixel value (number) to scale the dimensions to.
+ - :destination-height. A pixel value (number) to scale the dimensions to.
+ 
+ - :color. A three- or four-item list of rgb(a) values determining the <a href="./canvas_lisp.html#robo2">canvas</a>
+   background color.  Default = '(0 0 0 0)
+ - :id. The id of the <a href="./canvas_lisp.html#robo2">canvas</a>. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The <a href="./canvas_lisp.html#robo2">canvas</a> object. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((ps (<a href="#robo16">make-projection-surface</a> 200 300)))
+  (<strong>make-canvas-from-ps</strong> ps :factor 2.5))
+
+;; =&gt;
+CANVAS: width: 500, height: 750, color: (0 0 0 0)
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #&lt;RGB-IMAGE (500x750) {7015211513}&gt;
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmethod <strong>make-canvas-from-ps</strong> ((ps projection-surface)
+                                &amp;key
+                                  ;; just one of these three
+                                  factor destination-width destination-height
+                                  ;; any of these can be set
+                                  (color '(0 0 0 0))
+                                  id)
+</pre>
+
+<hr />
 <a name="projection2dsurface2fmake2dprojection2dsurface"></a>
-<a name="robo15"></a><h2>projection-surface/make-projection-surface [ Functions ]</h2>
+<a name="robo16"></a><h2>projection-surface/make-projection-surface [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">projection-surface</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -131,7 +186,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/projection-surface.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 14:23:07</p>
+<p>Generated from ./src/projection-surface.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 14:39:17</p>
 </div> <!-- footer -->
 </body>
 </html>
