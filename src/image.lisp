@@ -14,13 +14,14 @@
 ;;; an imago::image and provides an interface for accessing relevant attributes.
 ;;;
 ;;; NB: This abstraction of the imago::image class is necessary in order to
-;;;     provide convenient facilities of referencing images (e.g. to computing
-;;;     sdf ressources when working with a large amount of images). 
+;;;     provide convenient facilities of referencing images (e.g. to hanbdle
+;;;     computing ressources economically when working with a large amount of
+;;;     images).
 ;;;
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  22:41:06 Thu Feb 29 2024 CET
+;;; $$ Last modified:  22:43:18 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
