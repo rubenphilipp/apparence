@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  14:05:27 Thu Feb 29 2024 CET
+;;; $$ Last modified:  14:21:52 Thu Feb 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -92,6 +92,22 @@
     (apr:put-it cv img :dest-x 20)
     (apr:write-png cv :outfile "/tmp/cv-test.png"))
   (is (probe-file "/tmp/cv-test.png")))
+
+;;; test projection surface
+;;; RP  Mon Feb 26 17:49:28 2024
+(test test-projection-surface
+  (let ((ps (make-projection-surface 10 20.5)))
+    (is (= (width ps) 10.0))))
+
+;;; test cylinder-mantle
+;;; RP  Mon Feb 26 17:53:24 2024
+(test test-cylinder-mantle
+  (let ((mantle1 (make-cylinder-mantle 10
+                                       :width 2.0))
+        (mantle2 (make-cylinder-mantle 5.5
+                                       :diameter 3.0)))
+    (setf (diameter mantle1) 3.0)
+    (is (= (width mantle1) (width mantle2)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
