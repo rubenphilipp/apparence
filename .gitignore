@@ -31,6 +31,8 @@ auto-save-list
 tramp
 .\#*
 
+todo.org
+
 # Org-mode
 .org-id-locations
 *_archive
