@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; None, as this is the base class for all apparence classes.
 ;;;
-;;; $$ Last modified:  18:29:32 Fri Mar  1 2024 CET
+;;; $$ Last modified:  18:52:17 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -66,7 +66,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod clone-with-new-class ((no named-object) new-class)
-  (let ((new (make-instance new-class :id nil :data (data no))))
+  (let ((new (make-instance new-class :id nil :data nil)))
     (setf (slot-value new 'id) (basic-copy-object (id no))
           (slot-value new 'tag) (basic-copy-object (tag no))
           ;;; does the recursive copying/cloning

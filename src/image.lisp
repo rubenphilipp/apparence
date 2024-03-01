@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  18:27:32 Fri Mar  1 2024 CET
+;;; $$ Last modified:  18:58:43 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -80,17 +80,14 @@
 
 (defmethod update ((img image) &key ignore)
   (declare (ignore ignore))
-  (unless (default-interpolation img)
-    (warn "image::update: No default-interpolation is given. Using ~
-            imago::*default-interpolation*: ~a"
-           imago::*default-interpolation*))
-  (unless (typep (data img) 'imago::image)
-    (error "image::update: The data-slot of the image object must contain a ~
-            imago::image, not a ~a." (type-of (data img))))
-  ;;; set width and height from the imago::image
-  (let ((image (data img)))
-    (setf (slot-value img 'width) (imago::image-width image)
-          (slot-value img 'height) (imago::image-height image))))
+  (when (data img)
+    (unless (typep (data img) 'imago::image)
+      (error "image::update: The data-slot of the image object must contain a ~
+              imago::image, not a ~a." (type-of (data img))))
+    ;;; set width and height from the imago::image
+    (let ((image (data img)))
+      (setf (slot-value img 'width) (imago::image-width image)
+            (slot-value img 'height) (imago::image-height image)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

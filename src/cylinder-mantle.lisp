@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  16:21:55 Fri Mar  1 2024 CET
+;;; $$ Last modified:  19:20:30 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -36,6 +36,18 @@
 (defmethod print-object :before ((cm cylinder-mantle) stream)
   (format stream "~%CYLINDER-MANTLE: diameter: ~a"
           (diameter cm)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod clone ((cm cylinder-mantle))
+  (clone-with-new-class cm 'cylinder-mantle))
+
+(defmethod clone-with-new-class :around ((cm cylinder-mantle) new-class)
+  (declare (ignore new-class))
+  (let ((new (call-next-method)))
+    (setf (slot-value new 'diameter) (diameter cm))
+    (setf (slot-value new 'initialized) (initialized cm))
+    new))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -70,26 +82,20 @@
 
 (defmethod update ((cm cylinder-mantle) &key ignore)
   (declare (ignore ignore))
-  (unless (> (height cm) 0)
-    (error "cylinder-mantle::update: The height must be > 0"))
   (unless (initialized cm)
-    (when (and (diameter cm) (width cm))
-      (error "cylinder-mantle::initialize-instance: You can't specify both the ~
-              diameter and the width slots. ~a" cm))
+    (if (and (width cm) (diameter cm))
+        (error "cylinder-mantle::initialize-instance: You can't ~
+                specify both the diameter and the width slots. ~a" cm))
     (let ((diameter (diameter cm))
           (width (width cm)))
       (cond ((and diameter (not width))
-             (unless (> diameter 0)
-               (error "cylinder-mantle::update: The diameter must be > 0"))
              (set-width cm))
             ((and width (not diameter))
-             (unless (> (width cm) 0)
-               (error "cylinder-mantle::update: The width must be > 0"))
              (set-diameter cm))
-            (t (error "cylinder-mantle::update: Neither diameter nor width ~
-                       have been set. ~a" cm))))
+            ((and width diameter)
+             (error "cylinder-mantle::initialize-instance: You can't ~
+                   specify both the diameter and the width slots. ~a" cm))))
     (setf (slot-value cm 'initialized) t)))
-
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

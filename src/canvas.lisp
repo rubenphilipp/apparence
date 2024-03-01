@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  18:30:39 Fri Mar  1 2024 CET
+;;; $$ Last modified:  18:37:00 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -51,6 +51,20 @@
                   (imago::color-green c)
                   (imago::color-blue c)
                   (imago::color-alpha c)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod clone ((cv canvas))
+  (clone-with-new-class cv 'canvas))
+
+(defmethod clone-with-new-class :around ((cv canvas) new-class)
+  (declare (ignore new-class))
+  (let ((new (call-next-method)))
+    (setf (slot-value new 'width) (width cv)
+          (slot-value new 'height) (height cv)
+          (slot-value new 'color) (color cv)
+          (slot-value new 'data) (data cv))
+    new))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

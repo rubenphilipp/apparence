@@ -29,7 +29,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> projection-surface
 ;;;
-;;; $$ Last modified:  18:33:53 Fri Mar  1 2024 CET
+;;; $$ Last modified:  19:23:48 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -51,12 +51,34 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmethod clone ((ps projection-surface))
+  (clone-with-new-class ps 'projection-surface))
+
+(defmethod clone-with-new-class :around ((ps projection-surface) new-class)
+  (declare (ignore new-class))
+  (let ((new (call-next-method)))
+    (setf (slot-value new 'width) (width ps))
+    (setf (slot-value new 'height) (height ps))
+    new))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defmethod update ((ps projection-surface) &key ignore)
   (declare (ignore ignore))
-  (unless (> (width ps) 0)
-    (error "projection-surface::update: The width must be > 0"))
+  ;; nothing to do as of now
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod (setf height) :after (value (ps projection-surface))
+  (declare (ignore value))
   (unless (> (height ps) 0)
-    (error "projection-surface::update: The height must be > 0")))
+    (error "projection-surface::(setf height): The height must be > 0")))
+
+(defmethod (setf width) :after (value (ps projection-surface))
+  (declare (ignore value))
+  (unless (> (width ps) 0)
+    (error "projection-surface::(setf width): The width must be > 0")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
