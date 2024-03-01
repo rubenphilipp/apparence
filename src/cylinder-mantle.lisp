@@ -15,14 +15,13 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  14:20:31 Thu Feb 29 2024 CET
+;;; $$ Last modified:  15:25:44 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
 
 (defclass cylinder-mantle (projection-surface)
-  ;; diameter in meters
   ;; NB: diameter and width should never be assigned at the same time
   ;; NB2: the width in this case is the circumference of cylinder
   ((diameter :accessor diameter :initarg :diameter :initform nil)
@@ -35,7 +34,7 @@
   (update cm))
 
 (defmethod print-object :before ((cm cylinder-mantle) stream)
-  (format stream "~%CYLINDER-MANTLE: diameter: ~am"
+  (format stream "~%CYLINDER-MANTLE: diameter: ~a"
           (diameter cm)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -107,16 +106,22 @@
 ;;; A cylinder mantle is a specialized projection-surface. 
 ;;; 
 ;;; Please note that you cannot set both the diameter and the width (i.e. the
-;;; circumference) value when instantiating the object. 
+;;; circumference) value when instantiating the object.
+;;;
+;;; NB: The unit for positions/coordinates do not use a specified unit
+;;; (e.g. meters or px). This facilitates working on surfaces of an arbitrary
+;;; scale without deciding for the final output scale. The conversion, e.g. to
+;;; pixel values, will take place when creating a canvas from a projection
+;;; surface.
 ;;;
 ;;; ARGUMENTS
-;;; The height of the cylindrical surace (in m). 
+;;; The height of the cylindrical surface.
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
-;;; - :diameter. The diameter of the cylindrical mantle (in m).
+;;; - :diameter. The diameter of the cylindrical mantle.
 ;;;   NB: Do not set this value when a :width value is given. 
-;;; - :width. The width/circumference of the cylindrical mantle (in m). 
+;;; - :width. The width/circumference of the cylindrical mantle.
 ;;;   NB: Do not set this value when a :diameter value is given.
 ;;; - :id. The id of the cylinder.
 ;;; 
@@ -127,8 +132,8 @@
 #|
 (make-cylinder-mantle 47 :diameter 38 :id 'visiodrom)
 ;; =>
-CYLINDER-MANTLE: diameter: 38m
-PROJECTION-SURFACE: width: 119.38052083641213d0m, height: 47m
+CYLINDER-MANTLE: diameter: 38
+PROJECTION-SURFACE: width: 119.38052083641213d0, height: 47
 NAMED-OBJECT: id: VISIODROM, tag: NIL, 
 data: NIL
 |#
@@ -174,7 +179,7 @@ data: NIL
 ;;;   Default = 3
 ;;; 
 ;;; RETURN VALUE
-;;; A list with the x and y coordinates of the location of the point (in m). 
+;;; A list with the x and y coordinates of the location of the point.
 ;;;
 ;;; EXAMPLE
 #|

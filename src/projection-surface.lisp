@@ -11,20 +11,23 @@
 ;;; 
 ;;; PURPOSE
 ;;; This class implements projection projection-surfaces and their positions.
-;;; NB: Positions are always in meters. They will be converted later to the
-;;; actual pixel values. 
+;;; 
+;;; NB: The unit for positions/coordinates do not use a specified unit
+;;; (e.g. meters or px). This facilitates working on surfaces of an arbitrary
+;;; scale without deciding for the final output scale. The conversion, e.g. to
+;;; pixel values, will take place when creating a canvas from a projection
+;;; surface. 
 ;;;
 ;;; CLASS HIERARCHY
 ;;; named-object -> projection-surface
 ;;;
-;;; $$ Last modified:  14:37:22 Thu Feb 29 2024 CET
+;;; $$ Last modified:  15:23:42 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
 
 (defclass projection-surface (named-object)
-  ;; all measures in meters
   ((width :accessor width :initarg :width :initform nil)
    (height :accessor height :initarg :height :initform nil)))
 
@@ -35,7 +38,7 @@
   (update ps))
 
 (defmethod print-object :before ((ps projection-surface) stream)
-  (format stream "~%PROJECTION-SURFACE: width: ~am, height: ~am"
+  (format stream "~%PROJECTION-SURFACE: width: ~a, height: ~a"
           (width ps) (height ps)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -58,11 +61,17 @@
 ;;; 2024-02-26
 ;;; 
 ;;; DESCRIPTION
-;;; Helper function to instantiate a projection-surface object. 
+;;; Helper function to instantiate a projection-surface object.
+;;;
+;;; NB: The unit for positions/coordinates do not use a specified unit
+;;; (e.g. meters or px). This facilitates working on surfaces of an arbitrary
+;;; scale without deciding for the final output scale. The conversion, e.g. to
+;;; pixel values, will take place when creating a canvas from a projection
+;;; surface. 
 ;;;
 ;;; ARGUMENTS
-;;; - The width of the projection surface (in m).
-;;; - The height of the projection surface (in m). 
+;;; - The width of the projection surface.
+;;; - The height of the projection surface.
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:

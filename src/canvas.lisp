@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  23:27:31 Thu Feb 29 2024 CET
+;;; $$ Last modified:  14:45:33 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -181,7 +181,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;;   Default = "/tmp/canvas.png"
 ;;; 
 ;;; RETURN VALUE
-;;; cf. imago::write-png
+;;; NIL
 ;;;
 ;;; EXAMPLE
 #|
@@ -195,6 +195,44 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
   ;;; ****
   (let ((img (data cv)))
     (write-png img :outfile outfile)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* canvas/write-jpg
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; This method writes a canvas to a jpg-file. 
+;;;
+;;; ARGUMENTS
+;;; A canvas object.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :outfile. The output location for the png-file.
+;;;   Default = "/tmp/canvas.jpg"
+;;; - :quality. The quality of the output as an integer (0<=q<=100), where 100
+;;;   means best quality. Default = 100.
+;;; 
+;;; RETURN VALUE
+;;; NIL
+;;;
+;;; EXAMPLE
+#|
+(let ((cv (make-instance 'canvas :width 300 :height 200 :color '(55 255 55)))
+      (img (make-rgb-image 50 100)))
+  (copy (data cv) img)
+  (write-jpg cv :outfile "~/Downloads/cv-test.jpg"))
+|#
+;;; SYNOPSIS
+(defmethod write-jpg ((cv canvas) &key
+                                    (outfile "/tmp/canvas.jpg")
+                                    (quality 100))
+  ;;; ****
+  (write-jpg (data cv) :outfile outfile :quality quality))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
