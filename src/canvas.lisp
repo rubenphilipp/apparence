@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  21:54:46 Fri Mar  1 2024 CET
+;;; $$ Last modified:  23:53:34 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -84,8 +84,9 @@
   (declare (ignore ignore))
   (unless (and (numberp (width cv)) (> (width cv) 0))
     (error "canvas::set-width: The width is not a number > 0"))
-  (warn "canvas::set-width: Altering the width of an existing canvas might ~
-         cause the cutting of existing content.")
+  (when (get-apr-config :verbose)
+    (warn "canvas::set-width: Altering the width of an existing canvas might ~
+           cause the cutting of existing content."))
   (let ((new (make-rgb-image (width cv) (height cv)
                              :initial-color (color cv))))
     (copy new (data cv))
@@ -99,8 +100,9 @@
   (declare (ignore ignore))
   (unless (and (numberp (height cv)) (> (height cv) 0))
     (error "canvas::set-height: The height is not a number > 0"))
-  (warn "canvas::set-height: Altering the height of an existing canvas might ~
-         cause the cutting of existing content.")
+  (when (get-apr-config :verbose)
+    (warn "canvas::set-height: Altering the height of an existing canvas might ~
+           cause the cutting of existing content."))
   (let ((new (make-rgb-image (width cv) (height cv)
                              :initial-color (color cv))))
     (copy new (data cv))
