@@ -12,40 +12,35 @@
 ;;; PURPOSE
 ;;; Implementation of the projection-surface class.
 ;;; 
-;;; A projection-surface is an abstraction of a canvas. Its purpose is to be
-;;; enable the (spatial) arrangement of visual information (images etc.)
-;;; independently from the actual pixel-dimensions of the canvas. Thus, the
-;;; dimensions of and the coordinates on the projection-surface can differ in
-;;; scale from those of the actual canvas.
+;;; A projection-surface is an subclass of a canvas. Its purpose is to be enable
+;;; the (spatial) arrangement of visual information (images etc.)  independently
+;;; from the actual pixel-dimensions of the canvas. Thus, the dimensions of and
+;;; the coordinates on the projection-surface can differ in scale from those of
+;;; the canvas data itself. 
 ;;; 
 ;;; The canvas-coordinates/dimensions are derived by scaling the values
-;;; according to a x- and y-scaler. The canvas itself resides in the data-slot
-;;; of the projection-surface.
+;;; according to a x- and y-scaler. 
 ;;;
 ;;; The coordinate values of projection-surfaces are -- other than those of a
 ;;; canvas -- not limited to integer values, but can also be e.g. floats.
 ;;;
 ;;; CLASS HIERARCHY
-;;; named-object -> projection-surface
+;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  21:54:23 Fri Mar  1 2024 CET
+;;; $$ Last modified:  23:50:28 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
 
-(defclass projection-surface (named-object)
-  (;; the width and height of the ps (not the canvas)
-   (width :accessor width :initarg :width :initform nil)
-   (height :accessor height :initarg :height :initform nil)
-   (canvas-x-scaler :accessor canvas-x-scaler :initarg :canvas-x-scaler
-                    :initform nil)
-   (canvas-y-scaler :accessor canvas-y-scaler :initarg :canvas-y-scaler
-                    :initform nil)
-   (canvas-color :accessor canvas-color :initarg :canvas-color
-                 :initform '(0 0 0 0))
-   (initialized :accessor initialized :initform nil)))
-   
+(defclass projection-surface (canvas)
+  (;; the width and height of the ps are related to the canvas dimensions
+   ;; through the scalers
+   (surface-width :accessor surface-width :initarg :surface-width :initform nil)
+   (surface-height :accessor surface-height :initarg :surface-height
+                   :initform nil)
+   (x-scaler :accessor x-scaler :initarg :x-scaler :initform nil)
+   (y-scaler :accessor y-scaler :initarg :y-scaler :initform nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -54,11 +49,9 @@
   (update ps))
 
 (defmethod print-object :before ((ps projection-surface) stream)
-  (format stream "~%PROJECTION-SURFACE: width: ~a, height: ~a, ~
-                  ~%        canvas-x-scaler: ~a, canvas-y-scaler: ~a, ~
-                  ~%        canvas-color: ~a, initialized: ~a"
-          (width ps) (height ps) (canvas-x-scaler ps) (canvas-y-scaler ps)
-          (color->list (canvas-color ps)) (initialized ps)))
+  (format stream "~%PROJECTION-SURFACE: surface-width: ~a, surface-height: ~a, ~
+                  ~%        x-scaler: ~a, y-scaler: ~a"
+          (surface-width ps) (surface-height ps) (x-scaler ps) (y-scaler ps)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -68,55 +61,62 @@
 (defmethod clone-with-new-class :around ((ps projection-surface) new-class)
   (declare (ignore new-class))
   (let ((new (call-next-method)))
-    (setf (slot-value new 'width) (width ps))
-    (setf (slot-value new 'height) (height ps))
-    (setf (slot-value new 'canvas-x-scaler) (canvas-x-scaler ps))
-    (setf (slot-value new 'canvas-y-scaler) (canvas-y-scaler ps))
-    (setf (slot-value new 'canvas-color) (canvas-color ps))
+    (setf (slot-value new 'surface-width) (surface-width ps))
+    (setf (slot-value new 'surface-height) (surface-height ps))
+    (setf (slot-value new 'x-scaler) (x-scaler ps))
+    (setf (slot-value new 'y-scaler) (y-scaler ps))
     new))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod update ((ps projection-surface) &key ignore)
-  (declare (ignore ignore))
-  (unless (typep (data ps) 'canvas)
-    ;;; initialize
-    (when (and (width ps) (height ps) (canvas-x-scaler ps) (canvas-y-scaler ps)
-               (canvas-color ps))
-      (set-color ps)
-      (let ((canvas-width (floor (* (width ps) (canvas-x-scaler ps))))
-            (canvas-height (floor (* (height ps) (canvas-y-scaler ps)))))
-        (setf (slot-value ps 'data) (make-canvas canvas-width canvas-height
-                                                 :color (canvas-color ps))
-              (slot-value ps 'initialized) t)))))
-    
+(defmethod (setf surface-width) :after (value (ps projection-surface))
+  (declare (ignore value))
+  (unless (> (surface-width ps) 0)
+    (error "projection-surface::(setf surface-width): The surface-width ~
+            must be > 0")))
+
+(defmethod (setf surface-height) :after (value (ps projection-surface))
+  (declare (ignore value))
+  (unless (> (surface-height ps) 0)
+    (error "projection-surface::(setf surface-height): The surface-height ~
+            must be > 0")))
+
+(defmethod (setf width) :around (value (ps projection-surface))
+  (when (initialized ps)
+    (setf (slot-value ps 'x-scaler) (/ value (surface-width ps))))
+  (call-next-method))
+
+(defmethod (setf height) :around (value (ps projection-surface))
+  (when (initialized ps)
+    (setf (slot-value ps 'y-scaler) (/ value (surface-height ps))))
+  (call-next-method))
+
+(defmethod (setf surface-width) :after (value (ps projection-surface))
+  (when (initialized ps)
+    (setf (width ps) (* (floor (* value (x-scaler ps)))))))
+
+(defmethod (setf surface-height) :after (value (ps projection-surface))
+  (when (initialized ps)
+    (setf (height ps) (* (floor (* value (y-scaler ps)))))))
+
+(defmethod (setf x-scaler) :after (value (ps projection-surface))
+  (when (initialized ps)
+    (setf (width ps) (floor (* value (surface-width ps))))))
+
+(defmethod (setf y-scaler) :after (value (ps projection-surface))
+  (when (initialized ps)
+    (setf (height ps) (floor (* value (surface-height ps))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod (setf height) :after (value (ps projection-surface))
-  (declare (ignore value))
-  (unless (> (height ps) 0)
-    (error "projection-surface::(setf height): The height must be > 0")))
-
-(defmethod (setf width) :after (value (ps projection-surface))
-  (declare (ignore value))
-  (unless (> (width ps) 0)
-    (error "projection-surface::(setf width): The width must be > 0")))
-
-(defmethod (setf color) :after (value (ps projection-surface))
-  (declare (ignore value))
-  (when (data ps)
-    (error "projection-surface::(setf color): You can't change the color after ~
-            instantiation as this would delete the content of the ~
-            projection-surface."))
-  (set-color ps))
-
-(defmethod set-color ((ps projection-surface) &rest ignore)
+(defmethod update :around ((ps projection-surface) &key ignore)
   (declare (ignore ignore))
-  (let ((c (canvas-color ps)))
-    ;; just convert color list when a list is given
-    (when (or (rgb-p c) (rgba-p c))
-      (setf (slot-value ps 'canvas-color) (apply #'make-color c)))))
+  (when (and (surface-width ps) (surface-height ps) (x-scaler ps) (y-scaler ps))
+    (let ((c-width (floor (* (x-scaler ps) (surface-width ps))))
+          (c-height (floor (* (y-scaler ps) (surface-height ps)))))
+      (setf (slot-value ps 'width) c-width
+            (slot-value ps 'height) c-height)
+      (call-next-method))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -131,33 +131,34 @@
 ;;; DESCRIPTION
 ;;; Helper function to instantiate a projection-surface object.
 ;;;
-;;; A projection-surface is an abstraction of a canvas. Its purpose is to be
-;;; enable the (spatial) arrangement of visual information (images etc.)
-;;; independently from the actual pixel-dimensions of the canvas. Thus, the
-;;; dimensions of and the coordinates on the projection-surface can differ in
-;;; scale from those of the actual canvas.
+;;; A projection-surface is an subclass of a canvas. Its purpose is to be enable
+;;; the (spatial) arrangement of visual information (images etc.)  independently
+;;; from the actual pixel-dimensions of the canvas. Thus, the dimensions of and
+;;; the coordinates on the projection-surface can differ in scale from those of
+;;; the canvas data itself. 
 ;;; 
 ;;; The canvas-coordinates/dimensions are derived by scaling the values
-;;; according to a x- and y-scaler. The canvas itself resides in the data-slot
-;;; of the projection-surface.
+;;; according to a x- and y-scaler. 
 ;;;
 ;;; The coordinate values of projection-surfaces are -- other than those of a
 ;;; canvas -- not limited to integer values, but can also be e.g. floats.
 ;;;
-;;; NB: Altering the dimensions (width/height) of the projection-surface after
-;;;     initializing might cause the cutting of existing content. 
+;;; NB: Altering the dimensions (surface-width/-height) of the
+;;;     projection-surface after initializing might cause the cutting of
+;;;     existing content.
 ;;;
 ;;; ARGUMENTS
 ;;; - The width of the projection surface.
 ;;; - The height of the projection surface.
 ;;; - The scaling factor for the width of the ps's canvas (number).
 ;;; - The scaling factor for the height of the ps's canvas (number).
+;;; - :color. A three- or four-item list of rgb(a) values determining the canvas
+;;;   background color.  Default = '(0 0 0 0)
+;;; - :id. The id of the projection-surface. 
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
 ;;; - :id. The id of the object. Default = NIL.
-;;; - :canvas-color. The default color of the canvas as a rgb(a) color list.
-;;;   Default = '(0 0 0 0)
 ;;; 
 ;;; RETURN VALUE
 ;;; The initialized object. 
@@ -167,134 +168,19 @@
 (make-projection-surface 10 20.5 10.5 10.5)
 |#
 ;;; SYNOPSIS
-(defun make-projection-surface (width height canvas-x-scaler canvas-y-scaler
-                                &key id (canvas-color '(0 0 0 0)))
+(defun make-projection-surface (width height x-scaler y-scaler
+                                &key id (color '(0 0 0 0)))
   ;;; ****
-  (make-instance 'projection-surface :width width
-                                     :height height
-                                     :canvas-x-scaler canvas-x-scaler
-                                     :canvas-y-scaler canvas-y-scaler
-                                     :canvas-color canvas-color
+  (make-instance 'projection-surface :surface-width width
+                                     :surface-height height
+                                     :x-scaler x-scaler
+                                     :y-scaler y-scaler
+                                     :color color
                                      :id id))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****m* projection-surface/derive-canvas-dimensions
-;;; AUTHOR
-;;; Ruben Philipp <me@rubenphilipp.com>
-;;;
-;;; CREATED
-;;; 2024-02-28
-;;; 
-;;; DESCRIPTION
-;;; This method returns the canvas dimensions of a projection-surface object for
-;;; rendering purposes. Dimensions can either be calculated by a given scaling
-;;; factor (applied to width and height of the projection-surface), or derived
-;;; from a scaling-destination (either width or height).
-;;;
-;;; NB: It is necessary to provide exactly one scaling relation as argument. 
-;;;
-;;; ARGUMENTS
-;;; The projection-surface object. 
-;;; 
-;;; OPTIONAL ARGUMENTS
-;;; keyword-arguments:
-;;; - :factor. A scaling factor (number) for width and height.
-;;; - :destination-width. A pixel value (number) to scale the dimensions to.
-;;; - :destination-height. A pixel value (number) to scale the dimensions to. 
-;;; 
-;;; RETURN VALUE
-;;; A two-item list with width and height of the canvas (in px). 
-;;;
-;;; EXAMPLE
-#|
-(let ((ps (make-projection-surface 8.112149 8.373832)))
-  (derive-canvas-dimensions ps :destination-width 992))
-
-;; => (992 1024.0)
-|#
-;;; SYNOPSIS
-(defmethod derive-canvas-dimensions ((ps projection-surface)
-                                     &key
-                                       factor
-                                       destination-width
-                                       destination-height)
-  ;;; ****
-  (cond ((and (numberp factor) (not destination-width) (not destination-height))
-         (list (* factor (width ps)) (* factor (height ps))))
-        ((and (numberp destination-width) (not factor) (not destination-height))
-         (let ((factor (/ destination-width (width ps))))
-           (list destination-width (* factor (height ps)))))
-        ((and (numberp destination-height) (not factor) (not destination-width))
-         (let ((factor (/ destination-height (height ps))))
-           (list (* factor (width ps)) destination-height)))
-        (t (error "projection-surface::derive-canvas-dimensions: Either no ~
-                   factor/scaling destination (number) is given or there are ~
-                   more than one values present. "))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****m* projection-surface/make-canvas-from-ps
-;;; AUTHOR
-;;; Ruben Philipp <me@rubenphilipp.com>
-;;;
-;;; CREATED
-;;; 2024-02-29
-;;; 
-;;; DESCRIPTION
-;;; This method creates a canvas object from a projection-surface. The
-;;; dimensions of the canvas will be derived from the dimensions of the ps. This
-;;; is done by internally applying derive-canvas-dimensions. Hence, it is
-;;; mandatory to give exactly one of the three keyword-arguments (either
-;;; :factor, :destination-width, or :destination-height) in order to get a
-;;; properly scaled canvas. 
-;;;
-;;; ARGUMENTS
-;;; - A projection-surface object.
-;;; 
-;;; OPTIONAL ARGUMENTS
-;;; keyword-arguments:
-;;;   Give exactly one of these three arguments, leave the other to at NIL.
-;;; - :factor. A scaling factor (number) for width and height.
-;;; - :destination-width. A pixel value (number) to scale the dimensions to.
-;;; - :destination-height. A pixel value (number) to scale the dimensions to.
-;;; 
-;;; - :color. A three- or four-item list of rgb(a) values determining the canvas
-;;;   background color.  Default = '(0 0 0 0)
-;;; - :id. The id of the canvas. 
-;;; 
-;;; RETURN VALUE
-;;; The canvas object. 
-;;;
-;;; EXAMPLE
-#|
-(let ((ps (make-projection-surface 200 300)))
-  (make-canvas-from-ps ps :factor 2.5))
-
-;; =>
-CANVAS: width: 500, height: 750, color: (0 0 0 0)
-NAMED-OBJECT: id: NIL, tag: NIL, 
-data: #<RGB-IMAGE (500x750) {7015211513}>
-|#
-;;; SYNOPSIS
-(defmethod make-canvas-from-ps ((ps projection-surface)
-                                &key
-                                  ;; just one of these three
-                                  factor destination-width destination-height
-                                  ;; any of these can be set
-                                  (color '(0 0 0 0))
-                                  id)
-  ;;; ****
-  (let ((cv-dimensions (mapcar #'floor
-                               (derive-canvas-dimensions
-                                ps :factor factor
-                                   :destination-width destination-width
-                                   :destination-height destination-height))))
-    (make-canvas (first cv-dimensions) (second cv-dimensions)
-                 :color color :id id)))
-
+;;;  put methods for projections
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF projection-surface.lisp

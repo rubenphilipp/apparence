@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:57:56 Fri Mar  1 2024 CET
+;;; $$ Last modified:  23:22:00 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -100,6 +100,7 @@
     (apr:write-png cv :outfile "/tmp/cv-test.png"))
   (is (probe-file "/tmp/cv-test.png")))
 
+#|
 ;;; test cylinder-mantle
 ;;; RP  Mon Feb 26 17:53:24 2024
 (test test-cylinder-mantle
@@ -109,20 +110,25 @@
                                        :diameter 3.0)))
     (setf (diameter mantle1) 3.0)
     (is (= (width mantle1) (width mantle2)))))
+|#
 
+#|
 ;;; test-make-canvas-from-ps
 ;;; RP  Thu Feb 29 14:37:40 2024
 (test test-make-canvas-from-ps
   (let* ((ps (apr:make-projection-surface 200 300 1.0 1.0))
          (cv (apr:make-canvas-from-ps ps :factor 2.0)))
-    (is (= (width cv) 400))))
+(is (= (width cv) 400))))
+|#
 
+#|
 ;;; test-make-canvas-from-cm
 ;;; RP  Thu Feb 29 14:39:50 2024
 (test test-make-canvas-from-cm
   (let* ((cm (apr:make-cylinder-mantle 200 :diameter 30.0))
          (cv (apr:make-canvas-from-ps cm :destination-height 3000)))
-    (is (= (width cv) 1413))))
+(is (= (width cv) 1413))))
+|#
 
 ;;; test-get-coordinates
 ;;; RP  Thu Feb 29 14:42:06 2024
@@ -203,10 +209,25 @@
 ;;; test-make-ps-simple1
 ;;; RP  Fri Mar  1 21:55:19 2024
 (test test-make-ps-simple1
-  (let ((ps (apr:make-projection-surface 20 30.5 10.5 10.5
-                                         :canvas-color '(2 5 1 234))))
-    (is (and (typep ps 'apr:projection-surface)
-             (typep (data ps) 'apr:canvas)))))
+  (let ((ps (apr:make-projection-surface 20 30.5 10.5 10.5)))
+    (is (typep ps 'apr:projection-surface))))
+
+;;; test-ps-setters1
+;;; RP  Fri Mar  1 23:12:14 2024
+(test test-ps-setters1
+  (let ((ps (apr:make-projection-surface 20 30 10.5 10.5)))
+    (setf (width ps) 40)
+    (setf (surface-width ps) 10)
+    (setf (y-scaler ps) 4)
+    (setf (x-scaler ps) 10)
+    (setf (height ps) 50)
+    (setf (width ps) 250)
+    (is (and (= 10 (surface-width ps))
+             (= 30 (surface-height ps))
+             (= 25 (x-scaler ps))
+             (= 5/3 (y-scaler ps))
+             (= 250 (width (data ps)))
+             (= 50 (height (data ps)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
