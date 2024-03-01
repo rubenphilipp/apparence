@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  16:55:52 Fri Mar  1 2024 CET
+;;; $$ Last modified:  17:37:51 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -38,7 +38,6 @@
                (:file "globals")
                (:file "image")
                (:file "canvas")
-               ;;(:file "projection")
                (:file "projection-surface")
                (:file "cylinder-mantle")
                ;; export needs to be done lastly
