@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  16:52:33 Fri Mar  1 2024 CET
+;;; $$ Last modified:  18:27:32 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -51,6 +51,20 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmethod clone ((img image))
+  (clone-with-new-class img 'image))
+
+(defmethod clone-with-new-class :around ((img image) new-class)
+  (declare (ignore new-class))
+  (let ((new (call-next-method)))
+    (setf (slot-value new 'width) (width img)
+          (slot-value new 'height) (height img)
+          (slot-value new 'default-interpolation) (default-interpolation img)
+          (slot-value new 'data) (data img))
+    new))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defmethod (setf data) :after (value (img image))
   (declare (ignore value))
   (update img))
@@ -72,7 +86,7 @@
            imago::*default-interpolation*))
   (unless (typep (data img) 'imago::image)
     (error "image::update: The data-slot of the image object must contain a ~
-            imago::image."))
+            imago::image, not a ~a." (type-of (data img))))
   ;;; set width and height from the imago::image
   (let ((image (data img)))
     (setf (slot-value img 'width) (imago::image-width image)

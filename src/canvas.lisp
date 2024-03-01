@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  17:21:13 Fri Mar  1 2024 CET
+;;; $$ Last modified:  18:30:39 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -362,8 +362,12 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
            (type-of image)))
   (when (or height width (/= 0 src-y) (/= 0 src-x))
     (let ((new-height (if height height (height image)))
-          (new-width (if width width (width image))))
-      (crop image src-x src-y new-width new-height)))
+          (new-width (if width width (width image)))
+          (img-tmp (clone image)))
+      ;;; cloning is necessary, otherwise the original image will be overwritten
+      ;;; RP  Fri Mar  1 18:30:38 2024
+      (crop img-tmp src-x src-y new-width new-height)
+      (setf image img-tmp)))
   (let* ((canvas (data cv))
          (canvas-width (width cv))
          (img-width (width image))

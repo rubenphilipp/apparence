@@ -13,10 +13,13 @@
 ;;; Implementation of the named-object class which is the base class for
 ;;; all apparence classes.
 ;;;
+;;; A part of the code of this program is derived from slippery-chicken
+;;; (http://github.com/mdedwards/slippery-chicken).
+;;;
 ;;; CLASS HIERARCHY
 ;;; None, as this is the base class for all apparence classes.
 ;;;
-;;; $$ Last modified:  15:33:16 Mon Feb 26 2024 CET
+;;; $$ Last modified:  18:29:32 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -54,6 +57,28 @@
 
 (defmethod (setf id) :before (value (no named-object))
   (check-named-object-id-type value))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod clone ((no named-object))
+  (clone-with-new-class no 'named-object))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod clone-with-new-class ((no named-object) new-class)
+  (let ((new (make-instance new-class :id nil :data (data no))))
+    (setf (slot-value new 'id) (basic-copy-object (id no))
+          (slot-value new 'tag) (basic-copy-object (tag no))
+          ;;; does the recursive copying/cloning
+          (slot-value new 'data) (basic-copy-object (data no)))
+    new))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun basic-copy-object (object)
+  (typecase object
+            (named-object (clone object))
+            (t object)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Validate the id of the named-object. NB: NIL is a valid id.

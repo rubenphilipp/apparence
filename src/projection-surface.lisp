@@ -7,21 +7,29 @@
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
 ;;; CREATED
-;;; 2024-02-26
+;;; 2024-03-01
 ;;; 
 ;;; PURPOSE
-;;; This class implements projection projection-surfaces and their positions.
+;;; Implementation of the projection-surface class.
 ;;; 
-;;; NB: The unit for positions/coordinates do not use a specified unit
-;;; (e.g. meters or px). This facilitates working on surfaces of an arbitrary
-;;; scale without deciding for the final output scale. The conversion, e.g. to
-;;; pixel values, will take place when creating a canvas from a projection
-;;; surface. 
+;;; A projection-surface is an abstraction of a canvas. Its purpose is to be
+;;; enable the (spatial) arrangement of visual information (images etc.)
+;;; independently from the actual pixel-dimensions of the canvas. Thus, the
+;;; dimensions of and the coordinates on the projection-surface can differ in
+;;; scale from those of the actual canvas. The canvas-coordinates are derived
+;;; via an x- and y-scaler or a relative value when transferring/rendering a ps
+;;; to a canvas.  The coordinate values of projection-surfaces are -- other than
+;;; those of a canvas -- not limited to integer values, but can also be
+;;; e.g. floats.
+;;;
+;;; The data slot of a projection-surface holds a list of projection objects
+;;; which will be successively parsed when transferring/rendering a ps to a
+;;; canvas.
 ;;;
 ;;; CLASS HIERARCHY
 ;;; named-object -> projection-surface
 ;;;
-;;; $$ Last modified:  15:23:42 Fri Mar  1 2024 CET
+;;; $$ Last modified:  18:33:53 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -63,11 +71,19 @@
 ;;; DESCRIPTION
 ;;; Helper function to instantiate a projection-surface object.
 ;;;
-;;; NB: The unit for positions/coordinates do not use a specified unit
-;;; (e.g. meters or px). This facilitates working on surfaces of an arbitrary
-;;; scale without deciding for the final output scale. The conversion, e.g. to
-;;; pixel values, will take place when creating a canvas from a projection
-;;; surface. 
+;;; A projection surface is an abstraction of a canvas. Its purpose is to be
+;;; enable the (spatial) arrangement of visual information (images etc.)
+;;; independently from the actual pixel-dimensions of the canvas. Thus, the
+;;; dimensions of and the coordinates on the projection-surface can differ in
+;;; scale from those of the actual canvas. The canvas-coordinates are derived
+;;; via an x- and y-scaler or a relative value when transferring/rendering a ps
+;;; to a canvas.  The coordinate values of projection-surfaces are -- other than
+;;; those of a canvas -- not limited to integer values, but can also be
+;;; e.g. floats.
+;;;
+;;; The data slot of a projection-surface holds a list of projection objects
+;;; which will be successively parsed when transferring/rendering a ps to a
+;;; canvas.
 ;;;
 ;;; ARGUMENTS
 ;;; - The width of the projection surface.
@@ -91,6 +107,8 @@
   (make-instance 'projection-surface :width width
                                      :height height
                                      :id id))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* projection-surface/derive-canvas-dimensions
@@ -145,6 +163,8 @@
         (t (error "projection-surface::derive-canvas-dimensions: Either no ~
                    factor/scaling destination (number) is given or there are ~
                    more than one values present. "))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* projection-surface/make-canvas-from-ps
@@ -205,9 +225,6 @@ data: #<RGB-IMAGE (500x750) {7015211513}>
                                    :destination-height destination-height))))
     (make-canvas (first cv-dimensions) (second cv-dimensions)
                  :color color :id id)))
-
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
