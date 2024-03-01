@@ -52,12 +52,71 @@
  CLASS HIERARCHY
  <a href="./named-object_lisp.html#robo5">named-object</a> -&gt; <strong>image</strong>
 
- $$ Last modified:  23:23:23 Thu Feb 29 2024 CET
+ $$ Last modified:  14:41:21 Fri Mar  1 2024 CET
+</pre>
+
+<hr />
+<a name="image2fcopy"></a>
+<a name="robo16"></a><h2>image/copy [ Methods ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-01
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This method copies a rectangular region from the src <a href="#robo4">image</a> to the dest
+ <a href="#robo4">image</a> (cf. imago::<strong>copy</strong>). Then no width or height are given, the complete
+ <a href="#robo4">image</a> will be copied.
+ NB: Both images must be large enough to contain the specified region at the
+ given positions (cf. imago::<strong>copy</strong>). 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The destination <a href="#robo4">image</a> object.
+ - The source <a href="#robo4">image</a> object. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :dest-x. A number indicating the x-coordinate of the position on the
+   destination <a href="#robo4">image</a>. Default = 0
+ - :dest-y. A number indicating the y-coordinate of the position on the
+   destination <a href="#robo4">image</a>. Default = 0
+ - :src-x. A number indicating the x-coordinate on the src <a href="#robo4">image</a>. Default = 0
+ - :src-y. A number indicating the y-coordinate on the src <a href="#robo4">image</a>. Default = 0
+ - :width. The width of the region to cut out from the src-<a href="#robo4">image</a>. When NIL,
+   the complete width of the src-<a href="#robo4">image</a> will be used.
+ - :height. The height of the region to cut out from the src-<a href="#robo4">image</a>. When NIL,
+   the complete height of the src-<a href="#robo4">image</a> will be used. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The (modified) dest <a href="#robo4">image</a> object. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((img1 (<a href="#robo19">make-rgb-image</a> 200 300))
+      (img2 (<a href="#robo19">make-rgb-image</a> 30 30 :initial-color (make-color 20 90 111))))
+  (<strong>copy</strong> img1 img2 :height 10 :width 10
+                  :dest-x 20 :dest-y 25))
+;;; =&gt;
+IMAGE: width: 200, height: 300
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
+**********
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmethod <strong>copy</strong> ((dest <a href="#robo4">image</a>) (src <a href="#robo4">image</a>)
+                 &amp;key
+                   (dest-x 0)
+                   (dest-y 0)
+                   (src-x 0)
+                   (src-y 0)
+                   width height)
 </pre>
 
 <hr />
 <a name="image2fmake2dimage"></a>
-<a name="robo16"></a><h2>image/make-image [ Functions ]</h2>
+<a name="robo17"></a><h2>image/make-image [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -90,7 +149,7 @@
 
 <hr />
 <a name="image2fmake2dimage2dfrom2dfile"></a>
-<a name="robo17"></a><h2>image/make-image-from-file [ Methods ]</h2>
+<a name="robo18"></a><h2>image/make-image-from-file [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -124,7 +183,7 @@
 
 <hr />
 <a name="image2fmake2drgb2dimage"></a>
-<a name="robo18"></a><h2>image/make-rgb-image [ Functions ]</h2>
+<a name="robo19"></a><h2>image/make-rgb-image [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -162,9 +221,169 @@
                           (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)))
 </pre>
 
+<hr />
+<a name="image2fresize"></a>
+<a name="robo20"></a><h2>image/resize [ Methods ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-01
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This method resizes an <a href="#robo4">image</a> object to the new dimensions. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The <a href="#robo4">image</a> object.
+ - A number representing the new height (px).
+ - A number representing the new width (px). 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :interpolation. The interpolation method to be used for altering the
+   dimensions. Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The modified <a href="#robo4">image</a> object. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((img (<a href="#robo19">make-rgb-image</a> 200 300)))
+  (<strong>resize</strong> img 400 400))
+;;; =&gt;
+IMAGE: width: 400, height: 400
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #&lt;RGB-IMAGE (400x400) {70067BAB33}&gt;
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmethod <strong>resize</strong> ((img <a href="#robo4">image</a>) new-width new-height
+                   &amp;key (interpolation
+                         (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)))
+</pre>
+
+<hr />
+<a name="image2fscale"></a>
+<a name="robo21"></a><h2>image/scale [ Methods ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-01
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This methods scales an <a href="#robo4">image</a> object according to the scaling facors given as
+ arguments. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The <a href="#robo4">image</a> object.
+ - A number being the width-scaler.
+ - A number being the height-scaler. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :interpolation. The interpolation method to be used for altering the
+   dimensions. Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The modified <a href="#robo4">image</a> object. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((img (<a href="#robo19">make-rgb-image</a> 200 300)))
+  (<strong>scale</strong> img 1.5 2.0))
+;;; =&gt;
+IMAGE: width: 300, height: 600
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #&lt;RGB-IMAGE (300x600) {7006A8E413}&gt;
+**********
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmethod <strong>scale</strong> ((img <a href="#robo4">image</a>) width-factor height-factor
+                  &amp;key (interpolation
+                        (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)))
+</pre>
+
+<hr />
+<a name="image2fwrite2djpg"></a>
+<a name="robo22"></a><h2>image/write-jpg [ Methods ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-01
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This method writes the content of the data-slot of an <a href="#robo4">image</a> object to a
+ jpg-file. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The <a href="#robo4">image</a> object. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :outfile. The output filename. Default = "/tmp/<a href="#robo4">image</a>.jpg"
+ - :quality. The quality of the output as an integer (0&lt;=q&lt;=100), where 100
+   means best quality. Default = 100.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> NIL
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((img1 (<a href="#robo19">make-rgb-image</a> 200 300))
+      (img2 (<a href="#robo19">make-rgb-image</a> 30 30 :initial-color (make-color 20 90 111))))
+  (<a href="#robo16">copy</a> img1 img2 :height 10 :width 10
+                  :dest-x 20 :dest-y 25)
+  (<strong>write-jpg</strong> img1))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmethod <strong>write-jpg</strong> ((img <a href="#robo4">image</a>) &amp;key
+                                    (outfile "/tmp/<a href="#robo4">image</a>.jpg")
+                                    (quality 100))
+</pre>
+
+<hr />
+<a name="image2fwrite2dpng"></a>
+<a name="robo23"></a><h2>image/write-png [ Methods ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-01
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This method writes the content of the data-slot of an <a href="#robo4">image</a> object to a
+ png-file. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The <a href="#robo4">image</a> object. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :outfile. The output filename. Default = "/tmp/<a href="#robo4">image</a>.png"
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> NIL
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((img1 (<a href="#robo19">make-rgb-image</a> 200 300))
+      (img2 (<a href="#robo19">make-rgb-image</a> 30 30 :initial-color (make-color 20 90 111))))
+  (<a href="#robo16">copy</a> img1 img2 :height 10 :width 10
+                  :dest-x 20 :dest-y 25)
+  (<strong>write-png</strong> img1))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmethod <strong>write-png</strong> ((img <a href="#robo4">image</a>) &amp;key (outfile "/tmp/<a href="#robo4">image</a>.png"))
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/image.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-02-29 23:30:24</p>
+<p>Generated from ./src/image.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-01 14:41:37</p>
 </div> <!-- footer -->
 </body>
 </html>
