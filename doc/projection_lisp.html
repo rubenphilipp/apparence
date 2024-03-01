@@ -28,7 +28,7 @@
 <div id="content">
 <hr />
 <a name="projection2fcircular2dprojection"></a>
-<a name="robo27"></a><h2>projection/circular-projection [ Functions ]</h2>
+<a name="robo28"></a><h2>projection/circular-projection [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -64,17 +64,17 @@
  - :<a href="./canvas_lisp.html#robo2">canvas</a>-color. The rgb(a)-background color of the <a href="./canvas_lisp.html#robo2">canvas</a>.
    Default = (make-color 255 255 255 0)
  - :verbose. A boolean value. When T, then some information is printed during
-   the process.  Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :verbose)
+   the process.  Default = (<a href="./globals_lisp.html#robo15">get-apr-config</a> :verbose)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> An <a href="./image_lisp.html#robo4">image</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let* ((img (<a href="./image_lisp.html#robo19">make-rgb-image</a> 500 400 (make-color 233 200 188)))
+<pre class="source">(let* ((img (<a href="./image_lisp.html#robo20">make-rgb-image</a> 500 400 (make-color 233 200 188)))
        (result
          (<strong>circular-projection</strong> img 350 0)))
-  (<a href="./canvas_lisp.html#robo10">write-png</a> result "/tmp/test.png")
-  (<a href="./utilities_lisp.html#robo41">system-open-file</a> "/tmp/test.png"))
+  (<a href="./canvas_lisp.html#robo11">write-png</a> result "/tmp/test.png")
+  (<a href="./utilities_lisp.html#robo42">system-open-file</a> "/tmp/test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defun <strong>circular-projection</strong> (<a href="./image_lisp.html#robo4">image</a> azimuth y
@@ -84,12 +84,12 @@
                               (<a href="./canvas_lisp.html#robo2">canvas</a>-origin 0.0)
                               (<a href="./image_lisp.html#robo4">image</a>-origin 0.5)
                               (<a href="./canvas_lisp.html#robo2">canvas</a>-color (make-color 255 255 255 0))
-                              (verbose (<a href="./globals_lisp.html#robo14">get-apr-config</a> :verbose)))
+                              (verbose (<a href="./globals_lisp.html#robo15">get-apr-config</a> :verbose)))
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-01 14:41:37</p>
+<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-01 15:26:44</p>
 </div> <!-- footer -->
 </body>
 </html>

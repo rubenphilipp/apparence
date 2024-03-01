@@ -50,7 +50,7 @@
  CLASS HIERARCHY
  <a href="./named-object_lisp.html#robo5">named-object</a> -&gt; <strong>canvas</strong>
 
- $$ Last modified:  23:27:31 Thu Feb 29 2024 CET
+ $$ Last modified:  14:45:33 Fri Mar  1 2024 CET
 </pre>
 
 <hr />
@@ -116,23 +116,23 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
- - :height. Cf. <a href="./image_lisp.html#robo16">copy</a>.
- - :width. Cf. <a href="./image_lisp.html#robo16">copy</a>.
- - :src-y. Cf. <a href="./image_lisp.html#robo16">copy</a>.  Default = 0.
- - :src-x. Cf. <a href="./image_lisp.html#robo16">copy</a>.  Default = 0.
- - :dest-y. Cf. <a href="./image_lisp.html#robo16">copy</a>.  Default = 0.
- - :dest-x. Cf. <a href="./image_lisp.html#robo16">copy</a>.  Default = 0.
+ - :height. Cf. <a href="./image_lisp.html#robo17">copy</a>.
+ - :width. Cf. <a href="./image_lisp.html#robo17">copy</a>.
+ - :src-y. Cf. <a href="./image_lisp.html#robo17">copy</a>.  Default = 0.
+ - :src-x. Cf. <a href="./image_lisp.html#robo17">copy</a>.  Default = 0.
+ - :dest-y. Cf. <a href="./image_lisp.html#robo17">copy</a>.  Default = 0.
+ - :dest-x. Cf. <a href="./image_lisp.html#robo17">copy</a>.  Default = 0.
 </pre>
 <p class="item_name">RETURN VALUE</p>
-<pre> Cf. <a href="./image_lisp.html#robo16">copy</a>.
+<pre> Cf. <a href="./image_lisp.html#robo17">copy</a>.
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (<a href="#robo7">make-canvas</a> 300 200 :color '(255 255 255 0)))
-      (img (<a href="./image_lisp.html#robo19">make-rgb-image</a> 50 100 :initial-color (make-color 100 233 90)))
-      (img2 (<a href="./image_lisp.html#robo19">make-rgb-image</a> 50 100 :initial-color (make-color 80 133 90))))
+      (img (<a href="./image_lisp.html#robo20">make-rgb-image</a> 50 100 :initial-color (make-color 100 233 90)))
+      (img2 (<a href="./image_lisp.html#robo20">make-rgb-image</a> 50 100 :initial-color (make-color 80 133 90))))
   (<strong>put-it</strong> cv img :dest-x 0)
   (<strong>put-it</strong> cv img2 :dest-x 20)
-  (<a href="#robo10">write-png</a> cv :outfile "~/Downloads/cv-test.png"))
+  (<a href="#robo11">write-png</a> cv :outfile "~/Downloads/cv-test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmethod <strong>put-it</strong> ((cv <a href="#robo2">canvas</a>) img
@@ -177,29 +177,68 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
    projected. This value is relative to the <a href="./image_lisp.html#robo4">image</a> width and must be a number
    between 0.0 and 1.0.  Default = 0.5
  - :verbose. A boolean value. When T, then some information is printed during
-   the process.  Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :verbose)
+   the process.  Default = (<a href="./globals_lisp.html#robo15">get-apr-config</a> :verbose)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The modified <a href="#robo2">canvas</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let* ((cv (<a href="#robo7">make-canvas</a> 4000 2000 :color '(0 0 0 0)))
-       (img (<a href="./image_lisp.html#robo19">make-rgb-image</a> 500 400 :initial-color (make-color 233 200 188))))
+       (img (<a href="./image_lisp.html#robo20">make-rgb-image</a> 500 400 :initial-color (make-color 233 200 188))))
   (<strong>put-it-circular</strong> cv img 350 0)
-  (<a href="#robo10">write-png</a> cv :outfile "/tmp/test.png")
-  (<a href="./utilities_lisp.html#robo41">system-open-file</a> "/tmp/test.png"))
+  (<a href="#robo11">write-png</a> cv :outfile "/tmp/test.png")
+  (<a href="./utilities_lisp.html#robo42">system-open-file</a> "/tmp/test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmethod <strong>put-it-circular</strong> ((cv <a href="#robo2">canvas</a>) <a href="./image_lisp.html#robo4">image</a> azimuth y
                             &amp;key
                               (<a href="#robo2">canvas</a>-origin 0.0)
                               (<a href="./image_lisp.html#robo4">image</a>-origin 0.5)
-                              (verbose (<a href="./globals_lisp.html#robo14">get-apr-config</a> :verbose)))
+                              (verbose (<a href="./globals_lisp.html#robo15">get-apr-config</a> :verbose)))
+</pre>
+
+<hr />
+<a name="canvas2fwrite2djpg"></a>
+<a name="robo10"></a><h2>canvas/write-jpg [ Methods ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">canvas</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-28
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This method writes a <a href="#robo2">canvas</a> to a jpg-file. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> A <a href="#robo2">canvas</a> object.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :outfile. The output location for the png-file.
+   Default = "/tmp/<a href="#robo2">canvas</a>.jpg"
+ - :quality. The quality of the output as an integer (0&lt;=q&lt;=100), where 100
+   means best quality. Default = 100.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> NIL
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((cv (make-instance '<a href="#robo2">canvas</a> :width 300 :height 200 :color '(55 255 55)))
+      (img (<a href="./image_lisp.html#robo20">make-rgb-image</a> 50 100)))
+  (<a href="./image_lisp.html#robo17">copy</a> (data cv) img)
+  (<strong>write-jpg</strong> cv :outfile "~/Downloads/cv-test.jpg"))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmethod <strong>write-jpg</strong> ((cv <a href="#robo2">canvas</a>) &amp;key
+                                    (outfile "/tmp/<a href="#robo2">canvas</a>.jpg")
+                                    (quality 100))
 </pre>
 
 <hr />
 <a name="canvas2fwrite2dpng"></a>
-<a name="robo10"></a><h2>canvas/write-png [ Methods ]</h2>
+<a name="robo11"></a><h2>canvas/write-png [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">canvas</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -220,12 +259,12 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
    Default = "/tmp/<a href="#robo2">canvas</a>.png"
 </pre>
 <p class="item_name">RETURN VALUE</p>
-<pre> cf. imago::<strong>write-png</strong>
+<pre> NIL
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (make-instance '<a href="#robo2">canvas</a> :width 300 :height 200 :color '(55 255 55)))
-      (img (<a href="./image_lisp.html#robo19">make-rgb-image</a> 50 100)))
-  (<a href="./image_lisp.html#robo16">copy</a> (data cv) img)
+      (img (<a href="./image_lisp.html#robo20">make-rgb-image</a> 50 100)))
+  (<a href="./image_lisp.html#robo17">copy</a> (data cv) img)
   (<strong>write-png</strong> cv :outfile "~/Downloads/cv-test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
@@ -234,7 +273,7 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-01 14:41:37</p>
+<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-01 15:26:44</p>
 </div> <!-- footer -->
 </body>
 </html>

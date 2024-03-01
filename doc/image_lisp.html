@@ -57,7 +57,7 @@
 
 <hr />
 <a name="image2fcopy"></a>
-<a name="robo16"></a><h2>image/copy [ Methods ]</h2>
+<a name="robo17"></a><h2>image/copy [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -94,8 +94,8 @@
 <pre> The (modified) dest <a href="#robo4">image</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((img1 (<a href="#robo19">make-rgb-image</a> 200 300))
-      (img2 (<a href="#robo19">make-rgb-image</a> 30 30 :initial-color (make-color 20 90 111))))
+<pre class="source">(let ((img1 (<a href="#robo20">make-rgb-image</a> 200 300))
+      (img2 (<a href="#robo20">make-rgb-image</a> 30 30 :initial-color (make-color 20 90 111))))
   (<strong>copy</strong> img1 img2 :height 10 :width 10
                   :dest-x 20 :dest-y 25))
 ;;; =&gt;
@@ -116,7 +116,7 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 
 <hr />
 <a name="image2fmake2dimage"></a>
-<a name="robo17"></a><h2>image/make-image [ Functions ]</h2>
+<a name="robo18"></a><h2>image/make-image [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -136,7 +136,7 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
  - :id. The id of the <a href="#robo4">image</a> object.
  - :default-interpolation. The default interpolation method (used e.g. when
    changing the <a href="#robo4">image</a> dimensions via the (setf ...) methods.
-   Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)
+   Default = (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> An <a href="#robo4">image</a> object. 
@@ -144,12 +144,12 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defun <strong>make-image</strong> (data &amp;key id
                           (default-interpolation
-                           (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)))
+                           (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)))
 </pre>
 
 <hr />
 <a name="image2fmake2dimage2dfrom2dfile"></a>
-<a name="robo18"></a><h2>image/make-image-from-file [ Methods ]</h2>
+<a name="robo19"></a><h2>image/make-image-from-file [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -169,7 +169,7 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 <pre> - :id. The id of the new <a href="#robo4">image</a> object.
  - :default-interpolation. The default interpolation method (used e.g. when
    changing the <a href="#robo4">image</a> dimensions via the (setf ...) methods.
-   Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)
+   Default = (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The new <a href="#robo4">image</a> object. 
@@ -178,12 +178,12 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 <pre class="source">(defun <strong>make-image-from-file</strong> (path &amp;key
                                     id
                                     (default-interpolation
-                                     (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)))
+                                     (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)))
 </pre>
 
 <hr />
 <a name="image2fmake2drgb2dimage"></a>
-<a name="robo19"></a><h2>image/make-rgb-image [ Functions ]</h2>
+<a name="robo20"></a><h2>image/make-rgb-image [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -202,11 +202,11 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
  - :initial-color. The initial/background color of the new rgb-<a href="#robo4">image</a>.
-   Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-rgb)
+   Default = (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-rgb)
  - :id. The id of the new <a href="#robo4">image</a> object.
  - :default-interpolation. The default interpolation method (used e.g. when
    changing the <a href="#robo4">image</a> dimensions via the (setf ...) methods.
-   Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)
+   Default = (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The new <a href="#robo4">image</a> object. 
@@ -215,15 +215,15 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 <pre class="source">(defun <strong>make-rgb-image</strong> (width height
                        &amp;key
                          (initial-color
-                          (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-rgb))
+                          (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-rgb))
                          id
                          (default-interpolation
-                          (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)))
+                          (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)))
 </pre>
 
 <hr />
 <a name="image2fresize"></a>
-<a name="robo20"></a><h2>image/resize [ Methods ]</h2>
+<a name="robo21"></a><h2>image/resize [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -243,13 +243,13 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
  - :interpolation. The interpolation method to be used for altering the
-   dimensions. Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)
+   dimensions. Default = (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The modified <a href="#robo4">image</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((img (<a href="#robo19">make-rgb-image</a> 200 300)))
+<pre class="source">(let ((img (<a href="#robo20">make-rgb-image</a> 200 300)))
   (<strong>resize</strong> img 400 400))
 ;;; =&gt;
 IMAGE: width: 400, height: 400
@@ -259,12 +259,12 @@ data: #&lt;RGB-IMAGE (400x400) {70067BAB33}&gt;
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmethod <strong>resize</strong> ((img <a href="#robo4">image</a>) new-width new-height
                    &amp;key (interpolation
-                         (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)))
+                         (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)))
 </pre>
 
 <hr />
 <a name="image2fscale"></a>
-<a name="robo21"></a><h2>image/scale [ Methods ]</h2>
+<a name="robo22"></a><h2>image/scale [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -285,13 +285,13 @@ data: #&lt;RGB-IMAGE (400x400) {70067BAB33}&gt;
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
  - :interpolation. The interpolation method to be used for altering the
-   dimensions. Default = (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)
+   dimensions. Default = (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The modified <a href="#robo4">image</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((img (<a href="#robo19">make-rgb-image</a> 200 300)))
+<pre class="source">(let ((img (<a href="#robo20">make-rgb-image</a> 200 300)))
   (<strong>scale</strong> img 1.5 2.0))
 ;;; =&gt;
 IMAGE: width: 300, height: 600
@@ -302,12 +302,12 @@ data: #&lt;RGB-IMAGE (300x600) {7006A8E413}&gt;
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmethod <strong>scale</strong> ((img <a href="#robo4">image</a>) width-factor height-factor
                   &amp;key (interpolation
-                        (<a href="./globals_lisp.html#robo14">get-apr-config</a> :default-interpolation)))
+                        (<a href="./globals_lisp.html#robo15">get-apr-config</a> :default-interpolation)))
 </pre>
 
 <hr />
 <a name="image2fwrite2djpg"></a>
-<a name="robo22"></a><h2>image/write-jpg [ Methods ]</h2>
+<a name="robo23"></a><h2>image/write-jpg [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -333,9 +333,9 @@ data: #&lt;RGB-IMAGE (300x600) {7006A8E413}&gt;
 <pre> NIL
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((img1 (<a href="#robo19">make-rgb-image</a> 200 300))
-      (img2 (<a href="#robo19">make-rgb-image</a> 30 30 :initial-color (make-color 20 90 111))))
-  (<a href="#robo16">copy</a> img1 img2 :height 10 :width 10
+<pre class="source">(let ((img1 (<a href="#robo20">make-rgb-image</a> 200 300))
+      (img2 (<a href="#robo20">make-rgb-image</a> 30 30 :initial-color (make-color 20 90 111))))
+  (<a href="#robo17">copy</a> img1 img2 :height 10 :width 10
                   :dest-x 20 :dest-y 25)
   (<strong>write-jpg</strong> img1))
 </pre>
@@ -347,7 +347,7 @@ data: #&lt;RGB-IMAGE (300x600) {7006A8E413}&gt;
 
 <hr />
 <a name="image2fwrite2dpng"></a>
-<a name="robo23"></a><h2>image/write-png [ Methods ]</h2>
+<a name="robo24"></a><h2>image/write-png [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">image</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -371,9 +371,9 @@ data: #&lt;RGB-IMAGE (300x600) {7006A8E413}&gt;
 <pre> NIL
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((img1 (<a href="#robo19">make-rgb-image</a> 200 300))
-      (img2 (<a href="#robo19">make-rgb-image</a> 30 30 :initial-color (make-color 20 90 111))))
-  (<a href="#robo16">copy</a> img1 img2 :height 10 :width 10
+<pre class="source">(let ((img1 (<a href="#robo20">make-rgb-image</a> 200 300))
+      (img2 (<a href="#robo20">make-rgb-image</a> 30 30 :initial-color (make-color 20 90 111))))
+  (<a href="#robo17">copy</a> img1 img2 :height 10 :width 10
                   :dest-x 20 :dest-y 25)
   (<strong>write-png</strong> img1))
 </pre>
@@ -383,7 +383,7 @@ data: #&lt;RGB-IMAGE (300x600) {7006A8E413}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/image.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-01 14:41:37</p>
+<p>Generated from ./src/image.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-01 15:26:44</p>
 </div> <!-- footer -->
 </body>
 </html>
