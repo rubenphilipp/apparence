@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  13:59:10 Fri Mar  1 2024 CET
+;;; $$ Last modified:  14:21:58 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -270,17 +270,7 @@
                :src-x src-x
                :dest-y dest-y
                :dest-x dest-x))
-#|
 
-  (let ((new (imago::copy (data dest) (data src)
-                          :height height
-                          :width width
-                          :src-y src-y
-                          :src-x src-x
-                          :dest-y dest-y
-                          :dest-x dest-x)))
-    (make-image new :id id :default-interpolation default-interpolation)))
-|#
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod write-png ((img image) &key (outfile "/tmp/image.png"))
