@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  14:45:33 Fri Mar  1 2024 CET
+;;; $$ Last modified:  17:21:13 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -314,6 +314,10 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
+;;; - :height. Cf. copy.
+;;; - :width. Cf. copy.
+;;; - :src-y. Cf. copy.  Default = 0.
+;;; - :src-x. Cf. copy.  Default = 0.
 ;;; - :canvas-origin. The horizontal position of the origin (i.e. the center) on
 ;;;   the canvas. This value is relative to the width of the canvas and must be
 ;;;   a number between 0.0 and 1.0.  Default = 0.0
@@ -330,13 +334,18 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 #|
 (let* ((cv (make-canvas 4000 2000 :color '(0 0 0 0)))
        (img (make-rgb-image 500 400 :initial-color (make-color 233 200 188))))
-  (put-it-circular cv img 350 0)
+  (put-it-circular cv img 350 0 :width 300 :height 200
+                                :src-y 10 :src-x 20)
   (write-png cv :outfile "/tmp/test.png")
   (system-open-file "/tmp/test.png"))
 |#
 ;;; SYNOPSIS
 (defmethod put-it-circular ((cv canvas) image azimuth y
                             &key
+                              height
+                              width
+                              (src-y 0)
+                              (src-x 0)
                               (canvas-origin 0.0)
                               (image-origin 0.5)
                               (verbose (get-apr-config :verbose)))
@@ -351,6 +360,10 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
   (unless (typep image 'image)
     (error "canvas::put-it-circular: The image is not an image, but ~a"
            (type-of image)))
+  (when (or height width (/= 0 src-y) (/= 0 src-x))
+    (let ((new-height (if height height (height image)))
+          (new-width (if width width (width image))))
+      (crop image src-x src-y new-width new-height)))
   (let* ((canvas (data cv))
          (canvas-width (width cv))
          (img-width (width image))

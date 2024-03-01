@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  15:25:44 Fri Mar  1 2024 CET
+;;; $$ Last modified:  16:21:55 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -126,7 +126,7 @@
 ;;; - :id. The id of the cylinder.
 ;;; 
 ;;; RETURN VALUE
-;;; 
+;;; The new cylinder-mantle object. 
 ;;;
 ;;; EXAMPLE
 #|
