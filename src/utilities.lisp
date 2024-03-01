@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  16:56:50 Fri Mar  1 2024 CET
+;;; $$ Last modified:  21:33:13 Fri Mar  1 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -545,7 +545,31 @@
                               y-label)
   (when x-label (vgplot::xlabel x-label))
   (when y-label (vgplot::ylabel y-label)))
-    
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+#|
+(color->list 4294181120)
+;; => (244 1 0 255)
+|#
+(defun color->list (color)
+  ;;; ****
+  (let ((r (imago::color-red color))
+        (g (imago::color-green color))
+        (b (imago::color-blue color))
+        (a (imago::color-alpha color)))
+    (list r g b a)))
+
+#|
+(list->color '(244 1 2))
+;; => 49545472
+|#
+(defun list->color (clist)
+  ;;; ****
+  (unless (or (rgb-p clist) (rgba-p clist))
+    (error "utilities::list->color: The list is not of type rgb(a)-list"))
+  (apply #'imago::make-color clist))
   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

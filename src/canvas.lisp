@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  18:37:00 Fri Mar  1 2024 CET
+;;; $$ Last modified:  21:54:46 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -31,26 +31,19 @@
    (height :accessor height :initarg :height :initform nil)
    ;; The rgb(a)-background color of the canvas, as a list.
    ;; Default = (0 0 0 0)
-   (color :accessor color :initarg :color :initform '(0 0 0 0))))
+   (color :accessor color :initarg :color :initform '(0 0 0 0))
+   (initialized :accessor initialized :initform nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod initialize-instance :after ((cv canvas) &rest initargs)
   (declare (ignore initargs))
-  (unless (and (numberp (width cv)) (> (width cv) 0))
-    (error "canvas::initialize-instance: The width is not a number > 0"))
-  (unless (and (numberp (height cv)) (> (height cv) 0))
-    (error "canvas::initialize-instance: The height is not a number > 0"))
   (update cv))
 
 (defmethod print-object :before ((cv canvas) stream)
-  (format stream "~%CANVAS: width: ~a, height: ~a, color: ~a"
-          (width cv) (height cv)
-          (let ((c (color cv)))
-            (list (imago::color-red c)
-                  (imago::color-green c)
-                  (imago::color-blue c)
-                  (imago::color-alpha c)))))
+  (format stream "~%CANVAS: width: ~a, height: ~a, color: ~a, ~
+                  ~%        initialized: ~a"
+          (width cv) (height cv) (color->list (color cv)) (initialized cv)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -78,9 +71,9 @@
 (defmethod set-color ((cv canvas) &rest ignore)
   (declare (ignore ignore))
   (let ((c (color cv)))
-    (unless (or (rgb-p c) (rgba-p c))
-      (error "canvas::(setf color): The :color is not a valid color list"))
-    (setf (slot-value cv 'color) (apply #'make-color c))))
+    ;; just convert color list when a list is given
+    (when (or (rgb-p c) (rgba-p c))
+        (setf (slot-value cv 'color) (apply #'make-color c)))))
 
 
 (defmethod (setf width) :after (value (cv canvas))
@@ -120,11 +113,13 @@
   (declare (ignore ignore))
   ;; when data is not an image, initialize
   (unless (typep (data cv) 'image)
-    (set-color cv)
-    ;; initialize canvas data
-    (setf (slot-value cv 'data)
-          (make-rgb-image (width cv) (height cv)
-                          :initial-color (color cv)))))
+    (when (color cv) (set-color cv))
+    ;; initialize canvas data when width and height are given
+    (when (and (width cv) (height cv) (color cv))
+      (setf (slot-value cv 'data)
+            (make-rgb-image (width cv) (height cv)
+                            :initial-color (color cv))
+            (slot-value cv 'initialized) t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -207,6 +202,8 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; SYNOPSIS
 (defmethod write-png ((cv canvas) &key (outfile "/tmp/canvas.png"))
   ;;; ****
+  (unless (initialized cv)
+    (error "canvas::write-png: The canvas object has not been initialized."))
   (let ((img (data cv)))
     (write-png img :outfile outfile)))
 
@@ -246,6 +243,8 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                                     (outfile "/tmp/canvas.jpg")
                                     (quality 100))
   ;;; ****
+  (unless (initialized cv)
+    (error "canvas::write-jpg: The canvas object has not been initialized."))
   (write-jpg (data cv) :outfile outfile :quality quality))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -296,6 +295,8 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                      (dest-y 0)
                      (dest-x 0))
   ;;; ****
+  (unless (initialized cv)
+    (error "canvas::put-it: The canvas object has not been initialized."))
   (unless (typep img 'image)
     (error "canvas::put-it: The img must be of type image."))
   (copy (data cv) img
@@ -364,6 +365,9 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                               (image-origin 0.5)
                               (verbose (get-apr-config :verbose)))
   ;;; ****
+  (unless (initialized cv)
+    (error "canvas::put-it-circular: The canvas object has not been ~
+            initialized."))
   (unless (and (<= 0.0 image-origin) (>= 1.0 image-origin))
     (error "canvas::put-it-circular: The image-origin must >= 0.0 and <= 1.0"))
   (unless (and (<= 0.0 canvas-origin) (>= 1.0 canvas-origin))

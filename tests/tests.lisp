@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  14:00:42 Fri Mar  1 2024 CET
+;;; $$ Last modified:  21:57:56 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -100,12 +100,6 @@
     (apr:write-png cv :outfile "/tmp/cv-test.png"))
   (is (probe-file "/tmp/cv-test.png")))
 
-;;; test projection surface
-;;; RP  Mon Feb 26 17:49:28 2024
-(test test-projection-surface
-  (let ((ps (make-projection-surface 10 20.5)))
-    (is (= (width ps) 10.0))))
-
 ;;; test cylinder-mantle
 ;;; RP  Mon Feb 26 17:53:24 2024
 (test test-cylinder-mantle
@@ -119,7 +113,7 @@
 ;;; test-make-canvas-from-ps
 ;;; RP  Thu Feb 29 14:37:40 2024
 (test test-make-canvas-from-ps
-  (let* ((ps (apr:make-projection-surface 200 300))
+  (let* ((ps (apr:make-projection-surface 200 300 1.0 1.0))
          (cv (apr:make-canvas-from-ps ps :factor 2.0)))
     (is (= (width cv) 400))))
 
@@ -205,6 +199,14 @@
                   (test-pathname "image.jpg"))))
     (is (and (typep img1 'apr:image)
              (typep img2 'apr:image)))))
+
+;;; test-make-ps-simple1
+;;; RP  Fri Mar  1 21:55:19 2024
+(test test-make-ps-simple1
+  (let ((ps (apr:make-projection-surface 20 30.5 10.5 10.5
+                                         :canvas-color '(2 5 1 234))))
+    (is (and (typep ps 'apr:projection-surface)
+             (typep (data ps) 'apr:canvas)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
