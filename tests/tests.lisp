@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  23:09:04 Thu Feb 29 2024 CET
+;;; $$ Last modified:  14:00:42 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -167,10 +167,11 @@
                               :data (imago::make-rgb-image
                                      200 200
                                      (imago::make-color 232 130 232))))
-         (img2 (apr:make-image (imago::make-rgb-image 20 20
-                                                  (imago::make-color 0 0 0))))
-         (new (apr:copy img1 img2)))
-    (is (= 200 (imago::image-width (data new))))))
+         (img2 (apr:make-image (imago::make-rgb-image
+                                20 20
+                                (imago::make-color 0 0 0)))))
+    (apr:copy img1 img2)
+    (is (= 200 (imago::image-width (data img1))))))
 
 ;;; test-write-png-image
 ;;; RP  Thu Feb 29 21:40:26 2024
@@ -180,9 +181,9 @@
                                    (apr::make-color 232 130 232)))
          (img2 (apr:make-image (imago::make-rgb-image
                                 20 20
-                                (imago::make-color 0 0 0))))
-         (new (apr:copy img1 img2 :dest-x 30)))
-    (apr:write-png new :outfile "/tmp/test.png")
+                                (imago::make-color 0 0 0)))))
+    (apr:copy img1 img2 :dest-x 30)
+    (apr:write-png img1 :outfile "/tmp/test.png")
     (is (probe-file "/tmp/test.png"))))
 
 ;;; test-images-from-specific-files

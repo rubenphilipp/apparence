@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  23:23:23 Thu Feb 29 2024 CET
+;;; $$ Last modified:  13:59:10 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -253,7 +253,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; non-destructive
+;;; destructive
 ;;; returns a new image object
 (defmethod copy ((dest image) (src image)
                  &key
@@ -261,12 +261,17 @@
                    (dest-y 0)
                    (src-x 0)
                    (src-y 0)
-                   width height
-                   ;; attributes for the new image object
-                   id
-                   (default-interpolation
-                    (get-apr-config :default-interpolation)))
+                   width height)
   ;;; ****
+  (imago::copy (data dest) (data src)
+               :height height
+               :width width
+               :src-y src-y
+               :src-x src-x
+               :dest-y dest-y
+               :dest-x dest-x))
+#|
+
   (let ((new (imago::copy (data dest) (data src)
                           :height height
                           :width width
@@ -275,7 +280,7 @@
                           :dest-y dest-y
                           :dest-x dest-x)))
     (make-image new :id id :default-interpolation default-interpolation)))
-
+|#
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod write-png ((img image) &key (outfile "/tmp/image.png"))
