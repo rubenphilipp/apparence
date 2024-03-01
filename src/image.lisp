@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  14:21:58 Fri Mar  1 2024 CET
+;;; $$ Last modified:  14:41:21 Fri Mar  1 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -231,7 +231,40 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; These methods reflect some imago methods.
 
-;;; destructive
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* image/resize
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-01
+;;; 
+;;; DESCRIPTION
+;;; This method resizes an image object to the new dimensions. 
+;;;
+;;; ARGUMENTS
+;;; - The image object.
+;;; - A number representing the new height (px).
+;;; - A number representing the new width (px). 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :interpolation. The interpolation method to be used for altering the
+;;;   dimensions. Default = (get-apr-config :default-interpolation)
+;;; 
+;;; RETURN VALUE
+;;; The modified image object. 
+;;;
+;;; EXAMPLE
+#|
+(let ((img (make-rgb-image 200 300)))
+  (resize img 400 400))
+;;; =>
+IMAGE: width: 400, height: 400
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #<RGB-IMAGE (400x400) {70067BAB33}>
+|#
+;;; SYNOPSIS
 (defmethod resize ((img image) new-width new-height
                    &key (interpolation
                          (get-apr-config :default-interpolation)))
@@ -242,7 +275,42 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; destructive
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* image/scale
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-01
+;;; 
+;;; DESCRIPTION
+;;; This methods scales an image object according to the scaling facors given as
+;;; arguments. 
+;;;
+;;; ARGUMENTS
+;;; - The image object.
+;;; - A number being the width-scaler.
+;;; - A number being the height-scaler. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :interpolation. The interpolation method to be used for altering the
+;;;   dimensions. Default = (get-apr-config :default-interpolation)
+;;; 
+;;; RETURN VALUE
+;;; The modified image object. 
+;;;
+;;; EXAMPLE
+#|
+(let ((img (make-rgb-image 200 300)))
+  (scale img 1.5 2.0))
+;;; =>
+IMAGE: width: 300, height: 600
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #<RGB-IMAGE (300x600) {7006A8E413}>
+**********
+|#
+;;; SYNOPSIS
 (defmethod scale ((img image) width-factor height-factor
                   &key (interpolation
                         (get-apr-config :default-interpolation)))
@@ -253,8 +321,54 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; destructive
-;;; returns a new image object
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* image/copy
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-01
+;;; 
+;;; DESCRIPTION
+;;; This method copies a rectangular region from the src image to the dest
+;;; image (cf. imago::copy). Then no width or height are given, the complete
+;;; image will be copied.
+;;; NB: Both images must be large enough to contain the specified region at the
+;;; given positions (cf. imago::copy). 
+;;;
+;;; ARGUMENTS
+;;; - The destination image object.
+;;; - The source image object. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :dest-x. A number indicating the x-coordinate of the position on the
+;;;   destination image. Default = 0
+;;; - :dest-y. A number indicating the y-coordinate of the position on the
+;;;   destination image. Default = 0
+;;; - :src-x. A number indicating the x-coordinate on the src image. Default = 0
+;;; - :src-y. A number indicating the y-coordinate on the src image. Default = 0
+;;; - :width. The width of the region to cut out from the src-image. When NIL,
+;;;   the complete width of the src-image will be used.
+;;; - :height. The height of the region to cut out from the src-image. When NIL,
+;;;   the complete height of the src-image will be used. 
+;;; 
+;;; RETURN VALUE
+;;; The (modified) dest image object. 
+;;;
+;;; EXAMPLE
+#|
+(let ((img1 (make-rgb-image 200 300))
+      (img2 (make-rgb-image 30 30 :initial-color (make-color 20 90 111))))
+  (copy img1 img2 :height 10 :width 10
+                  :dest-x 20 :dest-y 25))
+;;; =>
+IMAGE: width: 200, height: 300
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
+**********
+|#
+;;; SYNOPSIS
 (defmethod copy ((dest image) (src image)
                  &key
                    (dest-x 0)
@@ -269,13 +383,86 @@
                :src-y src-y
                :src-x src-x
                :dest-y dest-y
-               :dest-x dest-x))
+               :dest-x dest-x)
+  dest)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* image/write-png
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-01
+;;; 
+;;; DESCRIPTION
+;;; This method writes the content of the data-slot of an image object to a
+;;; png-file. 
+;;;
+;;; ARGUMENTS
+;;; The image object. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :outfile. The output filename. Default = "/tmp/image.png"
+;;; 
+;;; RETURN VALUE
+;;; NIL
+;;;
+;;; EXAMPLE
+#|
+(let ((img1 (make-rgb-image 200 300))
+      (img2 (make-rgb-image 30 30 :initial-color (make-color 20 90 111))))
+  (copy img1 img2 :height 10 :width 10
+                  :dest-x 20 :dest-y 25)
+  (write-png img1))
+|#
+;;; SYNOPSIS
 (defmethod write-png ((img image) &key (outfile "/tmp/image.png"))
   ;;; ****
   (imago::write-png (data img) outfile))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* image/write-jpg
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-01
+;;; 
+;;; DESCRIPTION
+;;; This method writes the content of the data-slot of an image object to a
+;;; jpg-file. 
+;;;
+;;; ARGUMENTS
+;;; The image object. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :outfile. The output filename. Default = "/tmp/image.jpg"
+;;; - :quality. The quality of the output as an integer (0<=q<=100), where 100
+;;;   means best quality. Default = 100.
+;;; 
+;;; RETURN VALUE
+;;; NIL
+;;;
+;;; EXAMPLE
+#|
+(let ((img1 (make-rgb-image 200 300))
+      (img2 (make-rgb-image 30 30 :initial-color (make-color 20 90 111))))
+  (copy img1 img2 :height 10 :width 10
+                  :dest-x 20 :dest-y 25)
+  (write-jpg img1))
+|#
+;;; SYNOPSIS
+(defmethod write-jpg ((img image) &key
+                                    (outfile "/tmp/image.jpg")
+                                    (quality 100))
+  ;;; ****
+  (unless (and (integerp quality) (<= 0 quality) (>= 100 quality))
+    (error "image::write-jpg: The quality must be an integer [0-100]"))
+  (imago-jpeg-turbo::write-jpg (data img) outfile :quality quality))
                           
   
 
