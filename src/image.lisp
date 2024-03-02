@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  18:58:43 Fri Mar  1 2024 CET
+;;; $$ Last modified:  18:55:53 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  18:27:22 Sat Mar  2 2024 CET
+;;; $$ Last modified:  19:04:28 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -260,10 +260,13 @@
                                     :y-scaler 3)))
     (setf (projection-width pn1) 800)
     (setf (height pn1) 100)
-    (is (and (= (projection-width pn1) 800)
+    (resize pn1 200 200)
+    (is (and (= (projection-width pn1) 400)
+             (= (projection-height pn1) 600)
              (= (x-scaler pn1) 2)
-             (= (width pn1) 400)
-             (= (projection-height pn1) 300)))))
+             (= (y-scaler pn1) 3)
+             (= (width pn1) 200)
+             (= (height pn1) 200)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp

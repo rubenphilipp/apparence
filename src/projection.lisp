@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  18:20:07 Sat Mar  2 2024 CET
+;;; $$ Last modified:  19:02:39 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -84,13 +84,14 @@
 ;; class, thus, the consistency check won't take the changed dimensions into
 ;; account
 ;; RP  Sat Mar  2 17:51:55 2024
-(defmethod (setf width) :before (value (pn projection))
+(defmethod (setf width) :after (value (pn projection))
   ;; changing the width alters the projection-width
+  (print (width pn))
   (when (initialized pn)
     (setf (slot-value pn 'projection-width) (* value (x-scaler pn)))))
 
 ;; apropos :before see (setf width)
-(defmethod (setf height) :before (value (pn projection))
+(defmethod (setf height) :after (value (pn projection))
   (when (initialized pn)
     (setf (slot-value pn 'projection-height) (* value (y-scaler pn)))))
 
@@ -121,9 +122,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod update :before ((pn projection) &key ignore)
+(defmethod update :after ((pn projection) &key ignore)
   (declare (ignore ignore))
-  (when (and (data pn) (width pn) (height pn))
+  ;; update the projection dimensions in case they have been changed
+  ;; by a method from the image class
+  (when (initialized pn)
+    ;; slot value!!
+    (setf (slot-value pn 'projection-width) (* (width pn) (x-scaler pn))
+          (slot-value pn 'projection-height) (* (height pn) (y-scaler pn))))
+  ;; initialize
+  (when (and (data pn) (width pn) (height pn) (not (initialized pn)))
     ;; taking care of the width
     (cond ((and (not (x-scaler pn)) (projection-width pn))
            (setf (slot-value pn 'x-scaler) (/ (projection-width pn)
