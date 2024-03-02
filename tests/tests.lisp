@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:11:09 Sat Mar  2 2024 CET
+;;; $$ Last modified:  21:42:25 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -297,6 +297,19 @@
                                :projection-height 800)))
     (is (and (= (projection-height pn1) 800)
              (= (projection-width pn2) 400)))))
+
+;;; test-pn-scale
+;;; RP  Sat Mar  2 21:40:53 2024
+(test test-pn-scale
+  (let* ((img (make-rgb-image 200 400
+                              :initial-color (imago::make-color 210 180 90)))
+         (pn (make-projection img
+                              :x-scaler 2)))
+    (scale pn 2 2)
+    (is (and (= (projection-width pn) 800)
+             (= (x-scaler pn) 4)
+             (= (projection-height pn) 1600)
+             (= (y-scaler pn) 4)))))
               
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

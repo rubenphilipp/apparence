@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  21:33:11 Sat Mar  2 2024 CET
+;;; $$ Last modified:  21:39:25 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -338,6 +338,15 @@ data: #<RGB-IMAGE (200x300) {700ED06133}>
           (warn "projection::copy: Won't copy. The resulting dimensions are ~
                  too small.")))
     dest))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; this version does not scale the image but the scalers
+(defmethod scale ((pn projection) width-factor height-factor &rest ignore)
+  ;;; ****
+  (declare (ignore ignore))
+  (setf (x-scaler pn) (* width-factor (x-scaler pn))
+        (y-scaler pn) (* height-factor (y-scaler pn))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
