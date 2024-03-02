@@ -19,7 +19,10 @@
 ;;; the canvas data itself. 
 ;;; 
 ;;; The canvas-coordinates/dimensions are derived by scaling the values
-;;; according to a x- and y-scaler. 
+;;; according to a x- and y-scaler.
+;;; 
+;;; The scalers determine the ratio canvas / projection-surface
+;;; (e.g. canvas-width / surface-width).
 ;;;
 ;;; The coordinate values of projection-surfaces are -- other than those of a
 ;;; canvas -- not limited to integer values, but can also be e.g. floats.
@@ -27,7 +30,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  16:32:40 Sat Mar  2 2024 CET
+;;; $$ Last modified:  23:07:21 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -84,14 +87,14 @@
     (error "projection-surface::(setf surface-width): The surface-width ~
             must be > 0"))
   (when (initialized ps)
-    (setf (width ps) (* (floor (* value (x-scaler ps)))))))
+    (setf (width ps) (floor (* value (x-scaler ps))))))
 
 (defmethod (setf surface-height) :after (value (ps projection-surface))
   (unless (> (surface-height ps) 0)
     (error "projection-surface::(setf surface-height): The surface-height ~
             must be > 0"))
   (when (initialized ps)
-    (setf (height ps) (* (floor (* value (y-scaler ps)))))))
+    (setf (height ps) (floor (* value (y-scaler ps))))))
 
 (defmethod (setf x-scaler) :after (value (ps projection-surface))
   (when (initialized ps)
@@ -136,6 +139,9 @@
 ;;; The coordinate values of projection-surfaces are -- other than those of a
 ;;; canvas -- not limited to integer values, but can also be e.g. floats.
 ;;;
+;;; The scalers determine the ratio projection-surface / image
+;;; (e.g. surface-width / image-width).
+;;;
 ;;; NB: Altering the dimensions (surface-width/-height) of the
 ;;;     projection-surface after initializing might cause the cutting of
 ;;;     existing content.
@@ -173,7 +179,67 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;  put methods for projections
+;;; put methods for projections
+;;; all values relative to the projection(-surface) scale
+;;; assuming coordinates and dimensions of projection-surface and projection
+;;; share the same scale!!
+;;; RP  Sat Mar  2 21:59:40 2024
+(defmethod put-it ((ps projection-surface) (pn projection)
+                   &key
+                     height
+                     width
+                     (src-y 0)
+                     (src-x 0)
+                     (dest-y 0)
+                     (dest-x 0)
+                     (interpolation
+                      (get-apr-config :default-interpolation)))
+  ;;; ****
+  (unless (initialized ps)
+    (error "projection-surface::put-it: The projection-surface object has not ~
+            been initialized."))
+  (unless (initialized pn)
+    (error "projection-surface::put-it: The projection object has not ~
+            been initialized."))
+  
+
+  
+  (let* ((pn->ps-x (/ (x-scaler pn)
+                      (x-scaler ps)))
+         (pn->ps-y (/ (y-scaler pn)
+                      (y-scaler ps)))
+         (tmp-pn pn))
+    (print pn->ps-x)
+    ;; scale the src if necessary
+    (unless (= 1.0 pn->ps-x pn->ps-y)
+      ;; warn when image is upscaled
+      (when (or (< 1.0 pn->ps-x) (< 1.0 pn->ps-y))
+        (warn "projection-surface::put-it: The projection image will be ~
+               upscaled by a factor of ~
+               x: ~a, y: ~a." pn->ps-x pn->ps-y))
+      ;; clone the src
+      (setf tmp-pn (make-image (data pn)))
+      (scale tmp-pn pn->ps-x pn->ps-y :interpolation interpolation))
+    (let ((height (when height (round (/ height (y-scaler pn)))))
+          (width (when width (round (/ width (x-scaler pn)))))
+          (src-y (round (/ src-y (y-scaler pn))))
+          (src-x (round (/ src-x (x-scaler pn))))
+          (dest-y (round (/ dest-y (y-scaler ps))))
+          (dest-x (round (/ dest-x (x-scaler ps)))))
+      (if (every #'(lambda (x)
+                     (or (null x) (< -1 x)))
+                 (list height width height src-x src-y))
+          (imago::copy (data (data ps)) (data tmp-pn)
+                       :height height
+                       :width width
+                       :src-y src-y
+                       :src-x src-x
+                       :dest-y dest-y
+                       :dest-x dest-x)
+          (warn "projection::copy: Won't copy. The resulting dimensions are ~
+                 too small.")))
+    ps))
+  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF projection-surface.lisp

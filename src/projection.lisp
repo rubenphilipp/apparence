@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  21:53:59 Sat Mar  2 2024 CET
+;;; $$ Last modified:  22:53:26 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -305,11 +305,11 @@ data: #<RGB-IMAGE (200x300) {700ED06133}>
                    (interpolation
                     (get-apr-config :default-interpolation)))
   ;;; ****
-  (let* ((src->dest-x (/ (x-scaler src)
+  (let ((src->dest-x (/ (x-scaler src)
                          (x-scaler dest)))
-         (src->dest-y (/ (y-scaler src)
+        (src->dest-y (/ (y-scaler src)
                          (y-scaler dest)))
-         (tmp-src src))
+        (tmp-src src))
     ;; scale the src if necessary
     (unless (= 1.0 src->dest-x src->dest-y)
       ;; warn when image is upscaled
