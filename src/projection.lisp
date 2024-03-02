@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  17:00:56 Sat Mar  2 2024 CET
+;;; $$ Last modified:  18:06:08 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -80,80 +80,98 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod set-width ((pn projection) &rest ignore)
-  (declare (ignore ignore))
+;; must be called :before, since update will be called when updating the image
+;; class, thus, the consistency check won't take the changed dimensions into
+;; account
+;; RP  Sat Mar  2 17:51:55 2024
+(defmethod (setf width) :before (value (pn projection))
   ;; changing the width alters the projection-width
-  (setf (slot-value pn 'projection-width) (* (width pn) (x-scaler pn))))
+  (when (initialized pn)
+    (setf (slot-value pn 'projection-width) (* value (x-scaler pn)))))
 
-(defmethod set-height ((pn projection) &rest ignore)
-  (declare (ignore ignore))
-  (setf (slot-value pn 'projection-height) (* (height pn) (y-scaler pn))))
+;; apropos :before see (setf width)
+(defmethod (setf height) :before (value (pn projection))
+  (when (initialized pn)
+    (setf (slot-value pn 'projection-height) (* value (y-scaler pn)))))
 
-(defmethod set-projection-width ((pn projection) &rest ignore)
-  (declare (ignore ignore))
+(defmethod (setf projection-width) :after (value (pn projection))
   (unless (> (projection-width pn) 0)
     (error "projection::set-projection-width: The projection-width ~
             must be > 0"))
-  ;;; this does not alter the image dimensions (see description)
-  (setf (width pn) (/ (projection-width pn) (x-scaler pn))))
+  (when (initialized pn)
+    (setf (width pn) (floor (/ value (x-scaler pn))))))
 
-(defmethod set-projection-height ((pn projection) &rest ignore)
-  (declare (ignore ignore))
+(defmethod (setf projection-height) :after (value (pn projection))
   (unless (> (projection-height pn) 0)
     (error "projection::set-projection-height: The projection-height ~
             must be > 0"))
-  (setf (height pn) (/ (projection-height pn) (y-scaler pn))))
-
-(defmethod set-x-scaler ((pn projection) &rest ignore)
-  (declare (ignore ignore))
-  ;;; this does not alter the image dimensions but the projection-width (see
-  ;;; description)
-  (setf (slot-value pn 'projection-width) (* (x-scaler pn) (width pn))))
-
-(defmethod set-y-scaler ((pn projection) &rest ignore)
-  (declare (ignore ignore))
-  (setf (slot-value pn 'projection-height) (* (y-scaler pn) (height pn))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defmethod (setf width) :after (value (pn projection))
-  (declare (ignore value))
   (when (initialized pn)
-    (set-width pn)))
+    (setf (height pn) (floor (/ value (y-scaler pn))))))
 
-(defmethod (setf height) :after (value (pn projection))
-  (declare (ignore value))
-  (when (initialized pn)
-    (set-height pn)))
-
-(defmethod (setf projection-width) :after (value (pn projection))
-  (declare (ignore value))
-  (when (initialized pn)
-    (set-projection-width pn)))
-
-(defmethod (setf projection-height) :after (value (pn projection))
-  (declare (ignore value))
-  (when (initialized pn)
-    (set-projection-height pn)))
 
 (defmethod (setf x-scaler) :after (value (pn projection))
-  (declare (ignore value))
+  ;;; this does not alter the image dimensions but the projection-width (see
+  ;;; description)
   (when (initialized pn)
-    (set-x-scaler pn)))
+    (setf (slot-value pn 'projection-width) (* value (width pn)))))
 
 (defmethod (setf y-scaler) :after (value (pn projection))
-  (declare (ignore value))
   (when (initialized pn)
-    (set-y-scaler pn)))
+    (setf (slot-value pn 'projection-height) (* value (height pn)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod update :after ((pn projection) &key ignore)
+(defmethod update :before ((pn projection) &key ignore)
   (declare (ignore ignore))
+  (when (and (data pn) (width pn) (height pn))
+    ;; taking care of the width
+    (cond ((and (not (x-scaler pn)) (projection-width pn))
+           (setf (slot-value pn 'x-scaler) (/ (projection-width pn)
+                                              (width pn))))
+          ((and (x-scaler pn) (not (projection-width pn)))
+           (setf (slot-value pn 'projection-width) (* (x-scaler pn)
+                                                      (width pn))))
+          ((and (x-scaler pn) (projection-width pn))
+           (let ((test-res (* (width pn) (x-scaler pn))))
+             (when (/= test-res (projection-width pn))
+               (error "projection::update: Inconsistent data: ~
+                       width * x-scaler != projection-width. ~% ~
+                       (~a * ~a != ~a; projection-width should be ~a)."
+                      (width pn) (x-scaler pn) (projection-width pn)
+                      test-res))))
+          (t (error "projection::update: Neither an x-scaler nor a ~
+                     projection-width are given.")))
+    ;; now doing the height
+    (cond ((and (not (y-scaler pn)) (projection-height pn))
+           (setf (slot-value pn 'y-scaler) (/ (projection-height pn)
+                                              (height pn))))
+          ((and (y-scaler pn) (not (projection-height pn)))
+           (setf (slot-value pn 'projection-height) (* (y-scaler pn)
+                                                      (height pn))))
+          ((and (y-scaler pn) (projection-height pn))
+           (let ((test-res (* (height pn) (y-scaler pn))))
+             (when (/= test-res (projection-height pn))
+               (error "projection::update: Inconsistent data: ~
+                       height * y-scaler != projection-height. ~% ~
+                       (~a * ~a != ~a; projection-height should be ~a)."
+                      (height pn) (y-scaler pn) (projection-height pn)
+                      test-res))))
+          (t (error "projection::update: Neither an y-scaler nor a ~
+                     projection-height are given.")))
+    (setf (slot-value pn 'initialized) t)))
+
+#|
+    (when (and (not (x-scaler pn)) (projection-width pn))
+      (setf (slot-value pn 'x-scaler) (/ (projection-width pn)
+                                         (width pn))))
+    (when (and (not (y-scaler pn) (projection-height pn)))
+      (setf (slot-value pn 'y-scaler) (/ (projection-height pn)
+                                         (height pn))))
+  
   (when (and (projection-width pn) (projection-height pn)
              (x-scaler pn) (y-scaler pn))
     (setf (slot-value pn 'initialized) t)))
-
+|#
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF projection.lisp
