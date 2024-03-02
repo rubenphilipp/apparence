@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  19:02:39 Sat Mar  2 2024 CET
+;;; $$ Last modified:  19:48:07 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -86,7 +86,6 @@
 ;; RP  Sat Mar  2 17:51:55 2024
 (defmethod (setf width) :after (value (pn projection))
   ;; changing the width alters the projection-width
-  (print (width pn))
   (when (initialized pn)
     (setf (slot-value pn 'projection-width) (* value (x-scaler pn)))))
 
@@ -265,6 +264,40 @@ data: #<RGB-IMAGE (200x300) {700ED06133}>
                              :id id
                              :default-interpolation default-interpolation
                              :data image))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod copy ((dest projection) (src projection)
+                 &key
+                   (dest-x 0)
+                   (dest-y 0)
+                   (src-x 0)
+                   (src-y 0)
+                   width height
+                   (interpolation
+                    (get-apr-config :default-interpolation)))
+  ;;; ****
+  (let* ((src->dest-x (/ (x-scaler src)
+                         (x-scaler dest)))
+         (src->dest-y (/ (y-scaler src)
+                         (y-scaler dest)))
+         (tmp-src src))
+    ;; scale the src if necessary
+    (unless (= 1.0 src->dest-x src->dest-y)
+      ;; clone the src
+      (setf tmp-src (make-image (data src)))
+      (scale tmp-src src->dest-x src->dest-y :interpolation interpolation))
+    (imago::copy (data dest) (data tmp-src)
+                 :height (when height (/ height (y-scaler src)))
+                 :width (when width (/ width (x-scaler src)))
+                 :src-y (/ src-y (y-scaler src))
+                 :src-x (/ src-x (x-scaler src))
+                 :dest-y (/ dest-y (y-scaler dest))
+                 ;;(* src->dest-y (/ dest-y (y-scaler src)))
+                 :dest-x (/ dest-x (x-scaler dest)))
+    ;;(* src->dest-x (/ dest-x (x-scaler src))))
+    dest))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
