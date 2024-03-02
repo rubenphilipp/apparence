@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  19:48:07 Sat Mar  2 2024 CET
+;;; $$ Last modified:  21:10:20 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -121,6 +121,50 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmethod init-x-dimensions ((pn projection))
+  (cond ((and (not (x-scaler pn)) (projection-width pn))
+         (setf (slot-value pn 'x-scaler) (/ (projection-width pn)
+                                            (width pn)))
+         t)
+        ((and (x-scaler pn) (not (projection-width pn)))
+         (setf (slot-value pn 'projection-width) (* (x-scaler pn)
+                                                    (width pn))))
+        ((and (x-scaler pn) (projection-width pn))
+         (let ((test-res (* (width pn) (x-scaler pn))))
+           (when (/= test-res (projection-width pn))
+             (error "projection::init-x-dimensions: Inconsistent data: ~
+                       width * x-scaler != projection-width. ~% ~
+                       (~a * ~a != ~a; projection-width should be ~a)."
+                    (width pn) (x-scaler pn) (projection-width pn)
+                    test-res)))
+         t)
+        (t nil)))
+
+(defmethod init-y-dimensions ((pn projection))
+  (cond ((and (not (y-scaler pn)) (projection-height pn))
+         (setf (slot-value pn 'y-scaler) (/ (projection-height pn)
+                                            (height pn))))
+        ((and (y-scaler pn) (not (projection-height pn)))
+         (setf (slot-value pn 'projection-height) (* (y-scaler pn)
+                                                     (height pn))))
+        ((and (y-scaler pn) (projection-height pn))
+         (let ((test-res (* (height pn) (y-scaler pn))))
+           (when (/= test-res (projection-height pn))
+             (error "projection::init-y-dimensions: Inconsistent data: ~
+                       height * y-scaler != projection-height. ~% ~
+                       (~a * ~a != ~a; projection-height should be ~a)."
+                    (height pn) (y-scaler pn) (projection-height pn)
+                    test-res))))
+        ;;; try to derive from x-dimensions
+        ((numberp (x-scaler pn))
+         (setf (slot-value pn 'y-scaler) (x-scaler pn)
+               (slot-value pn 'projection-height) (* (y-scaler pn)
+                                                     (projection-width pn))))
+        (t (error "projection::update: Neither an y-scaler nor a ~
+                     projection-height are given."))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defmethod update :after ((pn projection) &key ignore)
   (declare (ignore ignore))
   ;; update the projection dimensions in case they have been changed
@@ -131,40 +175,18 @@
           (slot-value pn 'projection-height) (* (height pn) (y-scaler pn))))
   ;; initialize
   (when (and (data pn) (width pn) (height pn) (not (initialized pn)))
-    ;; taking care of the width
-    (cond ((and (not (x-scaler pn)) (projection-width pn))
-           (setf (slot-value pn 'x-scaler) (/ (projection-width pn)
-                                              (width pn))))
-          ((and (x-scaler pn) (not (projection-width pn)))
-           (setf (slot-value pn 'projection-width) (* (x-scaler pn)
+    (cond ((init-x-dimensions pn)
+           ;; just go ahead
+           (init-y-dimensions pn))
+          ((or (y-scaler pn) (projection-height pn))
+           ;; try to derive the x-dimensions from the y-scaler,
+           ;; assuming to keep aspect ratio of image
+           (init-y-dimensions pn)
+           (setf (slot-value pn 'x-scaler) (y-scaler pn)
+                 (slot-value pn 'projection-width) (* (x-scaler pn)
                                                       (width pn))))
-          ((and (x-scaler pn) (projection-width pn))
-           (let ((test-res (* (width pn) (x-scaler pn))))
-             (when (/= test-res (projection-width pn))
-               (error "projection::update: Inconsistent data: ~
-                       width * x-scaler != projection-width. ~% ~
-                       (~a * ~a != ~a; projection-width should be ~a)."
-                      (width pn) (x-scaler pn) (projection-width pn)
-                      test-res))))
           (t (error "projection::update: Neither an x-scaler nor a ~
-                     projection-width are given.")))
-    ;; now doing the height
-    (cond ((and (not (y-scaler pn)) (projection-height pn))
-           (setf (slot-value pn 'y-scaler) (/ (projection-height pn)
-                                              (height pn))))
-          ((and (y-scaler pn) (not (projection-height pn)))
-           (setf (slot-value pn 'projection-height) (* (y-scaler pn)
-                                                      (height pn))))
-          ((and (y-scaler pn) (projection-height pn))
-           (let ((test-res (* (height pn) (y-scaler pn))))
-             (when (/= test-res (projection-height pn))
-               (error "projection::update: Inconsistent data: ~
-                       height * y-scaler != projection-height. ~% ~
-                       (~a * ~a != ~a; projection-height should be ~a)."
-                      (height pn) (y-scaler pn) (projection-height pn)
-                      test-res))))
-          (t (error "projection::update: Neither an y-scaler nor a ~
-                     projection-height are given.")))
+                     projection-width nor y-dimensions are given.")))
     (setf (slot-value pn 'initialized) t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -296,7 +318,6 @@ data: #<RGB-IMAGE (200x300) {700ED06133}>
                  :dest-y (/ dest-y (y-scaler dest))
                  ;;(* src->dest-y (/ dest-y (y-scaler src)))
                  :dest-x (/ dest-x (x-scaler dest)))
-    ;;(* src->dest-x (/ dest-x (x-scaler src))))
     dest))
 
 
