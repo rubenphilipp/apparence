@@ -27,14 +27,14 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  23:50:28 Fri Mar  1 2024 CET
+;;; $$ Last modified:  16:32:40 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
 
 (defclass projection-surface (canvas)
-  (;; the width and height of the ps are related to the canvas dimensions
+  (;; the surface-width and -height are related to the canvas dimensions
    ;; through the scalers
    (surface-width :accessor surface-width :initarg :surface-width :initform nil)
    (surface-height :accessor surface-height :initarg :surface-height
@@ -69,18 +69,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod (setf surface-width) :after (value (ps projection-surface))
-  (declare (ignore value))
-  (unless (> (surface-width ps) 0)
-    (error "projection-surface::(setf surface-width): The surface-width ~
-            must be > 0")))
-
-(defmethod (setf surface-height) :after (value (ps projection-surface))
-  (declare (ignore value))
-  (unless (> (surface-height ps) 0)
-    (error "projection-surface::(setf surface-height): The surface-height ~
-            must be > 0")))
-
 (defmethod (setf width) :around (value (ps projection-surface))
   (when (initialized ps)
     (setf (slot-value ps 'x-scaler) (/ value (surface-width ps))))
@@ -92,10 +80,16 @@
   (call-next-method))
 
 (defmethod (setf surface-width) :after (value (ps projection-surface))
+  (unless (> (surface-width ps) 0)
+    (error "projection-surface::(setf surface-width): The surface-width ~
+            must be > 0"))
   (when (initialized ps)
     (setf (width ps) (* (floor (* value (x-scaler ps)))))))
 
 (defmethod (setf surface-height) :after (value (ps projection-surface))
+  (unless (> (surface-height ps) 0)
+    (error "projection-surface::(setf surface-height): The surface-height ~
+            must be > 0"))
   (when (initialized ps)
     (setf (height ps) (* (floor (* value (y-scaler ps)))))))
 
@@ -109,14 +103,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod update :around ((ps projection-surface) &key ignore)
+(defmethod update :before ((ps projection-surface) &key ignore)
   (declare (ignore ignore))
   (when (and (surface-width ps) (surface-height ps) (x-scaler ps) (y-scaler ps))
     (let ((c-width (floor (* (x-scaler ps) (surface-width ps))))
           (c-height (floor (* (y-scaler ps) (surface-height ps)))))
       (setf (slot-value ps 'width) c-width
-            (slot-value ps 'height) c-height)
-      (call-next-method))))
+            (slot-value ps 'height) c-height))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

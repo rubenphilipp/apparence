@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  19:20:30 Fri Mar  1 2024 CET
+;;; $$ Last modified:  00:08:19 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -24,8 +24,7 @@
 (defclass cylinder-mantle (projection-surface)
   ;; NB: diameter and width should never be assigned at the same time
   ;; NB2: the width in this case is the circumference of cylinder
-  ((diameter :accessor diameter :initarg :diameter :initform nil)
-   (initialized :accessor initialized :initform nil)))
+  ((diameter :accessor diameter :initarg :diameter :initform nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -46,7 +45,6 @@
   (declare (ignore new-class))
   (let ((new (call-next-method)))
     (setf (slot-value new 'diameter) (diameter cm))
-    (setf (slot-value new 'initialized) (initialized cm))
     new))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

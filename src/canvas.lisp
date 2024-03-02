@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  23:53:34 Fri Mar  1 2024 CET
+;;; $$ Last modified:  00:32:19 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -452,7 +452,6 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                  the width of the projection screen.")))
     ;; finally, return the altered canvas object
     cv))
-
 
     
 
