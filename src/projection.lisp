@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  18:06:08 Sat Mar  2 2024 CET
+;;; $$ Last modified:  18:20:07 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -160,18 +160,104 @@
                      projection-height are given.")))
     (setf (slot-value pn 'initialized) t)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* projection/make-projection
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-02
+;;; 
+;;; DESCRIPTION
+;;; Shorthand to make a projection object.
+;;;
+;;; A projection is a subclass of an image. Its purpose is to "translate" the
+;;; dimensions of an image object to the dimensions of the projection surface.
+;;; The data-slot holds the actual (unscaled) image object with its original
+;;; dimensions and properties. Its relation to the projection-surface is
+;;; determined by the projection-width and -height slots as well as by the
+;;; related x- and y-scalers.
+;;;
+;;; The scalers determine the ratio projection / image (e.g. projection-width /
+;;; image-width).
+;;; 
+;;; NB: Altering the projection-width and -height after initialization will
+;;;     resize the image applying the given scaling-factors. Changing the
+;;;     scaling factors, though, will not change the dimensions of the image
+;;;     but those of the projection. Finally, changing the image dimensions will
+;;;     change the projection-width and/or -height.
+;;;
+;;; NB2: You need to specify at least a value for :projection-width/-height
+;;;      or :x-/y-scaler. If both are specified, it needs to be ensured that
+;;;      width * x-scaler = projection-width resp.
+;;;      height * y-scaler = projection-height remain true. 
+;;;
+;;; The coordinate values of projections are -- other than those of images --
+;;; not limited to integer values, but can also be e.g. floats.
+;;;
+;;; ARGUMENTS
+;;; - An image object or an imago::image.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :x-scaler. A scaler (ratio image-width/projection-width) to link the
+;;;   dimensions of the image (in the data slot) to the dimensions of the
+;;;   projection.
+;;;   NB: This value can be omitted when a :projection-width is given. 
+;;; - :y-scaler. A scaler (ratio image-height/projection-height) to link the
+;;;   dimensions of the image (in the data slot) to the dimensions of the
+;;;   projection.
+;;;   NB: This value can be omitted when a :projection-height is given. 
+;;; - :projection-width. The width of the image in the projection space.
+;;;   NB: If a :x-scaler is given, this value can be omitted, otherweise
+;;;   it should be width * x-scaler = projection-width.
+;;; - :projection-height. The height of the image in the projection space.
+;;;   NB: If a :y-scaler is given, this value can be omitted otherweise, it
+;;;   should be height * y-scaler = projection-height.
+;;; - :id. The id of the image object.
+;;; - :default-interpolation. The default interpolation method (used e.g. when
+;;;   changing the image dimensions via the (setf ...) methods.
+;;;   Default = (get-apr-config :default-interpolation)
+;;; 
+;;; RETURN VALUE
+;;; The new projection object. 
+;;;
+;;; EXAMPLE
 #|
-    (when (and (not (x-scaler pn)) (projection-width pn))
-      (setf (slot-value pn 'x-scaler) (/ (projection-width pn)
-                                         (width pn))))
-    (when (and (not (y-scaler pn) (projection-height pn)))
-      (setf (slot-value pn 'y-scaler) (/ (projection-height pn)
-                                         (height pn))))
-  
-  (when (and (projection-width pn) (projection-height pn)
-             (x-scaler pn) (y-scaler pn))
-    (setf (slot-value pn 'initialized) t)))
+(let* ((img (make-rgb-image 200 300))
+       (pn (make-projection img :x-scaler 2
+                                :y-scaler 2)))
+  pn)
+
+;; =>
+PROJECTION: projection-width: 400, projection-height: 600 
+        x-scaler: 2, y-scaler: 2, initialized: T
+IMAGE: width: 200, height: 300
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #<RGB-IMAGE (200x300) {700ED06133}>
 |#
+;;; SYNOPSIS
+(defmethod make-projection (image &key
+                                    x-scaler
+                                    y-scaler
+                                    projection-width
+                                    projection-height
+                                    id
+                                    (default-interpolation
+                                     (get-apr-config :default-interpolation)))
+  ;;; ****
+  (when (typep image 'image)
+    (setf image (data image)))
+  (make-instance 'projection :x-scaler x-scaler
+                             :y-scaler y-scaler
+                             :projection-width projection-width
+                             :projection-height projection-height
+                             :id id
+                             :default-interpolation default-interpolation
+                             :data image))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF projection.lisp
