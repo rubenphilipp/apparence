@@ -65,7 +65,7 @@
  CLASS HIERARCHY
  <a href="./named-object_lisp.html#robo5">named-object</a> -&gt; <a href="./image_lisp.html#robo4">image</a> -&gt; <strong>projection</strong>
 
- $$ Last modified:  18:20:07 Sat Mar  2 2024 CET
+ $$ Last modified:  21:13:26 Sat Mar  2 2024 CET
 </pre>
 
 <hr />
@@ -98,10 +98,15 @@
      but those of the <a href="#robo6">projection</a>. Finally, changing the <a href="./image_lisp.html#robo4">image</a> dimensions will
      change the <a href="#robo6">projection</a>-width and/or -height.
 
- NB2: You need to specify at least a value for :<a href="#robo6">projection</a>-width/-height
-      or :x-/y-scaler. If both are specified, it needs to be ensured that
-      width * x-scaler = <a href="#robo6">projection</a>-width resp.
-      height * y-scaler = <a href="#robo6">projection</a>-height remain true. 
+ NB2: You need to specify at least a value for :<a href="#robo6">projection</a>-width/-height or
+      :x-/y-scaler. If both are specified, it needs to be ensured that width
+      * x-scaler = <a href="#robo6">projection</a>-width resp.
+      height * y-scaler = <a href="#robo6">projection</a>-height remain true.
+ 
+      It is also possible to just specify one coordinate (x/width or
+      y/height). Then, the complementary side will be scaled to the same
+      scaler as the side where an argument is given (i.e. this keeps the
+      proportions of the original <a href="./image_lisp.html#robo4">image</a>). 
 
  The coordinate values of projections are -- other than those of images --
  not limited to integer values, but can also be e.g. floats.
@@ -159,7 +164,7 @@ data: #&lt;RGB-IMAGE (200x300) {700ED06133}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-02 18:20:30</p>
+<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-02 21:13:38</p>
 </div> <!-- footer -->
 </body>
 </html>

@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  21:10:20 Sat Mar  2 2024 CET
+;;; $$ Last modified:  21:13:26 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -218,10 +218,15 @@
 ;;;     but those of the projection. Finally, changing the image dimensions will
 ;;;     change the projection-width and/or -height.
 ;;;
-;;; NB2: You need to specify at least a value for :projection-width/-height
-;;;      or :x-/y-scaler. If both are specified, it needs to be ensured that
-;;;      width * x-scaler = projection-width resp.
-;;;      height * y-scaler = projection-height remain true. 
+;;; NB2: You need to specify at least a value for :projection-width/-height or
+;;;      :x-/y-scaler. If both are specified, it needs to be ensured that width
+;;;      * x-scaler = projection-width resp.
+;;;      height * y-scaler = projection-height remain true.
+;;; 
+;;;      It is also possible to just specify one coordinate (x/width or
+;;;      y/height). Then, the complementary side will be scaled to the same
+;;;      scaler as the side where an argument is given (i.e. this keeps the
+;;;      proportions of the original image). 
 ;;;
 ;;; The coordinate values of projections are -- other than those of images --
 ;;; not limited to integer values, but can also be e.g. floats.
