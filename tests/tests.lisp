@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:42:25 Sat Mar  2 2024 CET
+;;; $$ Last modified:  23:40:28 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -310,6 +310,23 @@
              (= (x-scaler pn) 4)
              (= (projection-height pn) 1600)
              (= (y-scaler pn) 4)))))
+
+
+;;; test-put-it-ps-pn
+;;; RP  Sat Mar  2 23:37:50 2024
+(test test-put-it-ps-pn
+      (let* ((cm (make-projection-surface (* 38 pi) 40.36670443321064d0
+                                          (/ 8192 (* 38.0 pi))
+                                          (/ 2770 40.36670443321064d0)))
+             (img-orig (make-rgb-image 2000 1381 :initial-color
+                                       (imago::make-color 222 100 189)))
+             (pn (make-projection img-orig
+                                  :projection-height 40.36670443321064d0)))
+        (put-it cm pn :src-y 0 :dest-y 37.5 :dest-x 100.15)
+        (when (probe-file "/tmp/put-it-ps.jpg")
+          (delete-file "/tmp/put-it-ps.jpg"))
+        (write-jpg cm :outfile "/tmp/put-it-ps.jpg")
+        (is (probe-file "/tmp/put-it-ps.jpg"))))
               
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

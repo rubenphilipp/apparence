@@ -30,7 +30,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  23:07:21 Sat Mar  2 2024 CET
+;;; $$ Last modified:  23:32:40 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -201,15 +201,13 @@
   (unless (initialized pn)
     (error "projection-surface::put-it: The projection object has not ~
             been initialized."))
-  
 
   
-  (let* ((pn->ps-x (/ (x-scaler pn)
-                      (x-scaler ps)))
-         (pn->ps-y (/ (y-scaler pn)
-                      (y-scaler ps)))
+  (let ((pn->ps-x (/ (x-scaler ps)
+                   (/ 1 (x-scaler pn))))
+        (pn->ps-y (/ (y-scaler ps)
+                   (/ 1 (y-scaler pn))))
          (tmp-pn pn))
-    (print pn->ps-x)
     ;; scale the src if necessary
     (unless (= 1.0 pn->ps-x pn->ps-y)
       ;; warn when image is upscaled
@@ -224,8 +222,8 @@
           (width (when width (round (/ width (x-scaler pn)))))
           (src-y (round (/ src-y (y-scaler pn))))
           (src-x (round (/ src-x (x-scaler pn))))
-          (dest-y (round (/ dest-y (y-scaler ps))))
-          (dest-x (round (/ dest-x (x-scaler ps)))))
+          (dest-y (round (/ dest-y (/ 1 (y-scaler ps)))))
+          (dest-x (round (/ dest-x (/ 1 (x-scaler ps))))))
       (if (every #'(lambda (x)
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
