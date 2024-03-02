@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  21:14:01 Sat Mar  2 2024 CET
+;;; $$ Last modified:  21:33:11 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -312,17 +312,31 @@ data: #<RGB-IMAGE (200x300) {700ED06133}>
          (tmp-src src))
     ;; scale the src if necessary
     (unless (= 1.0 src->dest-x src->dest-y)
+      ;; warn when image is upscaled
+      (when (or (< 1.0 src->dest-x) (< 1.0 src->dest-y))
+        (warn "projection::copy: The src image will be upscaled by a factor of ~
+               x: ~a, y: ~a." src->dest-x src->dest-y))
       ;; clone the src
       (setf tmp-src (make-image (data src)))
       (scale tmp-src src->dest-x src->dest-y :interpolation interpolation))
-    (imago::copy (data dest) (data tmp-src)
-                 :height (when height (/ height (y-scaler src)))
-                 :width (when width (/ width (x-scaler src)))
-                 :src-y (/ src-y (y-scaler src))
-                 :src-x (/ src-x (x-scaler src))
-                 :dest-y (/ dest-y (y-scaler dest))
-                 ;;(* src->dest-y (/ dest-y (y-scaler src)))
-                 :dest-x (/ dest-x (x-scaler dest)))
+    (let ((height (when height (round (/ height (y-scaler src)))))
+          (width (when width (round (/ width (x-scaler src)))))
+          (src-y (round (/ src-y (y-scaler src))))
+          (src-x (round (/ src-x (x-scaler src))))
+          (dest-y (round (/ dest-y (y-scaler dest))))
+          (dest-x (round (/ dest-x (x-scaler dest)))))
+      (if (every #'(lambda (x)
+                     (or (null x) (< -1 x)))
+                 (list height width height src-x src-y))
+          (imago::copy (data dest) (data tmp-src)
+                       :height height
+                       :width width
+                       :src-y src-y
+                       :src-x src-x
+                       :dest-y dest-y
+                       :dest-x dest-x)
+          (warn "projection::copy: Won't copy. The resulting dimensions are ~
+                 too small.")))
     dest))
 
 
