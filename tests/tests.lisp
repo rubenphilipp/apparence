@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  18:09:20 Sat Mar  2 2024 CET
+;;; $$ Last modified:  18:27:22 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -250,6 +250,20 @@
              (= (y-scaler pn) 4)
              (= (projection-width pn) 900)
              (= (projection-height pn) 500)))))
+
+;;; test-make-projection
+;;; RP  Sat Mar  2 18:21:00 2024
+(test test-make-projection
+  (let* ((img1 (make-image-from-file
+                (test-pathname "image-200x200.png")))
+         (pn1 (make-projection img1 :x-scaler 2
+                                    :y-scaler 3)))
+    (setf (projection-width pn1) 800)
+    (setf (height pn1) 100)
+    (is (and (= (projection-width pn1) 800)
+             (= (x-scaler pn1) 2)
+             (= (width pn1) 400)
+             (= (projection-height pn1) 300)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
