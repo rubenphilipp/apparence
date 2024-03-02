@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  21:13:26 Sat Mar  2 2024 CET
+;;; $$ Last modified:  21:14:01 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -226,7 +226,7 @@
 ;;;      It is also possible to just specify one coordinate (x/width or
 ;;;      y/height). Then, the complementary side will be scaled to the same
 ;;;      scaler as the side where an argument is given (i.e. this keeps the
-;;;      proportions of the original image). 
+;;;      aspect ratio of the original image). 
 ;;;
 ;;; The coordinate values of projections are -- other than those of images --
 ;;; not limited to integer values, but can also be e.g. floats.
