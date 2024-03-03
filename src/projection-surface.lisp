@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  22:16:00 Sun Mar  3 2024 CET
+;;; $$ Last modified:  22:18:23 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -74,6 +74,7 @@
     (setf (slot-value new 'surface-height) (surface-height ps))
     (setf (slot-value new 'x-scaler) (x-scaler ps))
     (setf (slot-value new 'y-scaler) (y-scaler ps))
+    (setf (slot-value new 'initialized) (initialized ps))
     new))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
