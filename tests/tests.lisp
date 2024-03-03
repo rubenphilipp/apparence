@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:11:48 Sun Mar  3 2024 CET
+;;; $$ Last modified:  21:43:19 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -86,17 +86,19 @@
     (apr:write-png cv :outfile "/tmp/cv-test.png"))
   (is (probe-file "/tmp/cv-test.png")))
 
-#|
+
 ;;; test cylinder-mantle
 ;;; RP  Mon Feb 26 17:53:24 2024
 (test test-cylinder-mantle
-  (let ((mantle1 (make-cylinder-mantle 10
-                                       :width 2.0))
-        (mantle2 (make-cylinder-mantle 5.5
-                                       :diameter 3.0)))
-    (setf (diameter mantle1) 3.0)
-    (is (= (width mantle1) (width mantle2)))))
-|#
+  (let ((cm (apr::make-cylinder-mantle 40 :surface-diameter 10
+                                          :width 2000
+                                          :height 4000
+                                          :id 'visiodrom)))
+    (is (numberp (surface-diameter cm))
+        (numberp (surface-width cm))
+        (= (surface-height cm) 40)
+        (= (y-scaler cm) 1/100)
+        (= (width cm) 2000))))
 
 #|
 ;;; test-make-canvas-from-ps

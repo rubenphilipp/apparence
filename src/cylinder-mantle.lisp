@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  18:40:34 Sun Mar  3 2024 CET
+;;; $$ Last modified:  21:38:24 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -49,7 +49,8 @@
     new))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-#|
+
+
 (defmethod (setf surface-diameter) :before (value (cm cylinder-mantle))
   (unless (> value 0)
     (error "cylinder-mantle::(setf surface-diameter): The surface-diameter ~
@@ -96,6 +97,93 @@
              (error "cylinder-mantle::initialize-instance: You can't ~
                    specify both the surface-diameter and the surface-width ~
                    slots. ~a" cm))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* cylinder-mantle/make-cylinder-mantle
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-26
+;;; 
+;;; DESCRIPTION
+;;; Helper function to instantiate a cylinder-mantle object.
+;;; A cylinder mantle is a specialized projection-surface. 
+;;; 
+;;; Please note that you cannot set both the diameter and the width (i.e. the
+;;; circumference) value when instantiating the object.
+;;;
+;;; NB: The unit for positions/coordinates do not use a specified unit
+;;; (e.g. meters or px). This facilitates working on surfaces of an arbitrary
+;;; scale without deciding for the final output scale. The conversion, e.g. to
+;;; pixel values, will take place when creating a canvas from a projection
+;;; surface.
+;;;
+;;; ARGUMENTS
+;;; The surface-height of the cylindrical surface.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :surface-diameter. The diameter of the cylindrical mantle.
+;;;   NB: Do not set this value when a :width value is given. 
+;;; - :surface-width. The width/circumference of the cylindrical mantle.
+;;;   NB: Do not set this value when a :diameter value is given.
+;;; - :x-scaler. A scaler (ratio canvas-width/surface-width) to link the
+;;;   dimensions of the canvas (in the data slot) to the dimensions of the
+;;;   projection.
+;;; - :y-scaler. A scaler (ratio canvas-height/surface-height) to link the
+;;;   dimensions of the image (in the data slot) to the dimensions of the
+;;;   projection.
+;;; - :width. The width (in px, thus an integer) of the canvas. 
+;;; - :height. The height (in px, thus an integer) of the canvas.
+;;; - :color. The initial color of the canvas, as a rgb(a) list.
+;;;   Default = '(0 0 0 0)
+;;; - :id. The id of the cylinder.
+;;; 
+;;; RETURN VALUE
+;;; The new cylinder-mantle object. 
+;;;
+;;; EXAMPLE
+#|
+(make-cylinder-mantle 47 :surface-diameter 38
+                         :width 8192
+                         :height 2770
+                         :id 'visiodrom)
+;; =>
+CYLINDER-MANTLE: surface-diameter: 38
+PROJECTION-SURFACE: surface-width: 119.38052083641213d0, surface-height: 47, 
+        x-scaler: 0.01457281748491359d0, y-scaler: 47/2770
+CANVAS: width: 8192, height: 2770, color: (0 0 0 0), 
+        initialized: T
+NAMED-OBJECT: id: VISIODROM, tag: NIL, 
+data: 
+IMAGE: width: 8192, height: 2770
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #<RGB-IMAGE (8192x2770) {7009314413}>
+**********
 |#
+;;; SYNOPSIS
+(defun make-cylinder-mantle (surface-height &key
+                                              surface-diameter
+                                              surface-width
+                                              x-scaler
+                                              y-scaler
+                                              width
+                                              height
+                                              (color '(0 0 0 0))
+                                              id)
+  ;;; ****
+  (make-instance 'cylinder-mantle :surface-diameter surface-diameter
+                                  :surface-width surface-width
+                                  :surface-height surface-height
+                                  :x-scaler x-scaler
+                                  :y-scaler y-scaler
+                                  :width width
+                                  :height height
+                                  :color color
+                                  :id id))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF cylinder-mantle.lisp
