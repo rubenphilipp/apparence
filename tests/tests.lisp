@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  23:40:28 Sat Mar  2 2024 CET
+;;; $$ Last modified:  17:46:59 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -327,6 +327,25 @@
           (delete-file "/tmp/put-it-ps.jpg"))
         (write-jpg cm :outfile "/tmp/put-it-ps.jpg")
         (is (probe-file "/tmp/put-it-ps.jpg"))))
+
+;;; test-put-it-circular-pn
+;;; RP  Sun Mar  3 17:44:23 2024
+(test test-put-it-circular-pn
+  (let* ((cm (make-projection-surface (* 38 pi) 40.36670443321064d0
+                                      (/ 8192 (* 38.0 pi))
+                                      (/ 2770 40.36670443321064d0)))
+         (img-orig (make-rgb-image 2000 1381
+                                   :initial-color (imago::make-color
+                                                   231 23 23 255)))
+         (pn (make-projection img-orig :projection-height 40.36670443321064d0))
+         (outfile "/tmp/test-put-it-circular.jpg"))
+    (put-it-circular cm pn 400 -20
+                     :src-x 5 :src-y 5
+                     :width 30 :height 30)
+    (when (probe-file outfile)
+      (delete-file outfile))
+    (write-jpg cm :outfile outfile)
+    (is (probe-file outfile))))
               
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

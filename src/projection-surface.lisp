@@ -30,7 +30,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  00:13:34 Sun Mar  3 2024 CET
+;;; $$ Last modified:  17:41:31 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -242,7 +242,56 @@
 
 ;;;  put-it-circular
 
-
+(defmethod put-it-circular ((ps projection-surface) (pn projection)
+                            azimuth y
+                            &key
+                              height
+                              width
+                              (src-y 0)
+                              (src-x 0)
+                              (ps-origin 0.0)
+                              (pn-origin 0.5)
+                              (interpolation
+                               (get-apr-config :default-interpolation))
+                              (verbose (get-apr-config :verbose)))
+  ;;; ****
+  (unless (initialized ps)
+    (error "projection-surface::put-it-circular: The projection-surface object ~
+            has not been initialized."))
+  (unless (initialized pn)
+    (error "projection-surface::put-it-circular: The projection object has not ~
+            been initialized."))
+  (let ((pn->ps-x (/ (x-scaler ps)
+                   (/ 1 (x-scaler pn))))
+        (pn->ps-y (/ (y-scaler ps)
+                     (/ 1 (y-scaler pn))))
+        (tmp-pn pn))
+    ;; scale the src if necessary
+    (unless (= 1.0 pn->ps-x pn->ps-y)
+      ;; warn when image is upscaled
+      (when (or (< 1.0 pn->ps-x) (< 1.0 pn->ps-y))
+        (warn "projection-surface::put-it-circular: The projection image will ~
+               be upscaled by a factor of ~
+               x: ~a, y: ~a." pn->ps-x pn->ps-y))
+      ;; clone the src
+      (setf tmp-pn (make-image (data pn)))
+      (scale tmp-pn pn->ps-x pn->ps-y :interpolation interpolation))
+    (let ((height (when height (round (/ height (y-scaler pn)))))
+          (width (when width (round (/ width (x-scaler pn)))))
+          (src-y (round (/ src-y (y-scaler pn))))
+          (src-x (round (/ src-x (x-scaler pn))))
+          (y (round (/ y (/ 1 (y-scaler ps))))))
+      (if (every #'(lambda (x)
+                     (or (null x) (< -1 x)))
+                 (list height width height src-x src-y))
+          (put-it-circular ps tmp-pn azimuth y
+                           :verbose verbose
+                           :width width
+                           :height height
+                           :src-x src-x
+                           :src-y src-y
+                           :image-origin pn-origin
+                           :canvas-origin ps-origin)))))
   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

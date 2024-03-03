@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  23:52:31 Sat Mar  2 2024 CET
+;;; $$ Last modified:  17:36:44 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -367,18 +367,40 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                               (image-origin 0.5)
                               (verbose (get-apr-config :verbose)))
   ;;; ****
+  (put-it-circular-aux cv image azimuth y
+                       :height height
+                       :width width
+                       :src-x src-x
+                       :src-y src-y
+                       :canvas-origin canvas-origin
+                       :image-origin image-origin
+                       :verbose verbose))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod put-it-circular-aux ((cv canvas) image azimuth y
+                                &key
+                                  height
+                                  width
+                                  (src-y 0)
+                                  (src-x 0)
+                                  (canvas-origin 0.0)
+                                  (image-origin 0.5)
+                                  (verbose (get-apr-config :verbose)))
   (unless (initialized cv)
-    (error "canvas::put-it-circular: The canvas object has not been ~
+    (error "canvas::put-it-circular-aux: The canvas object has not been ~
             initialized."))
   (unless (and (<= 0.0 image-origin) (>= 1.0 image-origin))
-    (error "canvas::put-it-circular: The image-origin must >= 0.0 and <= 1.0"))
+    (error "canvas::put-it-circular-aux: The image-origin must be ~
+            >= 0.0 and <= 1.0"))
   (unless (and (<= 0.0 canvas-origin) (>= 1.0 canvas-origin))
-    (error "canvas::put-it-circular: The canvas-origin must >= 0.0 and <= 1.0"))
+    (error "canvas::put-it-circular-aux: The canvas-origin must be ~
+            >= 0.0 and <= 1.0"))
   (when (>= y (height cv))
-    (error "canvas::put-it-circular:  The y-coordinate is >= the height of ~
+    (error "canvas::put-it-circular-aux: The y-coordinate is >= the height of ~
             the canvas."))
   (unless (typep image 'image)
-    (error "canvas::put-it-circular: The image is not an image, but ~a"
+    (error "canvas::put-it-circular-aux: The image is not an image, but ~a"
            (type-of image)))
   (when (or height width (/= 0 src-y) (/= 0 src-x))
     (let ((new-height (if height height (height image)))
@@ -451,8 +473,6 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                  the width of the projection screen.")))
     ;; finally, return the altered canvas object
     cv))
-
-    
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF canvas.lisp
