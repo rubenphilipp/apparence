@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  21:23:31 Sun Mar  3 2024 CET
+;;; $$ Last modified:  22:16:00 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -171,7 +171,9 @@
 (defmethod update :before ((ps projection-surface) &key ignore)
   (declare (ignore ignore))
   ;; initialize
-  (unless (initialized ps)
+  (when (and (not (initialized ps))
+             (or (width ps) (height ps) (surface-width ps) (surface-height ps)
+                 (x-scaler ps) (y-scaler ps)))
     (cond ((init-x-dimensions ps)
            ;; just go ahead
            (init-y-dimensions ps))
