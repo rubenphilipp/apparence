@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  17:36:44 Sun Mar  3 2024 CET
+;;; $$ Last modified:  17:49:20 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -367,26 +367,6 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                               (image-origin 0.5)
                               (verbose (get-apr-config :verbose)))
   ;;; ****
-  (put-it-circular-aux cv image azimuth y
-                       :height height
-                       :width width
-                       :src-x src-x
-                       :src-y src-y
-                       :canvas-origin canvas-origin
-                       :image-origin image-origin
-                       :verbose verbose))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defmethod put-it-circular-aux ((cv canvas) image azimuth y
-                                &key
-                                  height
-                                  width
-                                  (src-y 0)
-                                  (src-x 0)
-                                  (canvas-origin 0.0)
-                                  (image-origin 0.5)
-                                  (verbose (get-apr-config :verbose)))
   (unless (initialized cv)
     (error "canvas::put-it-circular-aux: The canvas object has not been ~
             initialized."))
