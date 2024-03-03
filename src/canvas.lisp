@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  18:46:27 Sun Mar  3 2024 CET
+;;; $$ Last modified:  22:56:52 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -56,7 +56,9 @@
     (setf (slot-value new 'width) (width cv)
           (slot-value new 'height) (height cv)
           (slot-value new 'color) (color cv)
-          (slot-value new 'data) (data cv))
+          (slot-value new 'initialized) (initialized cv)
+          ;; the data slot needs to be cloned as this is an image object
+          (slot-value new 'data) (clone (data cv)))
     new))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

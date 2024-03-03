@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  18:55:53 Sat Mar  2 2024 CET
+;;; $$ Last modified:  23:35:41 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -60,7 +60,19 @@
     (setf (slot-value new 'width) (width img)
           (slot-value new 'height) (height img)
           (slot-value new 'default-interpolation) (default-interpolation img)
-          (slot-value new 'data) (data img))
+          ;;(slot-value new 'data) (data img)
+          (slot-value new 'data) (clone-image (data img))
+          )
+    new))
+
+;; this needs to be done, as otherwise the same image might be used by cloned
+;; instances of other methods
+;; RP  Sun Mar  3 23:08:21 2024
+(defmethod clone-image ((img imago::image))
+  (let* ((w (imago::image-width img))
+         (h (imago::image-height img))
+         (new (imago::make-rgb-image w h)))
+    (imago::copy new img)
     new))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  22:18:23 Sun Mar  3 2024 CET
+;;; $$ Last modified:  22:27:50 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -341,9 +341,10 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
     (unless (= 1.0 pn->ps-x pn->ps-y)
       ;; warn when image is upscaled
       (when (or (< 1.0 pn->ps-x) (< 1.0 pn->ps-y))
-        (warn "projection-surface::put-it: The projection image will be ~
-               upscaled by a factor of ~
-               x: ~a, y: ~a." pn->ps-x pn->ps-y))
+        (when (get-apr-config :verbose)
+          (warn "projection-surface::put-it: The projection image will be ~
+                 upscaled by a factor of ~
+                 x: ~a, y: ~a." pn->ps-x pn->ps-y)))
       ;; clone the src
       (setf tmp-pn (make-image (data pn)))
       (scale tmp-pn pn->ps-x pn->ps-y :interpolation interpolation))
@@ -401,9 +402,10 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
     (unless (= 1.0 pn->ps-x pn->ps-y)
       ;; warn when image is upscaled
       (when (or (< 1.0 pn->ps-x) (< 1.0 pn->ps-y))
-        (warn "projection-surface::put-it-circular: The projection image will ~
-               be upscaled by a factor of ~
-               x: ~a, y: ~a." pn->ps-x pn->ps-y))
+        (when (get-apr-config :verbose)
+          (warn "projection-surface::put-it-circular: The projection image ~
+                 will be upscaled by a factor of ~
+                 x: ~a, y: ~a." pn->ps-x pn->ps-y)))
       ;; clone the src
       (setf tmp-pn (make-image (data pn)))
       (scale tmp-pn pn->ps-x pn->ps-y :interpolation interpolation))
