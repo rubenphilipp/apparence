@@ -30,7 +30,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  17:48:48 Sun Mar  3 2024 CET
+;;; $$ Last modified:  18:33:01 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -43,7 +43,8 @@
    (surface-height :accessor surface-height :initarg :surface-height
                    :initform nil)
    (x-scaler :accessor x-scaler :initarg :x-scaler :initform nil)
-   (y-scaler :accessor y-scaler :initarg :y-scaler :initform nil)))
+   (y-scaler :accessor y-scaler :initarg :y-scaler :initform nil)
+   (initialized :accessor initialized :initform nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -53,8 +54,9 @@
 
 (defmethod print-object :before ((ps projection-surface) stream)
   (format stream "~%PROJECTION-SURFACE: surface-width: ~a, surface-height: ~a, ~
-                  ~%        x-scaler: ~a, y-scaler: ~a"
-          (surface-width ps) (surface-height ps) (x-scaler ps) (y-scaler ps)))
+                  ~%        x-scaler: ~a, y-scaler: ~a, initialized: ~a"
+          (surface-width ps) (surface-height ps) (x-scaler ps) (y-scaler ps)
+          (initialized ps)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
