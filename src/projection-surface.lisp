@@ -24,13 +24,19 @@
 ;;; The scalers determine the ratio canvas / projection-surface
 ;;; (e.g. canvas-width / surface-width).
 ;;;
+;;; NB: Altering the surface-width and -height after initialization will resize
+;;;     the canvas applying the given scaling-factors. Changing the scaling
+;;;     factors, though, will not change the dimensions of the canvas but those
+;;;     of the projection-surface. Finally, changing the canvas dimensions will
+;;;     change the surface-width and/or -height.
+;;;
 ;;; The coordinate values of projection-surfaces are -- other than those of a
 ;;; canvas -- not limited to integer values, but can also be e.g. floats.
 ;;;
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  21:00:33 Sun Mar  3 2024 CET
+;;; $$ Last modified:  21:23:31 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -164,14 +170,6 @@
 
 (defmethod update :before ((ps projection-surface) &key ignore)
   (declare (ignore ignore))
-  ;; update the projection-surface-dimensions in case they have been changed
-  ;; by a method from the canvas class
-  ;; this does not work properly 
-  #|
-  (when (initialized ps)
-    (setf (slot-value ps 'surface-width) (* (width ps) (x-scaler ps))
-          (slot-value ps 'surface-height) (* (height ps) (y-scaler ps))))
-  |#
   ;; initialize
   (unless (initialized ps)
     (cond ((init-x-dimensions ps)
@@ -212,14 +210,32 @@
 ;;; The coordinate values of projection-surfaces are -- other than those of a
 ;;; canvas -- not limited to integer values, but can also be e.g. floats.
 ;;;
-;;; The scalers determine the ratio projection-surface / image
-;;; (e.g. surface-width / image-width).
+;;; The scalers determine the ratio canvas / projection-surface
+;;; (e.g. canvas-width / surface-width).
 ;;;
-;;; NB: Altering the dimensions (surface-width/-height) of the
-;;;     projection-surface after initializing might cause the cutting of
-;;;     existing content.
+;;; NB1: Altering the surface-width and -height after initialization will resize
+;;;      the canvas applying the given scaling-factors. Changing the scaling
+;;;      factors, though, will not change the dimensions of the canvas but those
+;;;      of the projection-surface. Finally, changing the canvas dimensions will
+;;;      change the surface-width and/or -height.
+;;;
+;;; NB2: Altering the dimensions (surface-width/-height) of the
+;;;      projection-surface after initializing might cause the cutting of
+;;;      existing content.
+;;;
+;;; NB3: You need to specify at least a value for :surface-width/-height or
+;;;      :x-/y-scaler. If both are specified, it needs to be ensured that width
+;;;      * x-scaler = surface-width resp.
+;;;      height * y-scaler = surface-height remain true.
+;;; 
+;;;      It is also possible to just specify one coordinate (x/width or
+;;;      y/height). Then, the complementary side will be scaled to the same
+;;;      scaler as the side where an argument is given (i.e. this keeps the
+;;;      aspect ratio of the canvas), provided :width and :height are given. 
 ;;;
 ;;; ARGUMENTS
+;;; none. 
+
 ;;; - The width of the projection surface.
 ;;; - The height of the projection surface.
 ;;; - The scaling factor for the width of the ps's canvas (number).
@@ -230,14 +246,43 @@
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
+;;; - :surface-width. The width of the projection surface.
+;;; - :surface-height. The height of the projection surface.
+;;; - :width. The width (in px, thus an integer) of the canvas. 
+;;; - :height. The height (in px, thus an integer) of the canvas. 
+;;; - :x-scaler. A scaler (ratio canvas-width/surface-width) to link the
+;;;   dimensions of the canvas (in the data slot) to the dimensions of the
+;;;   projection.
+;;; - :y-scaler. A scaler (ratio canvas-height/surface-height) to link the
+;;;   dimensions of the image (in the data slot) to the dimensions of the
+;;;   projection.
+;;; - :color. The initial color of the canvas, as a rgb(a) list.
+;;;   Default = '(0 0 0 0)
 ;;; - :id. The id of the object. Default = NIL.
+;;; - :default-interpolation. The default interpolation method (used e.g. when
+;;;   changing the image dimensions via the (setf ...) methods.
+;;;   Default = (get-apr-config :default-interpolation)
 ;;; 
 ;;; RETURN VALUE
 ;;; The initialized object. 
 ;;;
 ;;; EXAMPLE
 #|
-(make-projection-surface 10 20.5 10.5 10.5)
+(make-projection-surface :surface-width 20
+                         :surface-height 40
+                         :width 2000
+                         :height 4000)
+;; =>
+PROJECTION-SURFACE: surface-width: 20, surface-height: 40, 
+        x-scaler: 1/100, y-scaler: 1/100
+CANVAS: width: 2000, height: 4000, color: (0 0 0 0), 
+        initialized: T
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: 
+IMAGE: width: 2000, height: 4000
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
+**********
 |#
 ;;; SYNOPSIS
 (defun make-projection-surface (&key surface-width
