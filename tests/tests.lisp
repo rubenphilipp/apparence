@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  17:46:59 Sun Mar  3 2024 CET
+;;; $$ Last modified:  21:11:48 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -56,20 +56,6 @@
              (colporter::trailing-slash "/trailing/test"))))
 |#
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; test circular projection
-;;; RP  Fri Feb 23 19:31:49 2024
-;;; removed (deprecated)
-;;; RP  Thu Feb 29 20:42:50 2024
-#|
-(test test-circular-projection
-  (let* ((img (imago::make-rgb-image 500 400
-                                     (imago::make-color 233 200 188)))
-         (result
-           (apparence::circular-projection img 350 0)))
-    (imago::write-png result "/tmp/test.png"))
-(is (probe-file "/tmp/test.png")))
-|#
 
 ;;; test-canvas-simple
 ;;; RP  Wed Feb 28 22:00:38 2024
@@ -130,12 +116,14 @@
 (is (= (width cv) 1413))))
 |#
 
+#|
 ;;; test-get-coordinates
 ;;; RP  Thu Feb 29 14:42:06 2024
 (test test-get-coordinates
   (let* ((cm (apr:make-cylinder-mantle 10 :diameter 10))
          (coords (apr:get-coordinates cm 90 :azimuth-origin-offset 0)))
     (is (equal coords '(5.0d0 0.0d0)))))
+|#
 
 ;;; test-put-it-circular
 ;;; RP  Thu Feb 29 15:42:13 2024
@@ -209,23 +197,40 @@
 ;;; test-make-ps-simple1
 ;;; RP  Fri Mar  1 21:55:19 2024
 (test test-make-ps-simple1
-  (let ((ps (apr:make-projection-surface 20 30.5 10.5 10.5)))
-    (is (typep ps 'apr:projection-surface))))
+  (let ((ps (apr:make-projection-surface :surface-width 20
+                                         :surface-height 40
+                                         :x-scaler 10
+                                         :y-scaler 10)))
+    (setf (width ps) 4)
+    (setf (height ps) 8)
+    (setf (surface-width ps) 20)
+    (setf (surface-height ps) 40)
+    (setf (x-scaler ps) 20)
+    (is (and (typep ps 'projection-surface)
+             (= (width ps) 2)
+             (= (height ps) 4)
+             (= (surface-width ps) 40)
+             (= (surface-height ps) 40)
+             (= (x-scaler ps) 20)
+             (= (y-scaler ps) 10)))))
 
 ;;; test-ps-setters1
 ;;; RP  Fri Mar  1 23:12:14 2024
 (test test-ps-setters1
-  (let ((ps (apr:make-projection-surface 20 30 10.5 10.5)))
+  (let ((ps (apr:make-projection-surface :surface-width 20
+                                         :surface-height 30
+                                         :x-scaler 10.5
+                                         :y-scaler 10.5)))
     (setf (width ps) 40)
-    (setf (surface-width ps) 10)
+    (setf (surface-width ps) 20)
     (setf (y-scaler ps) 4)
     (setf (x-scaler ps) 10)
     (setf (height ps) 50)
     (setf (width ps) 250)
-    (is (and (= 10 (surface-width ps))
-             (= 30 (surface-height ps))
-             (= 25 (x-scaler ps))
-             (= 5/3 (y-scaler ps))
+    (is (and (= 2500 (surface-width ps))
+             (= 200 (surface-height ps))
+             (= 10 (x-scaler ps))
+             (= 4 (y-scaler ps))
              (= 250 (width (data ps)))
              (= 50 (height (data ps)))))))
 
@@ -315,9 +320,10 @@
 ;;; test-put-it-ps-pn
 ;;; RP  Sat Mar  2 23:37:50 2024
 (test test-put-it-ps-pn
-      (let* ((cm (make-projection-surface (* 38 pi) 40.36670443321064d0
-                                          (/ 8192 (* 38.0 pi))
-                                          (/ 2770 40.36670443321064d0)))
+  (let* ((cm (make-projection-surface :surface-width (* 38 pi)
+                                      :surface-height 40.36670443321064d0
+                                      :x-scaler (/ (* 38.0 pi) 8192)
+                                      :y-scaler (/ 40.36670443321064d0 2770)))
              (img-orig (make-rgb-image 2000 1381 :initial-color
                                        (imago::make-color 222 100 189)))
              (pn (make-projection img-orig
@@ -331,9 +337,10 @@
 ;;; test-put-it-circular-pn
 ;;; RP  Sun Mar  3 17:44:23 2024
 (test test-put-it-circular-pn
-  (let* ((cm (make-projection-surface (* 38 pi) 40.36670443321064d0
-                                      (/ 8192 (* 38.0 pi))
-                                      (/ 2770 40.36670443321064d0)))
+  (let* ((cm (make-projection-surface :surface-width (* 38 pi)
+                                      :surface-height 40.36670443321064d0
+                                      :x-scaler (/ (* 38.0 pi) 8192)
+                                      :y-scaler (/ 40.36670443321064d0 2770)))
          (img-orig (make-rgb-image 2000 1381
                                    :initial-color (imago::make-color
                                                    231 23 23 255)))

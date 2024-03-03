@@ -13,9 +13,9 @@
 ;;; This class implements the cylinder mantle projection surface. 
 ;;;
 ;;; CLASS HIERARCHY
-;;; named-object -> projection-surface -> cylinder-mantle
+;;; named-object -> canvas -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  18:29:54 Sun Mar  3 2024 CET
+;;; $$ Last modified:  18:40:34 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

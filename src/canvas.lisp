@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  17:49:20 Sun Mar  3 2024 CET
+;;; $$ Last modified:  18:46:27 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -113,6 +113,7 @@
 
 (defmethod update ((cv canvas) &key ignore)
   (declare (ignore ignore))
+  ;;(print "cv")
   ;; when data is not an image, initialize
   (unless (typep (data cv) 'image)
     (when (color cv) (set-color cv))

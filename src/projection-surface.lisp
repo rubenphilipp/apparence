@@ -30,7 +30,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  18:33:01 Sun Mar  3 2024 CET
+;;; $$ Last modified:  21:00:33 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -43,8 +43,7 @@
    (surface-height :accessor surface-height :initarg :surface-height
                    :initform nil)
    (x-scaler :accessor x-scaler :initarg :x-scaler :initform nil)
-   (y-scaler :accessor y-scaler :initarg :y-scaler :initform nil)
-   (initialized :accessor initialized :initform nil)))
+   (y-scaler :accessor y-scaler :initarg :y-scaler :initform nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -54,9 +53,8 @@
 
 (defmethod print-object :before ((ps projection-surface) stream)
   (format stream "~%PROJECTION-SURFACE: surface-width: ~a, surface-height: ~a, ~
-                  ~%        x-scaler: ~a, y-scaler: ~a, initialized: ~a"
-          (surface-width ps) (surface-height ps) (x-scaler ps) (y-scaler ps)
-          (initialized ps)))
+                  ~%        x-scaler: ~a, y-scaler: ~a"
+          (surface-width ps) (surface-height ps) (x-scaler ps) (y-scaler ps)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -76,12 +74,14 @@
 
 (defmethod (setf width) :around (value (ps projection-surface))
   (when (initialized ps)
-    (setf (slot-value ps 'x-scaler) (/ value (surface-width ps))))
+    (setf (slot-value ps 'surface-width) (* value (x-scaler ps))))
+    ;;(setf (slot-value ps 'x-scaler) (/ (surface-width ps) value)))
   (call-next-method))
 
 (defmethod (setf height) :around (value (ps projection-surface))
   (when (initialized ps)
-    (setf (slot-value ps 'y-scaler) (/ value (surface-height ps))))
+    (setf (slot-value ps 'surface-height) (* value (y-scaler ps))))
+    ;;(setf (slot-value ps 'y-scaler) (/ (surface-height ps) value)))
   (call-next-method))
 
 (defmethod (setf surface-width) :after (value (ps projection-surface))
@@ -89,32 +89,103 @@
     (error "projection-surface::(setf surface-width): The surface-width ~
             must be > 0"))
   (when (initialized ps)
-    (setf (width ps) (floor (* value (x-scaler ps))))))
+    (setf (width ps) (floor (/ value (x-scaler ps))))))
 
 (defmethod (setf surface-height) :after (value (ps projection-surface))
   (unless (> (surface-height ps) 0)
     (error "projection-surface::(setf surface-height): The surface-height ~
             must be > 0"))
   (when (initialized ps)
-    (setf (height ps) (floor (* value (y-scaler ps))))))
+    (setf (height ps) (floor (/ value (y-scaler ps))))))
 
 (defmethod (setf x-scaler) :after (value (ps projection-surface))
   (when (initialized ps)
-    (setf (width ps) (floor (* value (surface-width ps))))))
+    (setf (slot-value ps 'surface-width) (* value (width ps)))))
+    ;;(setf (width ps) (round (* value (width ps))))))
 
 (defmethod (setf y-scaler) :after (value (ps projection-surface))
   (when (initialized ps)
-    (setf (height ps) (floor (* value (surface-height ps))))))
+    (setf (slot-value ps 'surface-height) (* value (height ps)))))
+    ;;(setf (height ps) (round (* value (height ps))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod init-x-dimensions ((ps projection-surface))
+  (cond ((and (x-scaler ps) (surface-width ps))
+         (setf (slot-value ps 'width) (round (/ (surface-width ps)
+                                                (x-scaler ps))))
+         t)
+        ((and (not (x-scaler ps)) (width ps) (surface-width ps))
+         (setf (slot-value ps 'x-scaler) (/ (surface-width ps)
+                                            (width ps)))
+         t)
+        ((and (x-scaler ps) (width ps) (not (surface-width ps)))
+         (setf (slot-value ps 'surface-width) (* (x-scaler ps)
+                                                 (width ps))))
+        ((and (x-scaler ps) (surface-width ps) (width ps))
+         (print (width ps))
+         (let ((test-res (* (width ps) (x-scaler ps))))
+           (when (/= test-res (surface-width ps))
+             (error "projection-surface::init-x-dimensions: Inconsistent data: ~
+                       width * x-scaler != surface-width. ~% ~
+                       (~a * ~a != ~a; surface-width should be ~a)."
+                    (width ps) (x-scaler ps) (surface-width ps)
+                    test-res)))
+         t)
+        (t nil)))
+
+(defmethod init-y-dimensions ((ps projection-surface))
+  (cond ((and (y-scaler ps) (surface-height ps))
+         (setf (slot-value ps 'height) (round (/ (surface-height ps)
+                                                 (y-scaler ps)))))
+        ((and (not (y-scaler ps)) (height ps) (surface-height ps))
+         (setf (slot-value ps 'y-scaler) (/ (surface-height ps)
+                                            (height ps))))
+        ((and (y-scaler ps) (height ps) (not (surface-height ps)))
+         (setf (slot-value ps 'surface-height) (* (y-scaler ps)
+                                                  (height ps))))
+        ((and (y-scaler ps) (surface-height ps) (height ps))
+         (let ((test-res (* (height ps) (y-scaler ps))))
+           (when (/= test-res (surface-height ps))
+             (error "projection-surface::init-y-dimensions: Inconsistent data: ~
+                       height * y-scaler != surface-height. ~% ~
+                       (~a * ~a != ~a; surface-height should be ~a)."
+                    (height ps) (y-scaler ps) (surface-height ps)
+                    test-res))))
+        ;;; try to derive from x-dimensions
+        ((numberp (x-scaler ps))
+         (setf (slot-value ps 'y-scaler) (x-scaler ps)
+               (slot-value ps 'surface-height) (* (y-scaler ps)
+                                                  (surface-width ps))))
+        (t (error "projection-surface::update: Neither an y-scaler nor a ~
+                     surface-height are given."))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod update :before ((ps projection-surface) &key ignore)
   (declare (ignore ignore))
-  (when (and (surface-width ps) (surface-height ps) (x-scaler ps) (y-scaler ps))
-    (let ((c-width (floor (* (x-scaler ps) (surface-width ps))))
-          (c-height (floor (* (y-scaler ps) (surface-height ps)))))
-      (setf (slot-value ps 'width) c-width
-            (slot-value ps 'height) c-height))))
+  ;; update the projection-surface-dimensions in case they have been changed
+  ;; by a method from the canvas class
+  ;; this does not work properly 
+  #|
+  (when (initialized ps)
+    (setf (slot-value ps 'surface-width) (* (width ps) (x-scaler ps))
+          (slot-value ps 'surface-height) (* (height ps) (y-scaler ps))))
+  |#
+  ;; initialize
+  (unless (initialized ps)
+    (cond ((init-x-dimensions ps)
+           ;; just go ahead
+           (init-y-dimensions ps))
+          ((or (y-scaler ps) (surface-height ps) (height ps))
+           ;; try to derive the x-dimensions from the y-scaler,
+           ;; assuming to keep aspect ratio of image
+           (init-y-dimensions ps)
+           (setf (slot-value ps 'x-scaler) (y-scaler ps))
+           ;; try it again
+           (init-x-dimensions ps))
+          (t (error "projection-surface::update: Neither an x-scaler nor a ~
+                     surface-width nor y-dimensions are given.")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -169,13 +240,21 @@
 (make-projection-surface 10 20.5 10.5 10.5)
 |#
 ;;; SYNOPSIS
-(defun make-projection-surface (width height x-scaler y-scaler
-                                &key id (color '(0 0 0 0)))
+(defun make-projection-surface (&key surface-width
+                                  surface-height
+                                  x-scaler
+                                  y-scaler
+                                  width
+                                  height
+                                  (color '(0 0 0 0))
+                                  id)
   ;;; ****
-  (make-instance 'projection-surface :surface-width width
-                                     :surface-height height
+  (make-instance 'projection-surface :surface-width surface-width
+                                     :surface-height surface-height
                                      :x-scaler x-scaler
                                      :y-scaler y-scaler
+                                     :width width
+                                     :height height
                                      :color color
                                      :id id))
 
@@ -205,10 +284,10 @@
             been initialized."))
   ;;; NB: scalers in ps are different from scalers in pn
   ;;; RP  Sat Mar  2 23:59:24 2024
-  (let ((pn->ps-x (/ (x-scaler ps)
-                   (/ 1 (x-scaler pn))))
-        (pn->ps-y (/ (y-scaler ps)
-                   (/ 1 (y-scaler pn))))
+  (let ((pn->ps-x (/ (x-scaler pn)
+                     (x-scaler ps)))
+        (pn->ps-y (/ (y-scaler pn)
+                   (y-scaler ps)))
          (tmp-pn pn))
     ;; scale the src if necessary
     (unless (= 1.0 pn->ps-x pn->ps-y)
@@ -265,10 +344,10 @@
   (unless (initialized pn)
     (error "projection-surface::put-it-circular: The projection object has not ~
             been initialized."))
-  (let ((pn->ps-x (/ (x-scaler ps)
-                   (/ 1 (x-scaler pn))))
-        (pn->ps-y (/ (y-scaler ps)
-                     (/ 1 (y-scaler pn))))
+  (let ((pn->ps-x (/ (x-scaler pn)
+                     (x-scaler ps)))
+        (pn->ps-y (/ (y-scaler pn)
+                   (y-scaler ps)))
         (tmp-pn pn))
     ;; scale the src if necessary
     (unless (= 1.0 pn->ps-x pn->ps-y)

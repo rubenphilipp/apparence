@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  23:26:01 Sat Mar  2 2024 CET
+;;; $$ Last modified:  18:36:54 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -80,10 +80,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; must be called :before, since update will be called when updating the image
-;; class, thus, the consistency check won't take the changed dimensions into
-;; account
-;; RP  Sat Mar  2 17:51:55 2024
 (defmethod (setf width) :after (value (pn projection))
   ;; changing the width alters the projection-width
   (when (initialized pn)
