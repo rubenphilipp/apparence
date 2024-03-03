@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:43:19 Sun Mar  3 2024 CET
+;;; $$ Last modified:  21:45:33 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -100,32 +100,15 @@
         (= (y-scaler cm) 1/100)
         (= (width cm) 2000))))
 
-#|
-;;; test-make-canvas-from-ps
-;;; RP  Thu Feb 29 14:37:40 2024
-(test test-make-canvas-from-ps
-  (let* ((ps (apr:make-projection-surface 200 300 1.0 1.0))
-         (cv (apr:make-canvas-from-ps ps :factor 2.0)))
-(is (= (width cv) 400))))
-|#
-
-#|
-;;; test-make-canvas-from-cm
-;;; RP  Thu Feb 29 14:39:50 2024
-(test test-make-canvas-from-cm
-  (let* ((cm (apr:make-cylinder-mantle 200 :diameter 30.0))
-         (cv (apr:make-canvas-from-ps cm :destination-height 3000)))
-(is (= (width cv) 1413))))
-|#
-
-#|
 ;;; test-get-coordinates
 ;;; RP  Thu Feb 29 14:42:06 2024
 (test test-get-coordinates
-  (let* ((cm (apr:make-cylinder-mantle 10 :diameter 10))
+  (let* ((cm (apr:make-cylinder-mantle 10 :surface-diameter 10
+                                          :width 100
+                                          :height 200))
          (coords (apr:get-coordinates cm 90 :azimuth-origin-offset 0)))
     (is (equal coords '(5.0d0 0.0d0)))))
-|#
+
 
 ;;; test-put-it-circular
 ;;; RP  Thu Feb 29 15:42:13 2024

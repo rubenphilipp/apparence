@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  21:38:24 Sun Mar  3 2024 CET
+;;; $$ Last modified:  21:44:55 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -184,6 +184,73 @@ data: #<RGB-IMAGE (8192x2770) {7009314413}>
                                   :height height
                                   :color color
                                   :id id))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* cylinder-mantle/get-coordinates
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-02-28
+;;; 
+;;; DESCRIPTION
+;;; This method returns the cartesian coordinates of a point on the
+;;; cylinder mantle. The location of the point is given as the azimuth angle (in
+;;; degrees clockwise) from a given azimuth origin. By default, the origin is
+;;; placed at the top of the circle.  The azimuth origin can be adjusted
+;;; (clockwise) by an azimuth-offset value.
+;;;
+;;; ARGUMENTS
+;;; - A cylinder-mantle object.
+;;; - The azimuth (in degrees, clockwise) of the point on the circle, the
+;;;   x,y coordinates should be returned. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :azimuth-origin-offset. A number that indicates the offset of the azimuth
+;;;   origin on the circular base of the cylindrical mantle (in degrees,
+;;;   clockwise; see above).  Default = 0
+;;; - :center-x. The x-axis position of the center of the circle.  Default = 0
+;;; - :center-y. The y-axis position of the center of the circle.  Default = 0
+;;; - :round-to-digits. An integer indicating the number of digits the result
+;;;   should be (f)rounded to. When NIL, the result will not be rounded.
+;;;   Default = 3
+;;; 
+;;; RETURN VALUE
+;;; A list with the x and y coordinates of the location of the point.
+;;;
+;;; EXAMPLE
+#|
+(let ((cm (make-cylinder-mantle 10 :surface-diameter 10
+                                   :width 100
+                                   :height 200)))
+  (get-coordinates cm 90 :azimuth-origin-offset 0))
+;; => (5.0d0 0.0d0)
+|#
+;;; SYNOPSIS
+(defmethod get-coordinates ((cm cylinder-mantle) azimuth
+                            &key
+                              (azimuth-origin-offset 0)
+                              (center-x 0)
+                              (center-y 0)
+                              (round-to-digits 3))
+;;; ****
+  (unless (or (null round-to-digits)
+              (integerp round-to-digits))
+    (error "cylinder-mantle::get-coordinates: The value of :round-to-digits ~
+            must be either NIL or an integer. "))
+  (let* ((radius (/ (surface-diameter cm) 2))
+         (azimuth-w-offset (- (+ azimuth azimuth-origin-offset) 90))
+         (x (+ (* radius (cos (degrees->radians azimuth-w-offset)))
+               center-x))
+         (y (+ (* radius (sin (degrees->radians azimuth-w-offset)))
+               center-y)))
+    (when round-to-digits
+      (setf x (fround-to-digits x round-to-digits))
+      (setf y (fround-to-digits y round-to-digits)))
+    (list x y)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF cylinder-mantle.lisp
