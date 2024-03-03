@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  00:32:19 Sat Mar  2 2024 CET
+;;; $$ Last modified:  23:52:31 Sat Mar  2 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -391,7 +391,6 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
   (let* ((canvas (data cv))
          (canvas-width (width cv))
          (img-width (width image))
-         ;;(img-height (imago::image-height image))
          ;; anchor point (x-axis from left) on image, i.e. the origin x-coords
          (img-anchor (floor (* img-width image-origin)))
          (rotation-angle (mod azimuth 360))

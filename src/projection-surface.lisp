@@ -30,7 +30,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  23:32:40 Sat Mar  2 2024 CET
+;;; $$ Last modified:  00:13:34 Sun Mar  3 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -201,8 +201,8 @@
   (unless (initialized pn)
     (error "projection-surface::put-it: The projection object has not ~
             been initialized."))
-
-  
+  ;;; NB: scalers in ps are different from scalers in pn
+  ;;; RP  Sat Mar  2 23:59:24 2024
   (let ((pn->ps-x (/ (x-scaler ps)
                    (/ 1 (x-scaler pn))))
         (pn->ps-y (/ (y-scaler ps)
@@ -237,6 +237,12 @@
           (warn "projection::copy: Won't copy. The resulting dimensions are ~
                  too small.")))
     ps))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;  put-it-circular
+
+
   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
