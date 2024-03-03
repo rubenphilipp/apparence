@@ -55,18 +55,24 @@
  The scalers determine the ratio <a href="./canvas_lisp.html#robo2">canvas</a> / <strong>projection-surface</strong>
  (e.g. <a href="./canvas_lisp.html#robo2">canvas</a>-width / surface-width).
 
- The coordinate values of <a href="./projection_lisp.html#robo6">projection</a>-surfaces are -- other than those of a
+ NB: Altering the surface-width and -height after initialization will <a href="./image_lisp.html#robo23">resize</a>
+     the <a href="./canvas_lisp.html#robo2">canvas</a> applying the given scaling-factors. Changing the scaling
+     factors, though, will not change the dimensions of the <a href="./canvas_lisp.html#robo2">canvas</a> but those
+     of the <strong>projection-surface</strong>. Finally, changing the <a href="./canvas_lisp.html#robo2">canvas</a> dimensions will
+     change the surface-width and/or -height.
+
+ The coordinate values of <a href="./projection_lisp.html#robo7">projection</a>-surfaces are -- other than those of a
  <a href="./canvas_lisp.html#robo2">canvas</a> -- not limited to integer values, but can also be e.g. floats.
 
  CLASS HIERARCHY
- <a href="./named-object_lisp.html#robo5">named-object</a> -&gt; <a href="./canvas_lisp.html#robo2">canvas</a> -&gt; <strong>projection-surface</strong>
+ <a href="./named-object_lisp.html#robo6">named-object</a> -&gt; <a href="./canvas_lisp.html#robo2">canvas</a> -&gt; <strong>projection-surface</strong>
 
- $$ Last modified:  17:41:31 Sun Mar  3 2024 CET
+ $$ Last modified:  21:23:31 Sun Mar  3 2024 CET
 </pre>
 
 <hr />
 <a name="projection2dsurface2fmake2dprojection2dsurface"></a>
-<a name="robo29"></a><h2>projection-surface/make-projection-surface [ Functions ]</h2>
+<a name="robo27"></a><h2>projection-surface/make-projection-surface [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">projection-surface</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -87,19 +93,36 @@
  The <a href="./canvas_lisp.html#robo2">canvas</a>-coordinates/dimensions are derived by scaling the values
  according to a x- and y-scaler. 
 
- The coordinate values of <a href="./projection_lisp.html#robo6">projection</a>-surfaces are -- other than those of a
+ The coordinate values of <a href="./projection_lisp.html#robo7">projection</a>-surfaces are -- other than those of a
  <a href="./canvas_lisp.html#robo2">canvas</a> -- not limited to integer values, but can also be e.g. floats.
 
- The scalers determine the ratio <a href="#robo8">projection-surface</a> / <a href="./image_lisp.html#robo4">image</a>
- (e.g. surface-width / <a href="./image_lisp.html#robo4">image</a>-width).
+ The scalers determine the ratio <a href="./canvas_lisp.html#robo2">canvas</a> / <a href="#robo8">projection-surface</a>
+ (e.g. <a href="./canvas_lisp.html#robo2">canvas</a>-width / surface-width).
 
- NB: Altering the dimensions (surface-width/-height) of the
-     <a href="#robo8">projection-surface</a> after initializing might cause the cutting of
-     existing content.
+ NB1: Altering the surface-width and -height after initialization will <a href="./image_lisp.html#robo23">resize</a>
+      the <a href="./canvas_lisp.html#robo2">canvas</a> applying the given scaling-factors. Changing the scaling
+      factors, though, will not change the dimensions of the <a href="./canvas_lisp.html#robo2">canvas</a> but those
+      of the <a href="#robo8">projection-surface</a>. Finally, changing the <a href="./canvas_lisp.html#robo2">canvas</a> dimensions will
+      change the surface-width and/or -height.
+
+ NB2: Altering the dimensions (surface-width/-height) of the
+      <a href="#robo8">projection-surface</a> after initializing might cause the cutting of
+      existing content.
+
+ NB3: You need to specify at least a value for :surface-width/-height or
+      :x-/y-scaler. If both are specified, it needs to be ensured that width
+      * x-scaler = surface-width resp.
+      height * y-scaler = surface-height remain true.
+ 
+      It is also possible to just specify one coordinate (x/width or
+      y/height). Then, the complementary side will be scaled to the same
+      scaler as the side where an argument is given (i.e. this keeps the
+      aspect ratio of the <a href="./canvas_lisp.html#robo2">canvas</a>), provided :width and :height are given. 
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> - The width of the <a href="./projection_lisp.html#robo6">projection</a> surface.
- - The height of the <a href="./projection_lisp.html#robo6">projection</a> surface.
+<pre> none. 
+ - The width of the <a href="./projection_lisp.html#robo7">projection</a> surface.
+ - The height of the <a href="./projection_lisp.html#robo7">projection</a> surface.
  - The scaling factor for the width of the ps's <a href="./canvas_lisp.html#robo2">canvas</a> (number).
  - The scaling factor for the height of the ps's <a href="./canvas_lisp.html#robo2">canvas</a> (number).
  - :color. A three- or four-item list of rgb(a) values determining the <a href="./canvas_lisp.html#robo2">canvas</a>
@@ -108,22 +131,57 @@
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
+ - :surface-width. The width of the <a href="./projection_lisp.html#robo7">projection</a> surface.
+ - :surface-height. The height of the <a href="./projection_lisp.html#robo7">projection</a> surface.
+ - :width. The width (in px, thus an integer) of the <a href="./canvas_lisp.html#robo2">canvas</a>. 
+ - :height. The height (in px, thus an integer) of the <a href="./canvas_lisp.html#robo2">canvas</a>. 
+ - :x-scaler. A scaler (ratio <a href="./canvas_lisp.html#robo2">canvas</a>-width/surface-width) to link the
+   dimensions of the <a href="./canvas_lisp.html#robo2">canvas</a> (in the data slot) to the dimensions of the
+   <a href="./projection_lisp.html#robo7">projection</a>.
+ - :y-scaler. A scaler (ratio <a href="./canvas_lisp.html#robo2">canvas</a>-height/surface-height) to link the
+   dimensions of the <a href="./image_lisp.html#robo5">image</a> (in the data slot) to the dimensions of the
+   <a href="./projection_lisp.html#robo7">projection</a>.
+ - :color. The initial color of the <a href="./canvas_lisp.html#robo2">canvas</a>, as a rgb(a) list.
+   Default = '(0 0 0 0)
  - :id. The id of the object. Default = NIL.
+ - :default-interpolation. The default interpolation method (used e.g. when
+   changing the <a href="./image_lisp.html#robo5">image</a> dimensions via the (setf ...) methods.
+   Default = (<a href="./globals_lisp.html#robo17">get-apr-config</a> :default-interpolation)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The initialized object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(<strong>make-projection-surface</strong> 10 20.5 10.5 10.5)
+<pre class="source">(<strong>make-projection-surface</strong> :surface-width 20
+                         :surface-height 40
+                         :width 2000
+                         :height 4000)
+;; =&gt;
+PROJECTION-SURFACE: surface-width: 20, surface-height: 40, 
+        x-scaler: 1/100, y-scaler: 1/100
+CANVAS: width: 2000, height: 4000, color: (0 0 0 0), 
+        initialized: T
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: 
+IMAGE: width: 2000, height: 4000
+NAMED-OBJECT: id: NIL, tag: NIL, 
+data: #&lt;RGB-IMAGE (2000x4000) {700A9A2B03}&gt;
+**********
 </pre>
 <p class="item_name">SYNOPSIS</p>
-<pre class="source">(defun <strong>make-projection-surface</strong> (width height x-scaler y-scaler
-                                &amp;key id (color '(0 0 0 0)))
+<pre class="source">(defun <strong>make-projection-surface</strong> (&amp;key surface-width
+                                  surface-height
+                                  x-scaler
+                                  y-scaler
+                                  width
+                                  height
+                                  (color '(0 0 0 0))
+                                  id)
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/projection-surface.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-03 17:47:44</p>
+<p>Generated from ./src/projection-surface.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-03 21:25:16</p>
 </div> <!-- footer -->
 </body>
 </html>

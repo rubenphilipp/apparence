@@ -28,7 +28,7 @@
 <div id="content">
 <hr />
 <a name="apr2fprojection"></a>
-<a name="robo6"></a><h2>apr/projection [ Classes ]</h2>
+<a name="robo7"></a><h2>apr/projection [ Classes ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_classes.html#robo_top_of_doc">Classes</a> ]</p>
 <p class="item_name">NAME</p>
@@ -43,36 +43,36 @@
 <p class="item_name">PURPOSE</p>
 <pre> Implementation of the <strong>projection</strong> class.
 
- A <strong>projection</strong> is a subclass of an <a href="./image_lisp.html#robo4">image</a>. Its purpose is to "translate" the
- dimensions of an <a href="./image_lisp.html#robo4">image</a> object to the dimensions of the <strong>projection</strong> surface.
- The data-slot holds the actual (unscaled) <a href="./image_lisp.html#robo4">image</a> object with its original
+ A <strong>projection</strong> is a subclass of an <a href="./image_lisp.html#robo5">image</a>. Its purpose is to "translate" the
+ dimensions of an <a href="./image_lisp.html#robo5">image</a> object to the dimensions of the <strong>projection</strong> surface.
+ The data-slot holds the actual (unscaled) <a href="./image_lisp.html#robo5">image</a> object with its original
  dimensions and properties. Its relation to the <a href="./projection-surface_lisp.html#robo8">projection-surface</a> is
  determined by the <strong>projection</strong>-width and -height slots as well as by the
  related x- and y-scalers.
 
- The scalers determine the ratio <strong>projection</strong> / <a href="./image_lisp.html#robo4">image</a> (e.g. <strong>projection</strong>-width /
- <a href="./image_lisp.html#robo4">image</a>-width).
+ The scalers determine the ratio <strong>projection</strong> / <a href="./image_lisp.html#robo5">image</a> (e.g. <strong>projection</strong>-width /
+ <a href="./image_lisp.html#robo5">image</a>-width).
  
  NB: Altering the <strong>projection</strong>-width and -height after initialization will
-     <a href="./image_lisp.html#robo23">resize</a> the <a href="./image_lisp.html#robo4">image</a> applying the given scaling-factors. Changing the
-     scaling factors, though, will not change the dimensions of the <a href="./image_lisp.html#robo4">image</a>
-     but those of the <strong>projection</strong>. Finally, changing the <a href="./image_lisp.html#robo4">image</a> dimensions will
+     <a href="./image_lisp.html#robo23">resize</a> the <a href="./image_lisp.html#robo5">image</a> applying the given scaling-factors. Changing the
+     scaling factors, though, will not change the dimensions of the <a href="./image_lisp.html#robo5">image</a>
+     but those of the <strong>projection</strong>. Finally, changing the <a href="./image_lisp.html#robo5">image</a> dimensions will
      change the <strong>projection</strong>-width and/or -height. 
 
  The coordinate values of projections are -- other than those of images --
  not limited to integer values, but can also be e.g. floats.
 
  CLASS HIERARCHY
- <a href="./named-object_lisp.html#robo5">named-object</a> -&gt; <a href="./image_lisp.html#robo4">image</a> -&gt; <strong>projection</strong>
+ <a href="./named-object_lisp.html#robo6">named-object</a> -&gt; <a href="./image_lisp.html#robo5">image</a> -&gt; <strong>projection</strong>
 
- $$ Last modified:  23:26:01 Sat Mar  2 2024 CET
+ $$ Last modified:  18:36:54 Sun Mar  3 2024 CET
 </pre>
 
 <hr />
 <a name="projection2fmake2dprojection"></a>
-<a name="robo31"></a><h2>projection/make-projection [ Functions ]</h2>
+<a name="robo28"></a><h2>projection/make-projection [ Functions ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">projection</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">projection</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
 <pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
 </pre>
@@ -80,63 +80,63 @@
 <pre> 2024-03-02
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> Shorthand to make a <a href="#robo6">projection</a> object.
+<pre> Shorthand to make a <a href="#robo7">projection</a> object.
 
- A <a href="#robo6">projection</a> is a subclass of an <a href="./image_lisp.html#robo4">image</a>. Its purpose is to "translate" the
- dimensions of an <a href="./image_lisp.html#robo4">image</a> object to the dimensions of the <a href="#robo6">projection</a> surface.
- The data-slot holds the actual (unscaled) <a href="./image_lisp.html#robo4">image</a> object with its original
+ A <a href="#robo7">projection</a> is a subclass of an <a href="./image_lisp.html#robo5">image</a>. Its purpose is to "translate" the
+ dimensions of an <a href="./image_lisp.html#robo5">image</a> object to the dimensions of the <a href="#robo7">projection</a> surface.
+ The data-slot holds the actual (unscaled) <a href="./image_lisp.html#robo5">image</a> object with its original
  dimensions and properties. Its relation to the <a href="./projection-surface_lisp.html#robo8">projection-surface</a> is
- determined by the <a href="#robo6">projection</a>-width and -height slots as well as by the
+ determined by the <a href="#robo7">projection</a>-width and -height slots as well as by the
  related x- and y-scalers.
 
- The scalers determine the ratio <a href="#robo6">projection</a> / <a href="./image_lisp.html#robo4">image</a> (e.g. <a href="#robo6">projection</a>-width /
- <a href="./image_lisp.html#robo4">image</a>-width).
+ The scalers determine the ratio <a href="#robo7">projection</a> / <a href="./image_lisp.html#robo5">image</a> (e.g. <a href="#robo7">projection</a>-width /
+ <a href="./image_lisp.html#robo5">image</a>-width).
  
- NB: Altering the <a href="#robo6">projection</a>-width and -height after initialization will
-     <a href="./image_lisp.html#robo23">resize</a> the <a href="./image_lisp.html#robo4">image</a> applying the given scaling-factors. Changing the
-     scaling factors, though, will not change the dimensions of the <a href="./image_lisp.html#robo4">image</a>
-     but those of the <a href="#robo6">projection</a>. Finally, changing the <a href="./image_lisp.html#robo4">image</a> dimensions will
-     change the <a href="#robo6">projection</a>-width and/or -height.
+ NB: Altering the <a href="#robo7">projection</a>-width and -height after initialization will
+     <a href="./image_lisp.html#robo23">resize</a> the <a href="./image_lisp.html#robo5">image</a> applying the given scaling-factors. Changing the
+     scaling factors, though, will not change the dimensions of the <a href="./image_lisp.html#robo5">image</a>
+     but those of the <a href="#robo7">projection</a>. Finally, changing the <a href="./image_lisp.html#robo5">image</a> dimensions will
+     change the <a href="#robo7">projection</a>-width and/or -height.
 
- NB2: You need to specify at least a value for :<a href="#robo6">projection</a>-width/-height or
+ NB2: You need to specify at least a value for :<a href="#robo7">projection</a>-width/-height or
       :x-/y-scaler. If both are specified, it needs to be ensured that width
-      * x-scaler = <a href="#robo6">projection</a>-width resp.
-      height * y-scaler = <a href="#robo6">projection</a>-height remain true.
+      * x-scaler = <a href="#robo7">projection</a>-width resp.
+      height * y-scaler = <a href="#robo7">projection</a>-height remain true.
  
       It is also possible to just specify one coordinate (x/width or
       y/height). Then, the complementary side will be scaled to the same
       scaler as the side where an argument is given (i.e. this keeps the
-      aspect ratio of the original <a href="./image_lisp.html#robo4">image</a>). 
+      aspect ratio of the original <a href="./image_lisp.html#robo5">image</a>). 
 
  The coordinate values of projections are -- other than those of images --
  not limited to integer values, but can also be e.g. floats.
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> - An <a href="./image_lisp.html#robo4">image</a> object or an imago::<a href="./image_lisp.html#robo4">image</a>.
+<pre> - An <a href="./image_lisp.html#robo5">image</a> object or an imago::<a href="./image_lisp.html#robo5">image</a>.
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
- - :x-scaler. A scaler (ratio <a href="./image_lisp.html#robo4">image</a>-width/<a href="#robo6">projection</a>-width) to link the
-   dimensions of the <a href="./image_lisp.html#robo4">image</a> (in the data slot) to the dimensions of the
-   <a href="#robo6">projection</a>.
-   NB: This value can be omitted when a :<a href="#robo6">projection</a>-width is given. 
- - :y-scaler. A scaler (ratio <a href="./image_lisp.html#robo4">image</a>-height/<a href="#robo6">projection</a>-height) to link the
-   dimensions of the <a href="./image_lisp.html#robo4">image</a> (in the data slot) to the dimensions of the
-   <a href="#robo6">projection</a>.
-   NB: This value can be omitted when a :<a href="#robo6">projection</a>-height is given. 
- - :<a href="#robo6">projection</a>-width. The width of the <a href="./image_lisp.html#robo4">image</a> in the <a href="#robo6">projection</a> space.
+ - :x-scaler. A scaler (ratio <a href="./image_lisp.html#robo5">image</a>-width/<a href="#robo7">projection</a>-width) to link the
+   dimensions of the <a href="./image_lisp.html#robo5">image</a> (in the data slot) to the dimensions of the
+   <a href="#robo7">projection</a>.
+   NB: This value can be omitted when a :<a href="#robo7">projection</a>-width is given. 
+ - :y-scaler. A scaler (ratio <a href="./image_lisp.html#robo5">image</a>-height/<a href="#robo7">projection</a>-height) to link the
+   dimensions of the <a href="./image_lisp.html#robo5">image</a> (in the data slot) to the dimensions of the
+   <a href="#robo7">projection</a>.
+   NB: This value can be omitted when a :<a href="#robo7">projection</a>-height is given. 
+ - :<a href="#robo7">projection</a>-width. The width of the <a href="./image_lisp.html#robo5">image</a> in the <a href="#robo7">projection</a> space.
    NB: If a :x-scaler is given, this value can be omitted, otherweise
-   it should be width * x-scaler = <a href="#robo6">projection</a>-width.
- - :<a href="#robo6">projection</a>-height. The height of the <a href="./image_lisp.html#robo4">image</a> in the <a href="#robo6">projection</a> space.
+   it should be width * x-scaler = <a href="#robo7">projection</a>-width.
+ - :<a href="#robo7">projection</a>-height. The height of the <a href="./image_lisp.html#robo5">image</a> in the <a href="#robo7">projection</a> space.
    NB: If a :y-scaler is given, this value can be omitted otherweise, it
-   should be height * y-scaler = <a href="#robo6">projection</a>-height.
- - :id. The id of the <a href="./image_lisp.html#robo4">image</a> object.
+   should be height * y-scaler = <a href="#robo7">projection</a>-height.
+ - :id. The id of the <a href="./image_lisp.html#robo5">image</a> object.
  - :default-interpolation. The default interpolation method (used e.g. when
-   changing the <a href="./image_lisp.html#robo4">image</a> dimensions via the (setf ...) methods.
+   changing the <a href="./image_lisp.html#robo5">image</a> dimensions via the (setf ...) methods.
    Default = (<a href="./globals_lisp.html#robo17">get-apr-config</a> :default-interpolation)
 </pre>
 <p class="item_name">RETURN VALUE</p>
-<pre> The new <a href="#robo6">projection</a> object. 
+<pre> The new <a href="#robo7">projection</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let* ((img (<a href="./image_lisp.html#robo22">make-rgb-image</a> 200 300))
@@ -145,18 +145,18 @@
   pn)
 
 ;; =&gt;
-PROJECTION: <a href="#robo6">projection</a>-width: 400, <a href="#robo6">projection</a>-height: 600 
+PROJECTION: <a href="#robo7">projection</a>-width: 400, <a href="#robo7">projection</a>-height: 600 
         x-scaler: 2, y-scaler: 2, initialized: T
 IMAGE: width: 200, height: 300
 NAMED-OBJECT: id: NIL, tag: NIL, 
 data: #&lt;RGB-IMAGE (200x300) {700ED06133}&gt;
 </pre>
 <p class="item_name">SYNOPSIS</p>
-<pre class="source">(defmethod <strong>make-projection</strong> (<a href="./image_lisp.html#robo4">image</a> &amp;key
+<pre class="source">(defmethod <strong>make-projection</strong> (<a href="./image_lisp.html#robo5">image</a> &amp;key
                                     x-scaler
                                     y-scaler
-                                    <a href="#robo6">projection</a>-width
-                                    <a href="#robo6">projection</a>-height
+                                    <a href="#robo7">projection</a>-width
+                                    <a href="#robo7">projection</a>-height
                                     id
                                     (default-interpolation
                                      (<a href="./globals_lisp.html#robo17">get-apr-config</a> :default-interpolation)))
@@ -164,7 +164,7 @@ data: #&lt;RGB-IMAGE (200x300) {700ED06133}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-03 17:47:44</p>
+<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-03 21:25:16</p>
 </div> <!-- footer -->
 </body>
 </html>
