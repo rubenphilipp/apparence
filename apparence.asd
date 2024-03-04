@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  22:52:07 Sat Mar  2 2024 CET
+;;; $$ Last modified:  14:51:14 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -27,6 +27,7 @@
   :depends-on ("alexandria"
                "cl-ppcre"
                "cm"
+               "lparallel"
                "vgplot"
                "imago"
                "imago/pngload"
@@ -36,6 +37,7 @@
                (:file "named-object")
                (:file "utilities")
                (:file "globals")
+               (:file "parallel")
                (:file "image")
                (:file "canvas")
                (:file "projection")
