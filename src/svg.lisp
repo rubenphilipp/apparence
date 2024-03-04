@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  17:11:40 Mon Mar  4 2024 CET
+;;; $$ Last modified:  17:18:12 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -145,6 +145,44 @@
     (delete-file tmpfile)
     outfile))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* svg/make-svg-toplevel
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-04
+;;; 
+;;; DESCRIPTION
+;;; A shorthand for the cm-svg:make-svg-toplevel method. 
+;;;
+;;; ARGUMENTS
+;;; none.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :class. The cl-svg class. Default = 'cl-svg:svg-1.1-toplevel
+;;; - :width. The width of the svg.
+;;; - :height. The height of the svg. 
+;;; 
+;;; RETURN VALUE
+;;; The new cl-svg:svg-toplevel object. 
+;;;
+;;; EXAMPLE
+#|
+(make-svg-toplevel :width 100
+                   :height 200)
+;; => #<CL-SVG:SVG-1.1-TOPLEVEL {7006DD7CA3}>
+|#
+;;; SYNOPSIS
+(defun make-svg-toplevel (&key
+                            (class 'cl-svg:svg-1.1-toplevel)
+                            width height)
+  ;;; ****
+  (cl-svg:make-svg-toplevel class
+                            :width width
+                            :height height))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF svg.lisp
