@@ -18,7 +18,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  22:02:32 Mon Mar  4 2024 CET
+;;; $$ Last modified:  23:56:11 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -43,6 +43,30 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* random/reset-pcg
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-04
+;;; 
+;;; DESCRIPTION
+;;; This function resets the global pcg random state (i.e. it re-initializes the
+;;; global pcg-object stored in *pcg*).
+;;;
+;;; ARGUMENTS
+;;; none.
+;;; 
+;;; RETURN VALUE
+;;; The reset pcg object. 
+;;; 
+;;; SYNOPSIS
+(defun reset-pcg ()
+  ;;; ****
+  (setf *pcg* (pcg:make-pcg :seed (get-apr-config :pcg-seed))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****f* random/pcg-random
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -58,11 +82,13 @@
 ;;; "If only bound is given, the function acts much like cl:random" [1]
 ;;; 
 ;;; OPTIONAL ARGUMENTS
-;;; - max.
+;;; keyword-arguments:
+;;; - :max.
 ;;;   "If max is also given, a random number in [bound, max) is chosen." [1]
-;;; - inclusive?
+;;; - :inclusive?
 ;;;   "If inclusive? is also given, a random number in [bound, max] is chosen"
 ;;;   [1]
+;;; - :reset. When T, the global state is reset to the default pcg-seed. 
 ;;; 
 ;;; RETURN VALUE
 ;;; A random number. 
@@ -72,8 +98,10 @@
 (pcg-random 100)
 |#
 ;;; SYNOPSIS
-(defun pcg-random (bound &optional max inclusive?)
+(defun pcg-random (bound &key max inclusive? reset)
   ;;; ****
+  (when reset
+    (reset-pcg))
   (pcg:pcg-random *pcg* bound max inclusive?))
 
 

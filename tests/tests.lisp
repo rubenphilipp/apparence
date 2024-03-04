@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  17:17:59 Mon Mar  4 2024 CET
+;;; $$ Last modified:  23:51:44 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -391,6 +391,13 @@
 (test test-make-svg-toplevel
   (let ((result (make-svg-toplevel :width 100 :height 200)))
     (is (typep result 'cl-svg::svg-toplevel))))
+
+;;; test-pcg-random
+(test test-pcg-random
+  (let ((random1 (pcg-random 10))
+        (random2 nil))
+    (setf random2 (pcg-random 10 :reset t))
+    (is (= random1 random2))))
               
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

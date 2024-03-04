@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  21:57:54 Mon Mar  4 2024 CET
+;;; $$ Last modified:  23:46:29 Mon Mar  4 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -41,7 +41,7 @@
     ;; the command for to the inkscape binary
     (:inkscape-command . "/opt/homebrew/bin/inkscape")
     ;; a seed for the pcg generator (see random.lisp)
-    (:pcg-seed . nil)
+    (:pcg-seed . 4294967296)
     ;; the default tmp directory (trailing slash!)
     (:default-tmp-dir . "/tmp/apparence/")
     ;; the default rgb-color
