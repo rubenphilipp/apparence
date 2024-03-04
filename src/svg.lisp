@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  16:46:47 Mon Mar  4 2024 CET
+;;; $$ Last modified:  16:57:18 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -52,6 +52,7 @@
 ;;; The cl-svg::svg-toplevel object. 
 ;;; 
 ;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
 ;;; - :outfile. The output filename. Default = "/tmp/image.png"
 ;;; - :tmp-dir. A path to a directory where the temp-files are stored.
 ;;;   Default = (get-apr-config :default-tmp-dir)

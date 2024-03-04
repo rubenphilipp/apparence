@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  15:50:15 Mon Mar  4 2024 CET
+;;; $$ Last modified:  16:58:25 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -248,6 +248,79 @@
                                 :default-interpolation default-interpolation))
           (t (error "image::make-image-from-file: The file type ~a is not ~
                      supported." type)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* image/make-image-from-svg
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-04
+;;; 
+;;; DESCRIPTION
+;;; This method creates an image object from a cl-svg::svg-toplevel object
+;;; (cf. svg.lisp). 
+;;;
+;;; ARGUMENTS
+;;; The cl-svg::svg-toplevel object.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :id. The id of the new image object.
+;;; - :width. The width of the image (in px). Cf. svg->png.
+;;; - :height. The height of the image (in px). Cf. svg->png.
+;;; - :tmp-dir. A path to a directory where the temp-files are stored.
+;;;   Default = (get-apr-config :default-tmp-dir)
+;;; - :default-interpolation. The default interpolation method (used e.g. when
+;;;   changing the image dimensions via the (setf ...) methods.
+;;;   Default = (get-apr-config :default-interpolation)
+;;; 
+;;; RETURN VALUE
+;;; 
+;;;
+;;; EXAMPLE
+#|
+(let ((canvas (cl-svg::make-svg-toplevel 'cl-svg:svg-1.1-toplevel
+                                         :width 400
+                                         :height 300))
+      (image nil))
+  (cl-svg:draw canvas
+      (:rect :x 10 :y 10
+             :width 100 :height (* 100 4/3)
+             :fill "rgba(90,90,90,1)"))
+  (setf image (make-image-from-svg canvas))
+  (write-png image :outfile "/tmp/image.png")
+  (system-open-file "/tmp/image.png"))
+|#
+;;; SYNOPSIS
+(defun make-image-from-svg (svg &key
+                                  id
+                                  width
+                                  height
+                                  (tmp-dir (get-apr-config :default-tmp-dir))
+                                  (default-interpolation
+                                   (get-apr-config :default-interpolation)))
+  ;;; ****
+  (unless (typep svg 'cl-svg::svg-toplevel)
+    (error "image::make-image-from-svg: The svg is not an cl-svg::svg-toplevel ~
+            object."))
+  (let ((tmp-png (format nil "~a~a.png"
+                         (trailing-slash tmp-dir)
+                         (gensym "svg-image")))
+        (image nil))
+    (svg->png svg :width width
+                  :height height
+                  :tmp-dir tmp-dir
+                  :outfile tmp-png)
+    (setf image (make-image-from-file
+                 tmp-png
+                 :id id
+                 :default-interpolation default-interpolation))
+    ;; removing garbage
+    (delete-file tmp-png)
+    image))
                              
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

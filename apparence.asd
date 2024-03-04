@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  16:06:00 Mon Mar  4 2024 CET
+;;; $$ Last modified:  17:00:19 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -38,6 +38,7 @@
                (:file "named-object")
                (:file "utilities")
                (:file "globals")
+               (:file "svg")
                (:file "parallel")
                (:file "image")
                (:file "canvas")
