@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  16:59:48 Mon Mar  4 2024 CET
+;;; $$ Last modified:  17:12:42 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -368,6 +368,22 @@
     (when (probe-file outfile)
       (delete-file outfile))
     (write-png image :outfile outfile)
+    (is (probe-file outfile))))
+
+;;; test-write-svg
+;;; RP  Mon Mar  4 17:11:50 2024
+(test test-write-svg
+  (let ((canvas (cl-svg::make-svg-toplevel 'cl-svg:svg-1.1-toplevel
+                                           :width 400
+                                           :height 300))
+        (outfile "/tmp/test-write.svg"))
+    (cl-svg:draw canvas
+        (:rect :x 10 :y 10
+               :width 100 :height (* 100 4/3)
+               :fill "rgba(90,90,90,1)"))
+    (when (probe-file outfile)
+      (delete-file outfile))
+    (write-svg canvas :outfile outfile)
     (is (probe-file outfile))))
               
 

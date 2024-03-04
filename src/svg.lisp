@@ -18,12 +18,46 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  16:57:18 Mon Mar  4 2024 CET
+;;; $$ Last modified:  17:11:40 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* svg/write-svg
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-04
+;;; 
+;;; DESCRIPTION
+;;; This method writes a cl-svg::svg-toplevel object to a file. 
+;;;
+;;; ARGUMENTS
+;;; The cl-svg::svg-toplevel object. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword arguments:
+;;; - :outfile. The output filename. Default = "/tmp/image.svg"
+;;; 
+;;; RETURN VALUE
+;;; The output filename. 
+;;;
+;;; EXAMPLE
+#|
+(let ((canvas (cl-svg::make-svg-toplevel 'cl-svg:svg-1.1-toplevel
+                                         :width 400
+                                         :height 300)))
+  (cl-svg:draw canvas
+      (:rect :x 10 :y 10
+             :width 100 :height (* 100 4/3)
+             :fill "rgba(90,90,90,1)"))
+  (write-svg canvas))
+;; => "/tmp/image.svg"
+|#
+;;; SYNOPSIS
 (defmethod write-svg ((svg cl-svg::svg-toplevel)
                       &key
                         (outfile "/tmp/image.svg"))
@@ -31,7 +65,8 @@
   (with-open-file (s outfile
                      :direction :output
                      :if-exists :supersede)
-    (cl-svg:stream-out s svg)))
+    (cl-svg:stream-out s svg))
+  outfile)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
