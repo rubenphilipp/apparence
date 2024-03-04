@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  16:58:25 Mon Mar  4 2024 CET
+;;; $$ Last modified:  21:35:28 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -200,7 +200,7 @@
                                    (default-interpolation
                                     (get-apr-config :default-interpolation)))
   ;;; ****
-  (let ((data (imago-pngload::read-pngload path)))
+  (let ((data (imago-pngio::read-png path)))
     (make-image data :id id
                      :default-interpolation default-interpolation)))
 

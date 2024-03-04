@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  17:18:12 Mon Mar  4 2024 CET
+;;; $$ Last modified:  17:35:31 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -137,7 +137,10 @@
                             (list "-h"
                                   (format nil "~a" height)))))
     (setf command (append command
-                          (list "-o" outfile)))
+                          (list "--export-png-color-mode"
+                                "RGBA_8"
+                                "-o"
+                                outfile)))
     ;;; perform the conversion
     (ensure-directories-exist tmp-dir)
     (write-svg svg :outfile tmpfile)
@@ -164,7 +167,8 @@
 ;;; keyword-arguments:
 ;;; - :class. The cl-svg class. Default = 'cl-svg:svg-1.1-toplevel
 ;;; - :width. The width of the svg.
-;;; - :height. The height of the svg. 
+;;; - :height. The height of the svg.
+;;; - :viewbox. The svg viewbox coordinates (e.g. "0 0 700 700")
 ;;; 
 ;;; RETURN VALUE
 ;;; The new cl-svg:svg-toplevel object. 
@@ -178,11 +182,12 @@
 ;;; SYNOPSIS
 (defun make-svg-toplevel (&key
                             (class 'cl-svg:svg-1.1-toplevel)
-                            width height)
+                            width height viewbox)
   ;;; ****
   (cl-svg:make-svg-toplevel class
                             :width width
-                            :height height))
+                            :height height
+                            :viewbox viewbox))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF svg.lisp
