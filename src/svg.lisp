@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  17:35:31 Mon Mar  4 2024 CET
+;;; $$ Last modified:  21:43:22 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -124,7 +124,7 @@
   ;;; ****
   (let* ((tmpfile (format nil "~a~a.svg"
                           (trailing-slash tmp-dir)
-                          (gensym "svg-png")))
+                          (get-random-uuid)))
          (command (list (get-apr-config :inkscape-command)
                         tmpfile)))
     ;; add further elements to the command

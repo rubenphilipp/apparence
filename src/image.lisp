@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  21:35:28 Mon Mar  4 2024 CET
+;;; $$ Last modified:  21:43:47 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -308,7 +308,7 @@
             object."))
   (let ((tmp-png (format nil "~a~a.png"
                          (trailing-slash tmp-dir)
-                         (gensym "svg-image")))
+                         (get-random-uuid)))
         (image nil))
     (svg->png svg :width width
                   :height height

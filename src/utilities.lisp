@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  21:33:13 Fri Mar  1 2024 CET
+;;; $$ Last modified:  21:42:26 Mon Mar  4 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -570,7 +570,42 @@
   (unless (or (rgb-p clist) (rgba-p clist))
     (error "utilities::list->color: The list is not of type rgb(a)-list"))
   (apply #'imago::make-color clist))
-  
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/get-random-uuid
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-04
+;;; 
+;;; DESCRIPTION
+;;; This method returns a UUIV v4 (random UUID), generated via frugal-uuid. 
+;;;
+;;; ARGUMENTS
+;;; none.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :string. A boolean indicating whether a string (t) or fuuid-object schould
+;;;   be returned. Default = T
+;;; 
+;;; RETURN VALUE
+;;; The UUID as a string. 
+;;;
+;;; EXAMPLE
+#|
+(get-random-uuid)
+;; => "31db7363-f393-4fbc-ad26-10ffb6339640"
+|#
+;;; SYNOPSIS
+(defun get-random-uuid (&key (string t))
+  ;;; ****
+  (let ((uuid (fuuid:make-v4)))
+    (if string
+        (fuuid:to-string uuid)
+        uuid)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF utilities.lisp

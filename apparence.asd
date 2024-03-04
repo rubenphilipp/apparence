@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  17:00:19 Mon Mar  4 2024 CET
+;;; $$ Last modified:  21:37:49 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -30,6 +30,7 @@
                "cl-svg"
                "lparallel"
                "vgplot"
+               "frugal-uuid/non-frugal"
                "imago"
                "imago/pngload"
                "imago/jpeg-turbo")
