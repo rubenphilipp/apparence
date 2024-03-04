@@ -7,8 +7,8 @@
 <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <script src="./robodoc.js"></script>
-<title>parallel.lisp</title>
-<!-- Source: ./src/parallel.lisp -->
+<title>random.lisp</title>
+<!-- Source: ./src/random.lisp -->
 <!-- Generated with ROBODoc Version 4.99.44 (Nov 13 2022) -->
 </head>
 <body>
@@ -27,12 +27,12 @@
 </div> <!-- navigation -->
 <div id="content">
 <hr />
-<a name="apr2fparallel"></a>
-<a name="robo2"></a><h2>apr/parallel [ Modules ]</h2>
+<a name="apr2frandom"></a>
+<a name="robo3"></a><h2>apr/random [ Modules ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_modules.html#robo_top_of_doc">Modules</a> ]</p>
 <p class="item_name">NAME</p>
-<pre> <strong>parallel</strong>
+<pre> <strong>random</strong>
 </pre>
 <p class="item_name">AUTHOR</p>
 <pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
@@ -41,77 +41,74 @@
 <pre> 2024-03-04
 </pre>
 <p class="item_name">PURPOSE</p>
-<pre> Implementation of some methods related to <strong>parallel</strong> computing (via
- lparallel).
+<pre> This <a href="./package_lisp.html#robo1">package</a> implements a few advanced <strong>random</strong> functions, mostly relying on
+ cl-pcg (<a href="https://github.com/sjl/cl-pcg)">https://github.com/sjl/cl-pcg)</a>.
+
+ [1]: <a href="https://docs.stevelosh.com/cl-pcg/usage/">https://docs.stevelosh.com/cl-pcg/usage/</a>
 
  CLASS HIERARCHY
  none. no classes defined
 
- $$ Last modified:  14:52:34 Mon Mar  4 2024 CET
+ $$ Last modified:  22:02:32 Mon Mar  4 2024 CET
 </pre>
 
 <hr />
-<a name="parallel2finit2dkernel"></a>
-<a name="robo30"></a><h2>parallel/init-kernel [ Functions ]</h2>
+<a name="random2f2apcg"></a>
+<a name="robo34"></a><h2>random/*pcg [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">parallel</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo3">random</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">NAME</p>
+<pre> *pcg*
+</pre>
 <p class="item_name">AUTHOR</p>
 <pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
 </pre>
 <p class="item_name">CREATED</p>
-<pre> 2024-02-26
+<pre> 2024-02-23
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> This function initializes a lparallel kernel with n workers. 
+<pre> A global pcg generator. 
+ 
+</pre>
+
+<hr />
+<a name="random2fpcg2drandom"></a>
+<a name="robo35"></a><h2>random/pcg-random [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo3">random</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-04
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This is a shorthand to the <strong>pcg-random</strong> function. 
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> A number indicating the amount of workers to initialize the kernel with.
-
- NB: The kernel should always be destroyed before quitting the program (or
-     via <a href="#robo31">shutdown-kernel</a>. 
+<pre> The <a href="#robo3">random</a> bound.
+ "If only bound is given, the function acts much like cl:<a href="#robo3">random</a>" [1]
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
-<pre> keyword-arguments:
- - :name. A string as a name for the kernel. Default = "apparence kernel"
+<pre> - max.
+   "If max is also given, a <a href="#robo3">random</a> number in [bound, max) is chosen." [1]
+ - inclusive?
+   "If inclusive? is also given, a <a href="#robo3">random</a> number in [bound, max] is chosen"
+   [1]
 </pre>
 <p class="item_name">RETURN VALUE</p>
-<pre> The kernel object. 
+<pre> A <a href="#robo3">random</a> number. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(<strong>init-kernel</strong> (serapeum:count-cpus))
+<pre class="source">(<strong>pcg-random</strong> 100)
 </pre>
 <p class="item_name">SYNOPSIS</p>
-<pre class="source">(defun <strong>init-kernel</strong> (num-workers &amp;key (name "apparence kernel"))
-</pre>
-
-<hr />
-<a name="parallel2fshutdown2dkernel"></a>
-<a name="robo31"></a><h2>parallel/shutdown-kernel [ Functions ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">parallel</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
-<p class="item_name">AUTHOR</p>
-<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
-</pre>
-<p class="item_name">CREATED</p>
-<pre> 2024-02-26
-</pre>
-<p class="item_name">DESCRIPTION</p>
-<pre> This function destroys/shuts down the lparallel kernels. This is absolutely
- necessary (e.g. for garbage collecting etc.). 
-</pre>
-<p class="item_name">ARGUMENTS</p>
-<pre> none
-</pre>
-<p class="item_name">RETURN VALUE</p>
-<pre> Either T or NIL (cf. lparallel doc)
-</pre>
-<p class="item_name">SYNOPSIS</p>
-<pre class="source">(defun <strong>shutdown-kernel</strong> ()
+<pre class="source">(defun <strong>pcg-random</strong> (bound &amp;optional max inclusive?)
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/parallel.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-04 22:36:42</p>
+<p>Generated from ./src/random.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-04 22:36:42</p>
 </div> <!-- footer -->
 </body>
 </html>
