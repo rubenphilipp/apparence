@@ -128,11 +128,11 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (<a href="#robo10">make-canvas</a> 300 200 :color '(255 255 255 0)))
-      (img (<a href="./image_lisp.html#robo23">make-rgb-image</a> 50 100 :initial-color (make-color 100 233 90)))
-      (img2 (<a href="./image_lisp.html#robo23">make-rgb-image</a> 50 100 :initial-color (make-color 80 133 90))))
+      (img (<a href="./image_lisp.html#robo24">make-rgb-image</a> 50 100 :initial-color (make-color 100 233 90)))
+      (img2 (<a href="./image_lisp.html#robo24">make-rgb-image</a> 50 100 :initial-color (make-color 80 133 90))))
   (<strong>put-it</strong> cv img :dest-x 0)
   (<strong>put-it</strong> cv img2 :dest-x 20)
-  (<a href="./image_lisp.html#robo27">write-png</a> cv :outfile "~/Downloads/cv-test.png"))
+  (<a href="./image_lisp.html#robo28">write-png</a> cv :outfile "~/Downloads/cv-test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmethod <strong>put-it</strong> ((cv <a href="#robo4">canvas</a>) img
@@ -188,11 +188,11 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let* ((cv (<a href="#robo10">make-canvas</a> 4000 2000 :color '(0 0 0 0)))
-       (img (<a href="./image_lisp.html#robo23">make-rgb-image</a> 500 400 :initial-color (make-color 233 200 188))))
+       (img (<a href="./image_lisp.html#robo24">make-rgb-image</a> 500 400 :initial-color (make-color 233 200 188))))
   (<strong>put-it-circular</strong> cv img 350 0 :width 300 :height 200
                                 :src-y 10 :src-x 20)
-  (<a href="./image_lisp.html#robo27">write-png</a> cv :outfile "/tmp/test.png")
-  (<a href="./utilities_lisp.html#robo46">system-open-file</a> "/tmp/test.png"))
+  (<a href="./image_lisp.html#robo28">write-png</a> cv :outfile "/tmp/test.png")
+  (<a href="./utilities_lisp.html#robo47">system-open-file</a> "/tmp/test.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmethod <strong>put-it-circular</strong> ((cv <a href="#robo4">canvas</a>) <a href="./image_lisp.html#robo6">image</a> azimuth y
@@ -235,7 +235,7 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (make-instance '<a href="#robo4">canvas</a> :width 300 :height 200 :color '(55 255 55)))
-      (img (<a href="./image_lisp.html#robo23">make-rgb-image</a> 50 100)))
+      (img (<a href="./image_lisp.html#robo24">make-rgb-image</a> 50 100)))
   (<a href="./image_lisp.html#robo20">copy</a> (data cv) img)
   (<strong>write-jpg</strong> cv :outfile "~/Downloads/cv-test.jpg"))
 </pre>
@@ -272,7 +272,7 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (make-instance '<a href="#robo4">canvas</a> :width 300 :height 200 :color '(55 255 55)))
-      (img (<a href="./image_lisp.html#robo23">make-rgb-image</a> 50 100)))
+      (img (<a href="./image_lisp.html#robo24">make-rgb-image</a> 50 100)))
   (<a href="./image_lisp.html#robo20">copy</a> (data cv) img)
   (<strong>write-png</strong> cv :outfile "~/Downloads/cv-test.png"))
 </pre>
@@ -282,7 +282,7 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-04 16:48:30</p>
+<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-04 17:00:34</p>
 </div> <!-- footer -->
 </body>
 </html>
