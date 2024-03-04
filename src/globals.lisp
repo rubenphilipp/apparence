@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  21:50:39 Thu Feb 29 2024 CET
+;;; $$ Last modified:  16:05:41 Mon Mar  4 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -38,6 +38,8 @@
     (:fps . 25)
     ;; default interpolation mode
     (:default-interpolation . :nearest-neighbor)
+    ;; the command for to the inkscape binary
+    (:inkscape-command . "/opt/homebrew/bin/inkscape")
     ;; the default rgb-color
     (:default-rgb . ,(make-color 0 0 0 0))
     ;; verbose mode?

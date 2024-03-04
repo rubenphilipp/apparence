@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  23:35:41 Sun Mar  3 2024 CET
+;;; $$ Last modified:  15:50:15 Mon Mar  4 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -416,6 +416,24 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
   (setf (data img) (imago::crop (data img) x y width height)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; EXAMPLE:
+#|
+(let ((img (make-rgb-image 200 200
+                           :initial-color (make-color 129 200 211))))
+  (rotate img 20))
+|#
+;;; NB: Rotation is counterclockwise
+(defmethod rotate ((img image) degree
+                   &key
+                     (interpolation (get-apr-config :default-interpolation))
+                     (background-color (get-apr-config :default-rgb)))
+  ;;; ****
+  (setf (data img) (imago::rotate (data img) degree
+                                  :interpolation interpolation
+                                  :background-color background-color))
+  img)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* image/write-png
