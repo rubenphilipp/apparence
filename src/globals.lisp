@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  16:05:41 Mon Mar  4 2024 CET
+;;; $$ Last modified:  16:18:17 Mon Mar  4 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -40,6 +40,8 @@
     (:default-interpolation . :nearest-neighbor)
     ;; the command for to the inkscape binary
     (:inkscape-command . "/opt/homebrew/bin/inkscape")
+    ;; the default tmp directory (trailing slash!)
+    (:default-tmp-dir . "/tmp/apparence/")
     ;; the default rgb-color
     (:default-rgb . ,(make-color 0 0 0 0))
     ;; verbose mode?
