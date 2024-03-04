@@ -18,7 +18,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  23:56:11 Mon Mar  4 2024 CET
+;;; $$ Last modified:  00:03:57 Tue Mar  5 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -36,7 +36,7 @@
 ;;; 2024-02-23
 ;;; 
 ;;; DESCRIPTION
-;;; A global pcg generator. 
+;;; The global pcg generator.
 ;;; 
 (defparameter *pcg* (pcg:make-pcg :seed (get-apr-config :pcg-seed)))
 ;;; ****
@@ -85,7 +85,7 @@
 ;;; keyword-arguments:
 ;;; - :max.
 ;;;   "If max is also given, a random number in [bound, max) is chosen." [1]
-;;; - :inclusive?
+;;; - :inclusive
 ;;;   "If inclusive? is also given, a random number in [bound, max] is chosen"
 ;;;   [1]
 ;;; - :reset. When T, the global state is reset to the default pcg-seed. 
@@ -98,11 +98,11 @@
 (pcg-random 100)
 |#
 ;;; SYNOPSIS
-(defun pcg-random (bound &key max inclusive? reset)
+(defun pcg-random (bound &key max inclusive reset)
   ;;; ****
   (when reset
     (reset-pcg))
-  (pcg:pcg-random *pcg* bound max inclusive?))
+  (pcg:pcg-random *pcg* bound max inclusive))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
