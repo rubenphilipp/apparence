@@ -15,15 +15,16 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  21:44:55 Sun Mar  3 2024 CET
+;;; $$ Last modified:  21:36:08 Sun Mar 10 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
 
 (defclass cylinder-mantle (projection-surface)
-  ;; NB: diameter and width should never be assigned at the same time
-  ;; NB2: the width in this case is the circumference of cylinder
+  ;; NB: surface-diameter and surface-width should never be assigned at the same
+  ;; time
+  ;; NB2: the surface-width in this case is the circumference of cylinder
   ((surface-diameter :accessor surface-diameter :initarg :surface-diameter
                      :initform nil)))
 
