@@ -5,10 +5,10 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:22:09 Sun Mar 10 2024 CET
+$$ Last modified:  21:22:59 Sun Mar 10 2024 CET
 #+end_comment
 
-**Please note:** This program is at a very early stage and under development.
+*Please note:* This program is at a very early stage and under development.
 
 
 
