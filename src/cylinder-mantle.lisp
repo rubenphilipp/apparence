@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  21:36:08 Sun Mar 10 2024 CET
+;;; $$ Last modified:  21:36:55 Sun Mar 10 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

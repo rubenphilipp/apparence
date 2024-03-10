@@ -5,7 +5,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:23:35 Sun Mar 10 2024 CET
+$$ Last modified:  21:40:30 Sun Mar 10 2024 CET
 #+end_comment
 
 *Please note:* This program is at a very early stage and under development.
@@ -13,7 +13,7 @@ $$ Last modified:  21:23:35 Sun Mar 10 2024 CET
 * Overview
 
 *apparence* (nicknamed ~apr~) is a Common Lisp package aimed at working with
-(moving) images, based on [[https://github.com/tokenrove/imago][imago]]. 
+(moving) images.
 
 As of now, it still is in a very early stage of development. 
 
