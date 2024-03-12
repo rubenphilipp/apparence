@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:54:15 Mon Mar  4 2024 CET
+;;; $$ Last modified:  16:22:26 Tue Mar 12 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -26,7 +26,10 @@
   :in-order-to ((test-op (test-op "apparence/tests")))
   :depends-on ("alexandria"
                "cl-ppcre"
-               "cm"
+               ;; this is necessary, as re-loading the cm-version that
+               ;; comes with slippery-chicken might lead to naming conflicts
+               ;; RP  Tue Mar 12 16:17:06 2024
+               (:feature (:not :slippery-chicken) "cm")
                "cl-svg"
                "lparallel"
                "vgplot"
