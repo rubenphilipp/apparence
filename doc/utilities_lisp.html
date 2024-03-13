@@ -19,6 +19,7 @@
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./robo_sourcefiles.html#top">Sourcefiles</a>
 <a class="menuitem" href="./masterindex.html#top">Index</a>
+<a class="menuitem" href="./robo_generics.html#top">Generics</a>
 <a class="menuitem" href="./robo_classes.html#top">Classes</a>
 <a class="menuitem" href="./robo_functions.html#top">Functions</a>
 <a class="menuitem" href="./robo_modules.html#top">Modules</a>
@@ -503,9 +504,69 @@
 <pre class="source">(defun <strong>trailing-slash</strong> (path)
 </pre>
 
+<hr />
+<a name="utilities2fwith2dstopwatch"></a>
+<a name="robo56"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-13
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro counts the time (in seconds) from the start of running the forms
+ in the body. The start time (i.e. the universal timestamp) can be retrieved
+ via the symbol :start-accessor (cf. arguments).
+ There are some local functions which allow to retrieve further information
+ or interact with the state of the "stopwatch":
+ - delta-fun (&amp;optional print?)
+   This local function returns the difference between start-time and current
+   time (i.e. the time spent for performing the forms).
+   When print? = T, the time will be printed via (print).
+ - reset-fun
+   This local function resets the start-time to the current timestamp.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> none.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :start-accessor. The accessor (symbol) to the start time.
+   Default = 'sw-start
+ - :delta-fun. The function-name (symbol) for the delta-function (see above).
+   Default = 'sw-delta
+ - :reset-fun. The function-name (symbol) for the reset-function (see above).
+   Default = 'sw-reset
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>with-stopwatch</strong> ()
+  (sleep 1)
+  (sw-delta t)
+  (sleep 1)
+  (print sw-start)
+  (sw-delta t)
+  (sw-reset)
+  (sleep 1)
+  (sw-delta))
+;; =&gt;
+1 
+3919355895 
+2 
+1
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>with-stopwatch</strong> ((&amp;key
+                             (start-accessor 'sw-start)
+                             (delta-fun 'sw-delta)
+                             (reset-fun 'sw-reset))
+                          &amp;body body)
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-05 00:04:21</p>
+<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-13 23:05:53</p>
 </div> <!-- footer -->
 </body>
 </html>
