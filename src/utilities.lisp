@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  21:42:26 Mon Mar  4 2024 CET
+;;; $$ Last modified:  22:58:40 Wed Mar 13 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -605,6 +605,76 @@
     (if string
         (fuuid:to-string uuid)
         uuid)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****** utilities/with-stopwatch
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-13
+;;; 
+;;; DESCRIPTION
+;;; This macro counts the time (in seconds) from the start of running the forms
+;;; in the body. The start time (i.e. the universal timestamp) can be retrieved
+;;; via the symbol :start-accessor (cf. arguments).
+;;; There are some local functions which allow to retrieve further information
+;;; or interact with the state of the "stopwatch":
+;;; - delta-fun (&optional print?)
+;;;   This local function returns the difference between start-time and current
+;;;   time (i.e. the time spent for performing the forms).
+;;;   When print? = T, the time will be printed via (print).
+;;; - reset-fun
+;;;   This local function resets the start-time to the current timestamp.
+;;;
+;;; ARGUMENTS
+;;; none.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :start-accessor. The accessor (symbol) to the start time.
+;;;   Default = 'sw-start
+;;; - :delta-fun. The function-name (symbol) for the delta-function (see above).
+;;;   Default = 'sw-delta
+;;; - :reset-fun. The function-name (symbol) for the reset-function (see above).
+;;;   Default = 'sw-reset
+;;;
+;;; EXAMPLE
+#|
+(with-stopwatch ()
+  (sleep 1)
+  (sw-delta t)
+  (sleep 1)
+  (print sw-start)
+  (sw-delta t)
+  (sw-reset)
+  (sleep 1)
+  (sw-delta))
+;; =>
+1 
+3919355895 
+2 
+1
+|#
+;;; SYNOPSIS
+(defmacro with-stopwatch ((&key
+                             (start-accessor 'sw-start)
+                             (delta-fun 'sw-delta)
+                             (reset-fun 'sw-reset))
+                          &body body)
+  ;;; ****
+  `(let ((,start-accessor (get-universal-time)))
+     (flet ((,delta-fun (&optional (print? nil))
+              (let ((delta (- (get-universal-time) ,start-accessor)))
+                (if print?
+                    (print delta)
+                    delta)))
+            (,reset-fun ()
+              (setf ,start-accessor (get-universal-time))))
+       ,@body)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
