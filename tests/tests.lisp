@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  00:02:01 Tue Mar  5 2024 CET
+;;; $$ Last modified:  23:17:49 Wed Mar 13 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -398,6 +398,19 @@
         (random2 nil))
     (setf random2 (pcg-random 10 :reset t))
     (is (= random1 random2))))
+
+;;; test-stopwatch
+(test test-stopwatch
+      (let ((sleep nil)
+            (final nil))
+        (with-stopwatch ()
+          (sleep 1)
+          (setf sleep (apr::sw-delta))
+          (apr::sw-reset)
+          (sleep 1)
+          (setf final (apr::sw-delta)))
+        (is (and (= 1 sleep)
+                 (= 1 final)))))
               
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
