@@ -16,7 +16,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  22:18:35 Thu Mar 14 2024 CET
+;;; $$ Last modified:  22:32:07 Thu Mar 14 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -124,6 +124,18 @@
    (LPARALLEL.COGNATE:PDOTIMES (I 10)
      (PRINT I)))
  (SHUTDOWN-KERNEL))
+
+;; without stopwatch
+(with-kernel (:stopwatch? nil)
+  (lparallel:pdotimes (i 10)
+(print i)))
+;; =>
+(PROGN
+ (INIT-KERNEL 12 :NAME "apparence kernel")
+ (PROGN
+  (LPARALLEL.COGNATE:PDOTIMES (I 10)
+    (PRINT I)))
+ (SHUTDOWN-KERNEL))
 |#
 ;;; SYNOPSIS
 (defmacro with-kernel ((&key
@@ -135,13 +147,17 @@
                         (sw-reset-fun 'kernel-reset))
                        &body body)
   ;;; ****
-  `(progn
-     (init-kernel ,num-workers :name ,kernel-name)
-     (with-stopwatch (:start-accessor ,sw-start-accessor
-                      :delta-fun ,sw-delta-fun
-                      :reset-fun ,sw-reset-fun)
-       ,@body)
-     (shutdown-kernel)))
+  (let ((body-form
+          (if stopwatch?
+              `(with-stopwatch (:start-accessor ,sw-start-accessor
+                                :delta-fun ,sw-delta-fun
+                                :reset-fun ,sw-reset-fun)
+                 ,@body)
+              `(progn ,@body))))
+    `(progn
+       (init-kernel ,num-workers :name ,kernel-name)
+       ,body-form
+       (shutdown-kernel))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF parallel.lisp

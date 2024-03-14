@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  22:21:28 Thu Mar 14 2024 CET
+;;; $$ Last modified:  22:33:40 Thu Mar 14 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -420,11 +420,16 @@
 ;;; test-with-kernel
 ;;; RP  Thu Mar 14 22:20:00 2024
 (test test-with-kernel
-      (let ((res 0))
-        (with-kernel ()
-          (lparallel:pdotimes (i 10)
-            (incf res)))
-        (is (= res 10))))
+  (let ((res1 0)
+        (res2 0))
+    (with-kernel ()
+      (lparallel:pdotimes (i 10)
+        (incf res1)))
+    (with-kernel (:stopwatch? nil)
+      (lparallel:pdotimes (i 10)
+        (incf res2)))
+    (is (and (= res1 10)
+             (= res2 10)))))
               
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
