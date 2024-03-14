@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:56:28 Thu Mar 14 2024 CET
+;;; $$ Last modified:  22:04:01 Thu Mar 14 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -31,6 +31,7 @@
                ;; RP  Tue Mar 12 16:17:06 2024
                (:feature (:not :slippery-chicken) "cm")
                "parse-float"
+               "serapeum"
                "cl-svg"
                "lparallel"
                "vgplot"

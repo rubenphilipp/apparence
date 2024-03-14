@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  23:32:18 Wed Mar 13 2024 CET
+;;; $$ Last modified:  22:21:28 Thu Mar 14 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -416,6 +416,15 @@
           (setf final (apr::sw-delta)))
         (is (and (= 1 sleep)
                  (= 1 final)))))
+
+;;; test-with-kernel
+;;; RP  Thu Mar 14 22:20:00 2024
+(test test-with-kernel
+      (let ((res 0))
+        (with-kernel ()
+          (lparallel:pdotimes (i 10)
+            (incf res)))
+        (is (= res 10))))
               
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
