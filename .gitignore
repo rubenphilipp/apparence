@@ -1,6 +1,3 @@
-research.org
-
-
 ################################################################################
 
 # Created by https://www.toptal.com/developers/gitignore/api/audio,emacs,macos,images,video
@@ -141,8 +138,8 @@ flycheck_*.el
 ################################################################################
 ### excpetion for test images
 
-!/tests/image.jpg
-!/tests/image.png
+!/tests/*.jpg
+!/tests/*.png
 
 ### macOS ###
 # General

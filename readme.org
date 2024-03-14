@@ -5,7 +5,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:40:30 Sun Mar 10 2024 CET
+$$ Last modified:  00:27:51 Thu Mar 14 2024 CET
 #+end_comment
 
 *Please note:* This program is at a very early stage and under development.
@@ -21,6 +21,15 @@ As of now, it still is in a very early stage of development.
 * Compatibility
 
 Tested with SBCL on MacOS and Linux (Ubuntu 22.04).
+
+** Installation
+
+If the dependencies won't install, try using [[https://ultralisp.org/][Ultralisp]] as a source for QuickLisp
+packages:
+
+#+begin_src lisp
+(ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
+#+end_src
 
 ** Performance
 
