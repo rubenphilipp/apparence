@@ -5,7 +5,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  00:27:51 Thu Mar 14 2024 CET
+$$ Last modified:  21:01:22 Thu Mar 14 2024 CET
 #+end_comment
 
 *Please note:* This program is at a very early stage and under development.
@@ -30,6 +30,11 @@ packages:
 #+begin_src lisp
 (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
 #+end_src
+
+*** Inkscape
+
+*Note:* On Linux, there is a (known) issue with the ~inkscape~ package when
+installed via ~snap~. It is thus recommended, to use ~apt~ instead of ~snap~. 
 
 ** Performance
 
