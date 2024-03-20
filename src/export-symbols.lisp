@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****h* apr/export
+;;; ****h* apr/export-symbols
 ;;; NAME
-;;; export
+;;; export-symbols
 ;;; 
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -13,7 +13,7 @@
 ;;; This module exports all symbols from the apparence package. 
 ;;;
 ;;;
-;;; $$ Last modified:  17:59:18 Mon Feb 26 2024 CET
+;;; $$ Last modified:  17:01:47 Wed Mar 20 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -28,4 +28,4 @@
       (export symb package))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; EOF export.lisp
+;;; EOF export-symbols.lisp

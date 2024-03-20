@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  16:59:01 Wed Mar 20 2024 CET
+;;; $$ Last modified:  17:01:10 Wed Mar 20 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -54,7 +54,7 @@
                (:file "projection-surface")
                (:file "cylinder-mantle")
                ;; export needs to be done lastly
-               (:file "export")))
+               (:file "export-symbols")))
 
 
 ;;; regression tests
