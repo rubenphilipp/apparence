@@ -5,7 +5,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:01:22 Thu Mar 14 2024 CET
+$$ Last modified:  00:04:03 Mon Mar 18 2024 CET
 #+end_comment
 
 *Please note:* This program is at a very early stage and under development.
@@ -54,3 +54,4 @@ The major dependencies are:
 - [[https://github.com/tokenrove/imago][imago]]
 - [[https://github.com/ormf/cm][cm]]
 - [[https://gitlab.com/inkscape/inkscape][inkscape]] (for svg to image conversion)
+- [[https://github.com/ak-coram/cl-frugal-uuid/][cl-frugal-uuid]]
