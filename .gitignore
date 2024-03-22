@@ -139,9 +139,9 @@ flycheck_*.el
 ################################################################################
 ### excpetion for test images
 
-!/tests/*.jpg
-!/tests/*.png
-!/tests/*.svg
+!/tests/**/*.jpg
+!/tests/**/*.png
+!/tests/**/*.svg
 
 ### macOS ###
 # General
