@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  01:01:45 Fri Mar 22 2024 CET
+;;; $$ Last modified:  00:14:46 Sat Mar 23 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -444,7 +444,15 @@
                  (= b 25)
                  (= c 38)))))
             
-              
+;;; test-batch-svg->png
+(test test-batch-svg->png
+  (let ((indir (test-pathname "svg-seq/"))
+        (outdir "/tmp/apr-test-batch/"))
+    (apr::batch-svg->png :indir indir
+                         :outdir outdir)
+    (is (probe-file (concatenate 'string
+                                 outdir
+                                 "1.png")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp

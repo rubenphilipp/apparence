@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  00:44:18 Fri Mar 22 2024 CET
+;;; $$ Last modified:  00:25:40 Sat Mar 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -675,6 +675,104 @@
             (,reset-fun ()
               (setf ,start-accessor (get-universal-time))))
        ,@body)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/batch-svg->png
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-22
+;;; 
+;;; DESCRIPTION
+;;; This function converts all svg files in a directory to png files. 
+;;;
+;;; ARGUMENTS
+;;; none.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :indir. The input directory containing the svg files.
+;;; - :outdir. The output directory for the pngs.
+;;; - :in-extension. The filename extansions for the svg-files (without ".").
+;;;   Default = "svg"
+;;; Inherited from with-kernel:
+;;; - :num-workers. A number indicating the amount of workers to initialize the
+;;;   kernel with. Default = (serapeum:count-cpus) -> i.e. the number of
+;;;   available CPU cores. 
+;;; - :kernel-name. A string as a name for the kernel.
+;;;   Default = "apparence kernel"
+;;; - :stopwatch?. A boolean indicating whether to measure the running time of
+;;;   the kernel (when T; via with-stopwatch). Default = t
+;;; - :sw-start-accessor. The accessor (symbol) to the stopwatch start time.
+;;;   Default = kernel-start
+;;; - :sw-delta-fun. The function-name (symbol) for the delta-function
+;;;   (cf. with-stopwatch). Default = 'kernel-delta
+;;; - :sw-reset-fun. The function-name (symbol) for the reset-function
+;;;   (cf. with-stopwatch). Default = 'kernel-reset
+;;; 
+;;; RETURN VALUE
+;;; The output directory.
+;;;
+;;; EXAMPLE
+
+
+;;; SYNOPSIS
+(defun batch-svg->png (&key
+                         indir outdir
+                         (in-extension "svg")
+                         ;; inherited from with-kernel
+                         (num-workers (serapeum:count-cpus))
+                         (kernel-name "apparence kernel")
+                         (stopwatch? t)
+                         (sw-start-accessor 'kernel-start)
+                         (sw-delta-fun 'kernel-delta)
+                         (sw-reset-fun 'kernel-reset))
+  ;;; ****
+  (with-kernel (:num-workers num-workers
+                :kernel-name kernel-name
+                :stopwatch? stopwatch?
+                :sw-start-accessor sw-start-accessor
+                :sw-delta-fun sw-delta-fun
+                :sw-reset-fun sw-reset-fun)
+    (let* ((indir (if indir
+                      (trailing-slash indir)
+                      (trailing-slash
+                       (progn
+                         (format t "~%Input directory: ")
+                         (read-line)))))
+           (outdir (if outdir
+                       (trailing-slash outdir)
+                       (trailing-slash
+                        (progn
+                          (format t "~%Output directory: ")
+                          (read-line)))))
+           (file-pattern (pathname (format nil "*.~a" in-extension)))
+           (files (uiop:directory-files indir file-pattern))
+           (file-counter 1)
+           (num-files (length files)))
+      (ensure-directories-exist outdir)
+      (with-stopwatch ()
+        (lparallel:pdotimes (i num-files)
+          (with-stopwatch ()
+            (let* ((infile (namestring (nth i files)))
+                   (outfile (concatenate 'string outdir
+                                         (pathname-name infile) ".png")))
+              (apply #'shell (list (apr::get-apr-config :inkscape-command)
+                                   infile
+                                   "--export-png-color-mode"
+                                   "RGBA_8"
+                                   "-o"
+                                   outfile))
+              (format t "File: ~a (~a/~a) ~% ~
+                     Duration: ~a sec~%"
+                      outfile
+                      file-counter num-files
+                      (sw-delta))
+              (incf file-counter))))
+        (format t "Time elapsed: ~a seconds ~%" (sw-delta))))
+    outdir))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
