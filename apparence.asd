@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  17:01:10 Wed Mar 20 2024 CET
+;;; $$ Last modified:  00:10:24 Fri Mar 22 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -46,6 +46,7 @@
                (:file "utilities")
                (:file "globals")
                (:file "random")
+               (:file "slippery-chicken" :if-feature :slippery-chicken)
                (:file "svg")
                (:file "parallel")
                (:file "image")

@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  22:33:40 Thu Mar 14 2024 CET
+;;; $$ Last modified:  01:01:45 Fri Mar 22 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -430,6 +430,20 @@
         (incf res2)))
     (is (and (= res1 10)
              (= res2 10)))))
+
+;;; test-sc-1
+#+slippery-chicken
+(test test-sc-1
+      (let ((a (frame-start (sc::make-event 'c4 'q :start-time 2.0)
+                            :frame-rate 25))
+            (b (frame-end (sc::make-event 'c4 'q :start-time 0.0)
+                          :frame-rate 25))
+            (c (frame-duration (sc::make-event 'c4 'q. :start-time 2.0)
+                               :frame-rate 25)))
+        (is (and (= a 50)
+                 (= b 25)
+                 (= c 38)))))
+            
               
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

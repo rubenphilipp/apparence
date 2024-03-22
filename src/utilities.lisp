@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  22:58:40 Wed Mar 13 2024 CET
+;;; $$ Last modified:  00:44:18 Fri Mar 22 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -675,6 +675,28 @@
             (,reset-fun ()
               (setf ,start-accessor (get-universal-time))))
        ,@body)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#|
+(secs->frames 1.0 :frame-rate 25) ;; => 25
+|#
+(defun secs->frames (secs &key
+                            (frame-rate (get-apr-config :fps))
+                            (round-fun #'round))
+  ;;; ****
+  (let ((res (* secs frame-rate)))
+    (funcall round-fun res)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#|
+(frames->secs 55) ;; => 11/5 (2.2)
+|#
+(defun frames->secs (frames &key
+                              (frame-rate (get-apr-config :fps)))
+  ;;; ****
+  (/ frames frame-rate))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
