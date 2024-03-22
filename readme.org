@@ -5,7 +5,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  00:04:03 Mon Mar 18 2024 CET
+$$ Last modified:  01:19:26 Fri Mar 22 2024 CET
 #+end_comment
 
 *Please note:* This program is at a very early stage and under development.
@@ -44,6 +44,19 @@ adjust the dynamic heap size of SBCL, e.g.
 #+begin_src shell
 sbcl --dynamic-space-size 8192
 # this is setting the maximum heap size to 8192 MB
+#+end_src
+
+
+* Tests
+
+Always run tests with a fresh freshly started lisp instance.
+
+** Run tests
+
+Use this command:
+
+#+begin_src lisp
+(asdf:test-system :apparence)
 #+end_src
 
 
