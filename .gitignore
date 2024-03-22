@@ -141,6 +141,7 @@ flycheck_*.el
 
 !/tests/*.jpg
 !/tests/*.png
+!/tests/*.svg
 
 ### macOS ###
 # General
