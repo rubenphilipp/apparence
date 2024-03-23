@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  23:44:43 Sat Mar 23 2024 CET
+;;; $$ Last modified:  00:09:20 Sun Mar 24 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -734,7 +734,9 @@
                             (list "-h"
                                   (format nil "~a" height)))))
     (setf command (append command
-                          (list "--export-png-color-mode"
+                          (list "--export-type"
+                                "png"
+                                "--export-png-color-mode"
                                 "RGBA_8"
                                 "--export-dpi"
                                 (write-to-string dpi)

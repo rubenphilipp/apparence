@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  23:45:56 Sat Mar 23 2024 CET
+;;; $$ Last modified:  00:16:27 Sun Mar 24 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -121,29 +121,14 @@
     (error "svg::svg->png: The dpi must be of type integer."))
   (let* ((tmpfile (format nil "~a~a.svg"
                           (trailing-slash tmp-dir)
-                          (get-random-uuid)))
-         (command (list (get-apr-config :inkscape-command)
-                        tmpfile)))
-    ;; add further elements to the command
-    (when width
-      (setf command (append command
-                            (list "-w"
-                                  (format nil "~a" width)))))
-    (when height
-      (setf command (append command
-                            (list "-h"
-                                  (format nil "~a" height)))))
-    (setf command (append command
-                          (list "--export-png-color-mode"
-                                "RGBA_8"
-                                "--export-dpi"
-                                (write-to-string dpi)
-                                "-o"
-                                outfile)))
+                          (get-random-uuid))))
     ;;; perform the conversion
     (ensure-directories-exist tmp-dir)
     (write-svg svg :outfile tmpfile)
-    (apply #'shell command)
+    (svg-file->png tmpfile :outfile outfile
+                           :dpi dpi
+                           :width width
+                           :height height)
     (delete-file tmpfile)
     outfile))
 
