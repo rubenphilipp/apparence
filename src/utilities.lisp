@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  14:59:18 Sat Mar 23 2024 CET
+;;; $$ Last modified:  15:03:23 Sat Mar 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -732,6 +732,8 @@
   (unless (and indir outdir)
     (error "utilities::svg-files->png: Both indir and outdir have to be ~
             specified."))
+  (unless (integerp dpi)
+    (error "utilities::svg-files->png: The dpi must be of type integer."))
   (with-kernel (:num-workers num-workers
                 :kernel-name kernel-name
                 :stopwatch? stopwatch?
