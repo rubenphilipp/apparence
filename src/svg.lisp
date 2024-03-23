@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  15:03:43 Sat Mar 23 2024 CET
+;;; $$ Last modified:  23:45:56 Sat Mar 23 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -89,16 +89,9 @@
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
 ;;; - :outfile. The output filename. Default = "/tmp/image.png"
-;;; - :dpi. The dpi for the png. 
 ;;; - :tmp-dir. A path to a directory where the temp-files are stored.
-;;;   Default = (get-apr-config :default-tmp-dir)
-;;; - :width. The width of the resulting png file. When omitted, the width as
-;;;   specified in the svg will be used, or -- when the height is given -- the
-;;;   width will be derived proportionally from the height (see :height). 
-;;; - :height. The height of the resulting png file. When omitted and no value
-;;;   is set for :width, the size follow the specification in the svg-object.
-;;;   If ommited and width is set, the height will be proportionally derived
-;;;   from the width (inkscapes default behaviour). 
+;;;
+;;; further arguments are inherited from svg-file->png.
 ;;; 
 ;;; RETURN VALUE
 ;;; The output filename. 

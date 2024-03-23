@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  15:03:23 Sat Mar 23 2024 CET
+;;; $$ Last modified:  23:44:43 Sat Mar 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -678,6 +678,74 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/svg-file->png
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-23
+;;; 
+;;; DESCRIPTION
+;;; This function coverts a .svg file to a .png file via Inkscape. 
+;;;
+;;; ARGUMENTS
+;;; The path to the svg-file. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :outfile. The output filename. Default = "/tmp/image.png"
+;;; - :dpi. The dpi for the png.
+;;; - :width. The width of the resulting png file. When omitted, the width as
+;;;   specified in the svg will be used, or -- when the height is given -- the
+;;;   width will be derived proportionally from the height (see :height). 
+;;; - :height. The height of the resulting png file. When omitted and no value
+;;;   is set for :width, the size follow the specification in the svg-object.
+;;;   If ommited and width is set, the height will be proportionally derived
+;;;   from the width (inkscapes default behaviour). 
+;;; 
+;;; RETURN VALUE
+;;; The path to the png file. 
+;;;
+;;; EXAMPLE
+
+
+;;; SYNOPSIS
+(defun svg-file->png (svg-file
+                      &key
+                        (outfile "/tmp/image.png")
+                        (dpi 300)
+                        width
+                        height)
+  ;;; ****
+  (unless (integerp dpi)
+    (error "utilities::svg-file->png: The dpi must be of type integer."))
+  (unless (probe-file svg-file)
+    (error "utilities::svg-file->png: The svg-file ~a does not exist."
+           svg-file))
+  (let ((command (list (get-apr-config :inkscape-command)
+                       svg-file)))
+    ;; add further elements to the command
+    (when width
+      (setf command (append command
+                            (list "-w"
+                                  (format nil "~a" width)))))
+    (when height
+      (setf command (append command
+                            (list "-h"
+                                  (format nil "~a" height)))))
+    (setf command (append command
+                          (list "--export-png-color-mode"
+                                "RGBA_8"
+                                "--export-dpi"
+                                (write-to-string dpi)
+                                "-o"
+                                outfile)))
+    ;;; perform the conversion
+    (apply #'shell command)
+    outfile))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****f* utilities/svg-files->png
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -721,6 +789,8 @@
                          indir outdir
                          (in-extension "svg")
                          (dpi 300)
+                         width
+                         height
                          ;; inherited from with-kernel
                          (num-workers (serapeum::count-cpus))
                          (kernel-name "apparence kernel")
@@ -753,14 +823,10 @@
             (let* ((infile (namestring (nth i files)))
                    (outfile (concatenate 'string outdir
                                          (pathname-name infile) ".png")))
-              (apply #'shell (list (apr::get-apr-config :inkscape-command)
-                                   infile
-                                   "--export-png-color-mode"
-                                   "RGBA_8"
-                                   "--export-dpi"
-                                   (write-to-string dpi)
-                                   "-o"
-                                   outfile))
+              (svg-file->png infile :outfile outfile
+                                    :dpi dpi
+                                    :width width
+                                    :height height)
               (format t "File: ~a (~a/~a) ~% ~
                      Duration: ~a sec~%"
                       outfile
