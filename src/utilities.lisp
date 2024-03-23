@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  14:10:11 Sat Mar 23 2024 CET
+;;; $$ Last modified:  14:59:18 Sat Mar 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -678,7 +678,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* utilities/batch-svg->png
+;;; ****f* utilities/svg-files->png
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
@@ -697,6 +697,7 @@
 ;;; - :outdir. The output directory for the pngs.
 ;;; - :in-extension. The filename extansions for the svg-files (without ".").
 ;;;   Default = "svg"
+;;; - :dpi. The output dpi of the png files.
 ;;; Inherited from with-kernel:
 ;;; - :num-workers. A number indicating the amount of workers to initialize the
 ;;;   kernel with. Default = (serapeum:count-cpus) -> i.e. the number of
@@ -716,9 +717,10 @@
 ;;; The output directory namestring. 
 ;;;
 ;;; SYNOPSIS
-(defun batch-svg->png (&key
+(defun svg-files->png (&key
                          indir outdir
                          (in-extension "svg")
+                         (dpi 300)
                          ;; inherited from with-kernel
                          (num-workers (serapeum::count-cpus))
                          (kernel-name "apparence kernel")
@@ -728,7 +730,7 @@
                          (sw-reset-fun 'kernel-reset))
   ;;; ****
   (unless (and indir outdir)
-    (error "utilities::batch-svg->png: Both indir and outdir have to be ~
+    (error "utilities::svg-files->png: Both indir and outdir have to be ~
             specified."))
   (with-kernel (:num-workers num-workers
                 :kernel-name kernel-name
@@ -753,6 +755,8 @@
                                    infile
                                    "--export-png-color-mode"
                                    "RGBA_8"
+                                   "--export-dpi"
+                                   (write-to-string dpi)
                                    "-o"
                                    outfile))
               (format t "File: ~a (~a/~a) ~% ~

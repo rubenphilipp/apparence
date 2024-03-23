@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  01:29:10 Sat Mar 23 2024 CET
+;;; $$ Last modified:  14:59:39 Sat Mar 23 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -444,11 +444,11 @@
                  (= b 25)
                  (= c 38)))))
             
-;;; test-batch-svg->png
-(test test-batch-svg->png
+;;; test-svg-files->png
+(test test-svg-files->png
   (let ((indir (test-pathname "svg-seq/"))
         (outdir "/tmp/apr-test-batch/"))
-    (apr::batch-svg->png :indir indir
+    (apr::svg-files->png :indir indir
                          :outdir outdir)
     (is (probe-file (concatenate 'string
                                  outdir

@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  21:43:22 Mon Mar  4 2024 CET
+;;; $$ Last modified:  14:57:56 Sat Mar 23 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -89,6 +89,7 @@
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
 ;;; - :outfile. The output filename. Default = "/tmp/image.png"
+;;; - :dpi. The dpi for the png. 
 ;;; - :tmp-dir. A path to a directory where the temp-files are stored.
 ;;;   Default = (get-apr-config :default-tmp-dir)
 ;;; - :width. The width of the resulting png file. When omitted, the width as
@@ -118,6 +119,7 @@
 (defmethod svg->png ((svg cl-svg::svg-toplevel)
                      &key
                        (outfile "/tmp/image.png")
+                       (dpi 300)
                        (tmp-dir (get-apr-config :default-tmp-dir))
                        width
                        height)
@@ -139,6 +141,8 @@
     (setf command (append command
                           (list "--export-png-color-mode"
                                 "RGBA_8"
+                                "--export-dpi"
+                                (write-to-string dpi)
                                 "-o"
                                 outfile)))
     ;;; perform the conversion
