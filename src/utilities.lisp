@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  01:24:23 Sat Mar 23 2024 CET
+;;; $$ Last modified:  14:10:11 Sat Mar 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -713,12 +713,8 @@
 ;;;   (cf. with-stopwatch). Default = 'kernel-reset
 ;;; 
 ;;; RETURN VALUE
-;;; The output directory.
+;;; The output directory namestring. 
 ;;;
-;;; EXAMPLE
-
-;;(batch-svg->png)
-
 ;;; SYNOPSIS
 (defun batch-svg->png (&key
                          indir outdir
@@ -731,24 +727,17 @@
                          (sw-delta-fun 'kernel-delta)
                          (sw-reset-fun 'kernel-reset))
   ;;; ****
+  (unless (and indir outdir)
+    (error "utilities::batch-svg->png: Both indir and outdir have to be ~
+            specified."))
   (with-kernel (:num-workers num-workers
                 :kernel-name kernel-name
                 :stopwatch? stopwatch?
                 :sw-start-accessor sw-start-accessor
                 :sw-delta-fun sw-delta-fun
                 :sw-reset-fun sw-reset-fun)
-    (let* ((indir (if indir
-                      (trailing-slash indir)
-                      (trailing-slash
-                       (progn
-                         (format t "~%Input directory: ")
-                         (read-line)))))
-           (outdir (if outdir
-                       (trailing-slash outdir)
-                       (trailing-slash
-                        (progn
-                          (format t "~%Output directory: ")
-                          (read-line)))))
+    (let* ((indir (trailing-slash indir))
+           (outdir (trailing-slash outdir))
            (file-pattern (pathname (format nil "*.~a" in-extension)))
            (files (uiop:directory-files indir file-pattern))
            (file-counter 1)
