@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  00:16:27 Sun Mar 24 2024 CET
+;;; $$ Last modified:  00:20:24 Sun Mar 24 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -117,8 +117,6 @@
                        width
                        height)
   ;;; ****
-  (unless (integerp dpi)
-    (error "svg::svg->png: The dpi must be of type integer."))
   (let* ((tmpfile (format nil "~a~a.svg"
                           (trailing-slash tmp-dir)
                           (get-random-uuid))))
