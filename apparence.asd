@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  00:10:24 Fri Mar 22 2024 CET
+;;; $$ Last modified:  01:20:29 Sat Mar 23 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -43,12 +43,12 @@
   :pathname "src/"
   :components ((:file "package")
                (:file "named-object")
+               (:file "parallel")
                (:file "utilities")
                (:file "globals")
                (:file "random")
                (:file "slippery-chicken" :if-feature :slippery-chicken)
                (:file "svg")
-               (:file "parallel")
                (:file "image")
                (:file "canvas")
                (:file "projection")

@@ -16,7 +16,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  22:32:07 Thu Mar 14 2024 CET
+;;; $$ Last modified:  01:27:41 Sat Mar 23 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -139,12 +139,12 @@
 |#
 ;;; SYNOPSIS
 (defmacro with-kernel ((&key
-                        (num-workers (serapeum:count-cpus))
-                        (kernel-name "apparence kernel")
-                        (stopwatch? t)
-                        (sw-start-accessor 'kernel-start)
-                        (sw-delta-fun 'kernel-delta)
-                        (sw-reset-fun 'kernel-reset))
+                          (num-workers (serapeum::count-cpus))
+                          (kernel-name "apparence kernel")
+                          (stopwatch? t)
+                          (sw-start-accessor 'kernel-start)
+                          (sw-delta-fun 'kernel-delta)
+                          (sw-reset-fun 'kernel-reset))
                        &body body)
   ;;; ****
   (let ((body-form

@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  00:25:40 Sat Mar 23 2024 CET
+;;; $$ Last modified:  01:24:23 Sat Mar 23 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -717,13 +717,14 @@
 ;;;
 ;;; EXAMPLE
 
+;;(batch-svg->png)
 
 ;;; SYNOPSIS
 (defun batch-svg->png (&key
                          indir outdir
                          (in-extension "svg")
                          ;; inherited from with-kernel
-                         (num-workers (serapeum:count-cpus))
+                         (num-workers (serapeum::count-cpus))
                          (kernel-name "apparence kernel")
                          (stopwatch? t)
                          (sw-start-accessor 'kernel-start)
