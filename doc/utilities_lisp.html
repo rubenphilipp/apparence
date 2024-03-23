@@ -55,62 +55,8 @@
 </pre>
 
 <hr />
-<a name="utilities2fbatch2dsvg2d3epng"></a>
-<a name="robo43"></a><h2>utilities/batch-svg-&gt;png [ Functions ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
-<p class="item_name">AUTHOR</p>
-<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
-</pre>
-<p class="item_name">CREATED</p>
-<pre> 2024-03-22
-</pre>
-<p class="item_name">DESCRIPTION</p>
-<pre> This function converts all <a href="./svg_lisp.html#robo5">svg</a> files in a directory to png files. 
-</pre>
-<p class="item_name">ARGUMENTS</p>
-<pre> none.
-</pre>
-<p class="item_name">OPTIONAL ARGUMENTS</p>
-<pre> keyword-arguments:
- - :indir. The input directory containing the <a href="./svg_lisp.html#robo5">svg</a> files.
- - :outdir. The output directory for the pngs.
- - :in-extension. The filename extansions for the <a href="./svg_lisp.html#robo5">svg</a>-files (without ".").
-   Default = "<a href="./svg_lisp.html#robo5">svg</a>"
- Inherited from with-kernel:
- - :num-workers. A number indicating the amount of workers to initialize the
-   kernel with. Default = (serapeum:count-cpus) -&gt; i.e. the number of
-   available CPU cores. 
- - :kernel-name. A string as a name for the kernel.
-   Default = "apparence kernel"
- - :stopwatch?. A boolean indicating whether to measure the running time of
-   the kernel (when T; via with-stopwatch). Default = t
- - :sw-start-accessor. The accessor (symbol) to the stopwatch start time.
-   Default = kernel-start
- - :sw-delta-fun. The function-name (symbol) for the delta-function
-   (cf. with-stopwatch). Default = 'kernel-delta
- - :sw-reset-fun. The function-name (symbol) for the reset-function
-   (cf. with-stopwatch). Default = 'kernel-reset
-</pre>
-<p class="item_name">RETURN VALUE</p>
-<pre> The output directory namestring. 
-</pre>
-<p class="item_name">SYNOPSIS</p>
-<pre class="source">(defun <strong>batch-svg-&gt;png</strong> (&amp;key
-                         indir outdir
-                         (in-extension "<a href="./svg_lisp.html#robo5">svg</a>")
-                         ;; inherited from <a href="./parallel_lisp.html#robo33">with-kernel</a>
-                         (num-workers (serapeum::count-cpus))
-                         (kernel-name "apparence kernel")
-                         (stopwatch? t)
-                         (sw-start-accessor 'kernel-start)
-                         (sw-delta-fun 'kernel-delta)
-                         (sw-reset-fun 'kernel-reset))
-</pre>
-
-<hr />
 <a name="utilities2fdegrees2d3eradians"></a>
-<a name="robo44"></a><h2>utilities/degrees-&gt;radians [ Functions ]</h2>
+<a name="robo43"></a><h2>utilities/degrees-&gt;radians [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -138,7 +84,7 @@
 
 <hr />
 <a name="utilities2ffround2dto2ddigits"></a>
-<a name="robo45"></a><h2>utilities/fround-to-digits [ Functions ]</h2>
+<a name="robo44"></a><h2>utilities/fround-to-digits [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -170,7 +116,7 @@
 
 <hr />
 <a name="utilities2fget2drandom2duuid"></a>
-<a name="robo46"></a><h2>utilities/get-random-uuid [ Functions ]</h2>
+<a name="robo45"></a><h2>utilities/get-random-uuid [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -203,7 +149,7 @@
 
 <hr />
 <a name="utilities2fload2dfrom2dsame2ddir"></a>
-<a name="robo47"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
+<a name="robo46"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -229,7 +175,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsame2ddir"></a>
-<a name="robo48"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
+<a name="robo47"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -258,7 +204,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsrc2ddir"></a>
-<a name="robo49"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
+<a name="robo48"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -285,7 +231,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelope"></a>
-<a name="robo50"></a><h2>utilities/plot-envelope [ Functions ]</h2>
+<a name="robo49"></a><h2>utilities/plot-envelope [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -318,7 +264,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelopes"></a>
-<a name="robo51"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
+<a name="robo50"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -364,7 +310,7 @@
 
 <hr />
 <a name="utilities2fradians2d3edegrees"></a>
-<a name="robo52"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
+<a name="robo51"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -383,7 +329,7 @@
 <pre> The value in degrees. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(<strong>radians-&gt;degrees</strong> (<a href="#robo44">degrees-&gt;radians</a> -90))
+<pre class="source">(<strong>radians-&gt;degrees</strong> (<a href="#robo43">degrees-&gt;radians</a> -90))
 ;; =&gt; -90.0
 </pre>
 <p class="item_name">SYNOPSIS</p>
@@ -392,7 +338,7 @@
 
 <hr />
 <a name="utilities2frgb2dp"></a>
-<a name="robo53"></a><h2>utilities/rgb-p [ Functions ]</h2>
+<a name="robo52"></a><h2>utilities/rgb-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -420,7 +366,7 @@
 
 <hr />
 <a name="utilities2frgba2dp"></a>
-<a name="robo54"></a><h2>utilities/rgba-p [ Functions ]</h2>
+<a name="robo53"></a><h2>utilities/rgba-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -450,7 +396,7 @@
 
 <hr />
 <a name="utilities2fshell"></a>
-<a name="robo55"></a><h2>utilities/shell [ Functions ]</h2>
+<a name="robo54"></a><h2>utilities/shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -483,7 +429,7 @@
 
 <hr />
 <a name="utilities2fsimple2dshell"></a>
-<a name="robo56"></a><h2>utilities/simple-shell [ Functions ]</h2>
+<a name="robo55"></a><h2>utilities/simple-shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -493,20 +439,76 @@
 <pre> 2023-07-16
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> Run a <a href="#robo55">shell</a> command from lisp and return the exit code.
+<pre> Run a <a href="#robo54">shell</a> command from lisp and return the exit code.
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> - The <a href="#robo55">shell</a> command (i.e., most likely, path to the binary)
+<pre> - The <a href="#robo54">shell</a> command (i.e., most likely, path to the binary)
  
  OPTIONAL ARGUMENTS:
  rest:
- - The arguments to the <a href="#robo55">shell</a> program.
+ - The arguments to the <a href="#robo54">shell</a> program.
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The the exit-code of the process.
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defun <strong>simple-shell</strong> (command &amp;rest arguments)
+</pre>
+
+<hr />
+<a name="utilities2fsvg2dfiles2d3epng"></a>
+<a name="robo56"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-22
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts all <a href="./svg_lisp.html#robo5">svg</a> files in a directory to png files. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> none.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :indir. The input directory containing the <a href="./svg_lisp.html#robo5">svg</a> files.
+ - :outdir. The output directory for the pngs.
+ - :in-extension. The filename extansions for the <a href="./svg_lisp.html#robo5">svg</a>-files (without ".").
+   Default = "<a href="./svg_lisp.html#robo5">svg</a>"
+ - :dpi. The output dpi of the png files.
+ Inherited from with-kernel:
+ - :num-workers. A number indicating the amount of workers to initialize the
+   kernel with. Default = (serapeum:count-cpus) -&gt; i.e. the number of
+   available CPU cores. 
+ - :kernel-name. A string as a name for the kernel.
+   Default = "apparence kernel"
+ - :stopwatch?. A boolean indicating whether to measure the running time of
+   the kernel (when T; via with-stopwatch). Default = t
+ - :sw-start-accessor. The accessor (symbol) to the stopwatch start time.
+   Default = kernel-start
+ - :sw-delta-fun. The function-name (symbol) for the delta-function
+   (cf. with-stopwatch). Default = 'kernel-delta
+ - :sw-reset-fun. The function-name (symbol) for the reset-function
+   (cf. with-stopwatch). Default = 'kernel-reset
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The output directory namestring. 
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>svg-files-&gt;png</strong> (&amp;key
+                         indir outdir
+                         (in-extension "<a href="./svg_lisp.html#robo5">svg</a>")
+                         (dpi 300)
+                         ;; inherited from <a href="./parallel_lisp.html#robo33">with-kernel</a>
+                         (num-workers (serapeum::count-cpus))
+                         (kernel-name "apparence kernel")
+                         (stopwatch? t)
+                         (sw-start-accessor 'kernel-start)
+                         (sw-delta-fun 'kernel-delta)
+                         (sw-reset-fun 'kernel-reset))
 </pre>
 
 <hr />
@@ -620,7 +622,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-23 14:10:49</p>
+<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-23 15:00:43</p>
 </div> <!-- footer -->
 </body>
 </html>
