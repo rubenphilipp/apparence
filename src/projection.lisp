@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  17:04:01 Mon Mar 25 2024 CET
+;;; $$ Last modified:  17:15:34 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -348,6 +348,24 @@ data: #<RGB-IMAGE (200x300) {700ED06133}>
   (declare (ignore ignore))
   (setf (x-scaler pn) (* width-factor (x-scaler pn))
         (y-scaler pn) (* height-factor (y-scaler pn)))
+  pn)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; this changes the dimensions of the object
+
+(defmethod rotate ((pn projection) degree
+                   &key
+                     (interpolation (get-apr-config :default-interpolation))
+                     (background-color (get-apr-config :default-rgb)))
+  ;;; ****
+  (let ((img (make-image (data pn))))
+    (setf (initialized pn) nil)
+    (rotate img degree :background-color background-color
+                       :interpolation interpolation)
+    (setf (slot-value pn 'projection-width) nil
+          (slot-value pn 'projection-height) nil)
+    (setf (data pn) (data img))
+    (update pn))
   pn)
 
 

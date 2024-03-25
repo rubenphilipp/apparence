@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  16:11:10 Mon Mar 25 2024 CET
+;;; $$ Last modified:  22:06:38 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -541,7 +541,7 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
 ;;; SYNOPSIS
 (defmethod write-png ((img image) &key (outfile "/tmp/image.png"))
   ;;; ****
-  (imago::write-png (data img) outfile)
+  (imago-pngio::write-png (data img) outfile)
   outfile)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -595,8 +595,45 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
             outfile)))
   (imago-jpeg-turbo::write-jpg (data img) outfile :quality quality)
   outfile)
-                          
-  
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; to be used with imago::compose
+;;; 
+;;; Porter/Duff algorithm: A over B
+;;; 
+;;; - Porter, Thomas, und Tom Duff. 1984. „Compositing Digital Images“. In
+;;;   Proceedings of the 11th Annual Conference on Computer Graphics and
+;;;   Interactive Techniques,
+;;;   253–59. ACM. https://doi.org/10.1145/800031.808606.
+;;; - https://ssp.impulsetrain.com/porterduff.html
+;;; 
+;;; NB: In this context, color2 = A and color1 = B
+;;; RP  Mon Mar 25 18:44:42 2024
+
+(defun apr-default-compose-op (color1 color2)
+  (multiple-value-bind (a1 r1 g1 b1) (imago::color-argb color1)
+    (multiple-value-bind (a2 r2 g2 b2) (imago::color-argb color2)
+      (labels ((get-alpha (alpha-a alpha-b)
+                 (let ((alpha-a (8bit->float alpha-a))
+                       (alpha-b (8bit->float alpha-b)))
+                   (+ alpha-a
+                      (* (- 1 alpha-a) alpha-b))))
+               (get-color (alpha-a alpha-b alpha-c a b)
+                 (let ((alpha-a (8bit->float alpha-a))
+                       (alpha-b (8bit->float alpha-b))
+                       (alpha-c (8bit->float alpha-c))
+                       (a (8bit->float a))
+                       (b (8bit->float b)))
+                   (/ (+ (* alpha-a a)
+                         (* b alpha-b (- 1 alpha-a)))
+                      alpha-c))))
+        (let ((alpha-c (float->8bit (get-alpha a2 a1))))
+          (imago::make-color
+           (float->8bit (get-color a2 a1 alpha-c r2 r1))
+           (float->8bit (get-color a2 a1 alpha-c g2 g1))
+           (float->8bit (get-color a2 a1 alpha-c b2 b1))
+           alpha-c))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF image.lisp

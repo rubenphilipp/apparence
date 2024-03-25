@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  16:43:49 Mon Mar 25 2024 CET
+;;; $$ Last modified:  18:29:00 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -238,14 +238,6 @@
 ;;;
 ;;; ARGUMENTS
 ;;; none. 
-
-;;; - The width of the projection surface.
-;;; - The height of the projection surface.
-;;; - The scaling factor for the width of the ps's canvas (number).
-;;; - The scaling factor for the height of the ps's canvas (number).
-;;; - :color. A three- or four-item list of rgb(a) values determining the canvas
-;;;   background color.  Default = '(0 0 0 0)
-;;; - :id. The id of the projection-surface. 
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
@@ -369,17 +361,28 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
           (src-y (round (/ src-y (y-scaler ps))))
           (src-x (round (/ src-x (x-scaler ps))))
           (dest-y (round (/ dest-y (y-scaler ps))))
-          (dest-x (round (/ dest-x (x-scaler ps)))))
+          (dest-x (round (/ dest-x (x-scaler ps))))
+          ;; this is the temporary placeholder for image to put onto the
+          ;; ps
+          ;; RP  Mon Mar 25 18:15:27 2024
+          (tmp-canvas (imago::make-rgb-image (width ps) (height ps)
+                                             (make-color 0 0 0 0))))
       (if (every #'(lambda (x)
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
-          (imago::copy (data (data ps)) (data tmp-pn)
-                       :height height
-                       :width width
-                       :src-y src-y
-                       :src-x src-x
-                       :dest-y dest-y
-                       :dest-x dest-x)
+          (progn
+            ;; copy the pn image onto the tmp-canvas
+            (imago::copy tmp-canvas (data tmp-pn)
+                         :height height
+                         :width width
+                         :src-y src-y
+                         :src-x src-x
+                         :dest-y dest-y
+                         :dest-x dest-x)
+            ;; now do the actual "putting"
+            (setf (data (data ps))
+                  (imago::compose nil (data (data ps)) tmp-canvas 0 0
+                                  #'apr-default-compose-op)))
           (warn "projection::copy: Won't copy. The resulting dimensions are ~
                  too small.")))
     ps))
