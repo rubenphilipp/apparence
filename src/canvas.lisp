@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  15:42:18 Mon Mar 25 2024 CET
+;;; $$ Last modified:  00:27:51 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -265,7 +265,8 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; 2024-02-28
 ;;; 
 ;;; DESCRIPTION
-;;; This method puts an (imago) image object on top of the canvas.
+;;; This method puts an (imago) image object on top of the canvas by applying a
+;;; compositing function (compose-fun) to both images. 
 ;;;
 ;;; ARGUMENTS
 ;;; - The canvas object.
@@ -273,12 +274,21 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
-;;; - :height. Cf. copy.
-;;; - :width. Cf. copy.
-;;; - :src-y. Cf. copy.  Default = 0.
-;;; - :src-x. Cf. copy.  Default = 0.
-;;; - :dest-y. Cf. copy.  Default = 0.
-;;; - :dest-x. Cf. copy.  Default = 0.
+;;; - :height. The height of the image object on the canvas. If non-NIL, the
+;;;   image will be cropped to the given height (in px).
+;;; - :width. The width of the image object on the canvas. If non-NIL, the
+;;;   image will be cropped to the given width (in px).
+;;; - :src-y. The y coordinate within the image object used when cropped as the
+;;;   left origin. Default = 0
+;;; - :src-x. The x coordinate within the image object used when cropped as the
+;;;   top origin. Default = 0
+;;; - :dest-y. The y coordinate of the location the image object will be placed
+;;;   on the canvas. Default = 0
+;;; - :dest-x. The x coordinate of the location the image object will be placed
+;;;   on the canvas. Default = 0
+;;; - :compose-fun. The default function for performing the compositing.
+;;;   Default = #'apr-default-compose-op, which is the Porter/Duff A over B
+;;;   algorithm. 
 ;;; 
 ;;; RETURN VALUE
 ;;; Cf. copy.
@@ -293,26 +303,35 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
   (write-png cv :outfile "~/Downloads/cv-test.png"))
 |#
 ;;; SYNOPSIS
-(defmethod put-it ((cv canvas) img
+(defmethod put-it ((cv canvas) (img image)
                    &key
                      height
                      width
                      (src-y 0)
                      (src-x 0)
                      (dest-y 0)
-                     (dest-x 0))
+                     (dest-x 0)
+                     (compose-fun #'apr-default-compose-op))
   ;;; ****
   (unless (initialized cv)
     (error "canvas::put-it: The canvas object has not been initialized."))
-  (unless (typep img 'image)
-    (error "canvas::put-it: The img must be of type image."))
-  (copy (data cv) img
-        :height height
-        :width width
-        :src-y src-y
-        :src-x src-x
-        :dest-y dest-y
-        :dest-x dest-x))
+  ;; (unless (typep img 'image)
+  ;;   (error "canvas::put-it: The img must be of type image."))
+  (let ((tmp-img img))
+    (when (or width height)
+      (setf tmp-img (clone img))
+      (let ((width (if width
+                       width
+                       (width tmp-img)))
+            (height (if height
+                        height
+                        (height tmp-img))))
+        (setf (data tmp-img)
+              (imago::crop (data tmp-img) src-x src-y width height)))
+      (setf (data (data cv))
+            (imago::compose nil (data (data cv)) (data tmp-img)
+                            dest-x dest-y
+                            compose-fun)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* canvas/put-it-circular

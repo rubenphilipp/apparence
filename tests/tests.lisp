@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  23:30:42 Mon Mar 25 2024 CET
+;;; $$ Last modified:  00:24:18 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -86,6 +86,16 @@
     (apr:write-png cv :outfile "/tmp/cv-test.png"))
   (is (probe-file "/tmp/cv-test.png")))
 
+;;; test-put-it-elaborate1
+;;; RP  Tue Mar 26 00:06:15 2024
+(test test-put-it-elaborate1
+  (let* ((cv (apr:make-canvas 300 200 :color '(0 0 0 0)))
+         (img (apr::make-rgb-image 50 100
+                                   :initial-color
+                                   (imago::make-color 100 233 90))))
+    (apr:put-it cv img :dest-x 20 :width 20 :height 30 :src-x 5 :src-y 10)
+    (apr:write-png cv :outfile "/tmp/cv-test-ela1.png"))
+  (is (probe-file "/tmp/cv-test-ela1.png")))
 
 ;;; test cylinder-mantle
 ;;; RP  Mon Feb 26 17:53:24 2024
