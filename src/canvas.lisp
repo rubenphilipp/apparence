@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  00:27:51 Tue Mar 26 2024 CET
+;;; $$ Last modified:  00:52:14 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -414,8 +414,9 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
       ;;; RP  Fri Mar  1 18:30:38 2024
       (crop img-tmp src-x src-y new-width new-height)
       (setf image img-tmp)))
-  (let* ((canvas (data cv))
-         (canvas-width (width cv))
+  (let* (;;(canvas (data cv))
+         (canvas cv)
+         (canvas-width (width (data cv)))
          (img-width (width image))
          ;; anchor point (x-axis from left) on image, i.e. the origin x-coords
          (img-anchor (floor (* img-width image-origin)))
@@ -439,21 +440,21 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
     (cond
       ((and (<= 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
-       (copy canvas image :dest-x (first image-x-coords)
-                          :dest-y y))
+       (put-it canvas image :dest-x (first image-x-coords)
+                            :dest-y y))
       ((and (> 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
        (when verbose
          (print "left->right"))
        ;; wrap left->right
        ;; starting with the "left" part (i.e. the right part of the img)
-       (copy canvas image :width (second image-x-coords)
-                          :src-x (abs (first image-x-coords))
-                          :dest-y y)
+       (put-it canvas image :width (second image-x-coords)
+                            :src-x (abs (first image-x-coords))
+                            :dest-y y)
        ;; now the "right" part
-       (copy canvas image :width (abs (first image-x-coords))
-                          :src-x 0
-                          :dest-x (+ canvas-width
+       (put-it canvas image :width (abs (first image-x-coords))
+                            :src-x 0
+                            :dest-x (+ canvas-width
                                      (first image-x-coords))
                           :dest-y y))
       ((and (<= 0 (first image-x-coords))
@@ -462,17 +463,17 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
          (print "right->left"))
        ;; wrap right->left
        ;; starting with the right part (the left part of the img)
-       (copy canvas image :width (- canvas-width
-                                    (first image-x-coords))
-                          :src-x 0
-                          :dest-x (first image-x-coords)
-                          :dest-y y)
+       (put-it canvas image :width (- canvas-width
+                                      (first image-x-coords))
+                            :src-x 0
+                            :dest-x (first image-x-coords)
+                            :dest-y y)
        ;; now the left part
-       (copy canvas image :width (- (second image-x-coords)
-                                    canvas-width)
-                          :src-x (- canvas-width
-                                    (first image-x-coords))
-                          :dest-x 0 :dest-y y))
+       (put-it canvas image :width (- (second image-x-coords)
+                                      canvas-width)
+                            :src-x (- canvas-width
+                                      (first image-x-coords))
+                            :dest-x 0 :dest-y y))
       (t (error "the width of the image to be projected is greater than ~
                  the width of the projection screen.")))
     ;; finally, return the altered canvas object
