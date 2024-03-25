@@ -137,11 +137,20 @@ flycheck_*.el
 *.max
 
 ################################################################################
-### excpetion for test images
+### exception for test images
 
 !/tests/**/*.jpg
 !/tests/**/*.png
 !/tests/**/*.svg
+
+################################################################################
+### exception for example images
+
+!/examples/**/*.jpg
+!/examples/**/*.png
+!/examples/**/*.svg
+
+################################################################################
 
 ### macOS ###
 # General

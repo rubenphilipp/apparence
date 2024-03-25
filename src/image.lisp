@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  21:43:47 Mon Mar  4 2024 CET
+;;; $$ Last modified:  16:11:10 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -528,7 +528,7 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
 ;;; - :outfile. The output filename. Default = "/tmp/image.png"
 ;;; 
 ;;; RETURN VALUE
-;;; NIL
+;;; The path to the output file. 
 ;;;
 ;;; EXAMPLE
 #|
@@ -541,7 +541,8 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
 ;;; SYNOPSIS
 (defmethod write-png ((img image) &key (outfile "/tmp/image.png"))
   ;;; ****
-  (imago::write-png (data img) outfile))
+  (imago::write-png (data img) outfile)
+  outfile)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* image/write-jpg
@@ -563,9 +564,12 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
 ;;; - :outfile. The output filename. Default = "/tmp/image.jpg"
 ;;; - :quality. The quality of the output as an integer (0<=q<=100), where 100
 ;;;   means best quality. Default = 100.
+;;; - :overwrite? Overwrite an existing outfile (when T). Default = T
+;;; - :warn? Then T, additional warnings are printed.
+;;;   Default = (get-apr-config :verbose)
 ;;; 
 ;;; RETURN VALUE
-;;; NIL
+;;; The outfile path (string).
 ;;;
 ;;; EXAMPLE
 #|
@@ -578,11 +582,19 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
 ;;; SYNOPSIS
 (defmethod write-jpg ((img image) &key
                                     (outfile "/tmp/image.jpg")
-                                    (quality 100))
+                                    (quality 100)
+                                    (overwrite? t)
+                                    (warn? (get-apr-config :verbose)))
   ;;; ****
   (unless (and (integerp quality) (<= 0 quality) (>= 100 quality))
     (error "image::write-jpg: The quality must be an integer [0-100]"))
-  (imago-jpeg-turbo::write-jpg (data img) outfile :quality quality))
+  (when (and overwrite? (probe-file outfile))
+    (delete-file outfile)
+    (when warn?
+      (warn "image::write-jpg: The outfile ~a exists and will be overwritten."
+            outfile)))
+  (imago-jpeg-turbo::write-jpg (data img) outfile :quality quality)
+  outfile)
                           
   
 

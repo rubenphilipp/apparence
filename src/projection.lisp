@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  18:21:22 Mon Mar  4 2024 CET
+;;; $$ Last modified:  16:43:39 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -228,7 +228,7 @@
 ;;; not limited to integer values, but can also be e.g. floats.
 ;;;
 ;;; ARGUMENTS
-;;; - An image object or an imago::image.
+;;; - An image object, an imago::image, or the path to an image file. 
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
@@ -278,8 +278,12 @@ data: #<RGB-IMAGE (200x300) {700ED06133}>
                                     (default-interpolation
                                      (get-apr-config :default-interpolation)))
   ;;; ****
-  (when (typep image 'image)
-    (setf image (data image)))
+  (cond ((typep image 'image) (setf image (data image)))
+        ((and (or (pathnamep image) (stringp image))
+              (probe-file image))
+         (setf image (data (make-image-from-file image)))))
+  ;; (when (typep image 'image)
+  ;;   (setf image (data image)))
   (make-instance 'projection :x-scaler x-scaler
                              :y-scaler y-scaler
                              :projection-width projection-width

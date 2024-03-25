@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  00:20:24 Sun Mar 24 2024 CET
+;;; $$ Last modified:  13:13:00 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -170,6 +170,7 @@
                             :width width
                             :height height
                             :viewbox viewbox))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF svg.lisp

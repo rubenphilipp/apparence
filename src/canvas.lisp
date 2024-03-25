@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  22:56:52 Sun Mar  3 2024 CET
+;;; $$ Last modified:  15:42:18 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -195,7 +195,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;;   Default = "/tmp/canvas.png"
 ;;; 
 ;;; RETURN VALUE
-;;; NIL
+;;; The path to the output file. 
 ;;;
 ;;; EXAMPLE
 #|
@@ -210,7 +210,8 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
   (unless (initialized cv)
     (error "canvas::write-png: The canvas object has not been initialized."))
   (let ((img (data cv)))
-    (write-png img :outfile outfile)))
+    (write-png img :outfile outfile))
+  outfile)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* canvas/write-jpg
@@ -234,7 +235,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;;   means best quality. Default = 100.
 ;;; 
 ;;; RETURN VALUE
-;;; NIL
+;;; Returns the output file (string). 
 ;;;
 ;;; EXAMPLE
 #|
@@ -250,7 +251,8 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
   ;;; ****
   (unless (initialized cv)
     (error "canvas::write-jpg: The canvas object has not been initialized."))
-  (write-jpg (data cv) :outfile outfile :quality quality))
+  (write-jpg (data cv) :outfile outfile :quality quality)
+  outfile)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

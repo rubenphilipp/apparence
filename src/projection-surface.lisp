@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  22:27:50 Sun Mar  3 2024 CET
+;;; $$ Last modified:  16:43:49 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -208,7 +208,7 @@
 ;;; the canvas data itself. 
 ;;; 
 ;;; The canvas-coordinates/dimensions are derived by scaling the values
-;;; according to a x- and y-scaler. 
+;;; according to a x- and y-scaler.
 ;;;
 ;;; The coordinate values of projection-surfaces are -- other than those of a
 ;;; canvas -- not limited to integer values, but can also be e.g. floats.
@@ -313,6 +313,22 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
 ;;; assuming coordinates and dimensions of projection-surface and projection
 ;;; share the same scale!!
 ;;; RP  Sat Mar  2 21:59:40 2024
+;;; sharing the scale means that projection-height or -width of the projection
+;;; and the surface-height or -width of the projection-surface are equal, e.g.:
+#|
+(let* ((infile "/path/to/test.jpg")
+       (projection (make-projection infile :projection-height 100))
+       (ps (make-projection-surface :surface-width 200
+                                    :surface-height 100
+                                    :x-scaler 1/10
+                                    :y-scaler 1/10
+                                    :color '(255 255 255 255))))
+  (put-it ps projection :dest-x 100 :dest-y 50)
+  (system-open-file (write-jpg ps)))
+|#
+;;; this ensures that both the projection and the projection-surface share the
+;;; same scale
+;;; RP  Mon Mar 25 16:02:19 2024
 (defmethod put-it ((ps projection-surface) (pn projection)
                    &key
                      height
@@ -336,7 +352,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                      (x-scaler ps)))
         (pn->ps-y (/ (y-scaler pn)
                    (y-scaler ps)))
-         (tmp-pn pn))
+        (tmp-pn pn))
     ;; scale the src if necessary
     (unless (= 1.0 pn->ps-x pn->ps-y)
       ;; warn when image is upscaled
@@ -344,16 +360,16 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
         (when (get-apr-config :verbose)
           (warn "projection-surface::put-it: The projection image will be ~
                  upscaled by a factor of ~
-                 x: ~a, y: ~a." pn->ps-x pn->ps-y)))
+                 x: ~a, y: ~a." (float pn->ps-x) (float pn->ps-y))))
       ;; clone the src
       (setf tmp-pn (make-image (data pn)))
       (scale tmp-pn pn->ps-x pn->ps-y :interpolation interpolation))
-    (let ((height (when height (round (/ height (y-scaler pn)))))
-          (width (when width (round (/ width (x-scaler pn)))))
-          (src-y (round (/ src-y (y-scaler pn))))
-          (src-x (round (/ src-x (x-scaler pn))))
-          (dest-y (round (/ dest-y (/ 1 (y-scaler ps)))))
-          (dest-x (round (/ dest-x (/ 1 (x-scaler ps))))))
+    (let ((height (when height (round (/ height (y-scaler ps)))))
+          (width (when width (round (/ width (x-scaler ps)))))
+          (src-y (round (/ src-y (y-scaler ps))))
+          (src-x (round (/ src-x (x-scaler ps))))
+          (dest-y (round (/ dest-y (y-scaler ps))))
+          (dest-x (round (/ dest-x (x-scaler ps)))))
       (if (every #'(lambda (x)
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
