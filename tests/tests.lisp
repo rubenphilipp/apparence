@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  14:59:39 Sat Mar 23 2024 CET
+;;; $$ Last modified:  23:26:13 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -453,6 +453,39 @@
     (is (probe-file (concatenate 'string
                                  outdir
                                  "1.png")))))
+
+;;; test-improvisation-1
+;;; RP  Mon Mar 25 23:22:37 2024
+(test test-improvisation-1
+  (let* ((infile1 (test-pathname "composer.jpg"))
+         (infile2 (test-pathname "composers.jpg"))
+         (projection1 (make-projection infile1 :projection-height 50))
+         (projection2 (make-projection infile2 :projection-height 50))
+         (ps (make-projection-surface :surface-width 200
+                                      :surface-height 100
+                                      :x-scaler 1/10
+                                      :y-scaler 1/10
+                                      :color '(255 255 255 0)))
+         (outfile "/tmp/test-impr.png"))
+    (put-it ps projection1 :dest-x 100 :dest-y 20
+                           :width 25)
+    (put-it ps projection1 :dest-x 125 :dest-y 45
+                           :width 25 :src-x 25
+                           :height 25 :src-y 25)
+    (put-it ps (scale (clone projection1) .5 .5))
+    (put-it ps projection1 :dest-y 50)
+    ;; change the opacity
+    (imago::do-image-pixels ((data projection2) color x y)
+      (setf color (imago::make-color (imago::color-red color)
+                                     (imago::color-green color)
+                                     (imago::color-blue color)
+                                     200)))
+    (put-it ps (rotate (clone projection2) 80) :dest-y 15)
+    (put-it ps projection2 :dest-x 145 :dest-y 65
+                           :width 20 :height 15
+                           :src-x 5 :src-y 8)
+    (write-png ps :outfile outfile)
+    (is (probe-file outfile))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
