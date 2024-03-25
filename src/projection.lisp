@@ -34,7 +34,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image -> projection
 ;;;
-;;; $$ Last modified:  16:43:39 Mon Mar 25 2024 CET
+;;; $$ Last modified:  17:04:01 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -76,6 +76,7 @@
     (setf (slot-value new 'projection-height) (projection-height pn))
     (setf (slot-value new 'x-scaler) (x-scaler pn))
     (setf (slot-value new 'y-scaler) (y-scaler pn))
+    (setf (slot-value new 'initialized) (initialized pn))
     new))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -346,7 +347,8 @@ data: #<RGB-IMAGE (200x300) {700ED06133}>
   ;;; ****
   (declare (ignore ignore))
   (setf (x-scaler pn) (* width-factor (x-scaler pn))
-        (y-scaler pn) (* height-factor (y-scaler pn))))
+        (y-scaler pn) (* height-factor (y-scaler pn)))
+  pn)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
