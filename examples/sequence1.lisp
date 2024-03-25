@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-03-01
 ;;;
-;;; $$ Last modified:  12:55:12 Mon Mar 25 2024 CET
+;;; $$ Last modified:  13:09:54 Mon Mar 25 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -85,7 +85,6 @@
                           frame-counter frames
                           (sw-delta))))
             (incf frame-counter))))
-      ;;(write-jpg cm :outfile (concatenate 'string outdir "cm.jpg"))
       (format t "Time elapsed: ~a sec ~%"
               (sw-delta)))))
 
