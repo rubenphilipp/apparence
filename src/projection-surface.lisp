@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  23:20:01 Mon Mar 25 2024 CET
+;;; $$ Last modified:  23:37:26 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -369,8 +369,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
             (setf (data (data ps))
                   (imago::compose nil (data (data ps)) (data tmp-pn)
                                   dest-x dest-y
-                                  ;; TODO: set to compose-fun
-                                  #'apr-default-compose-op)))
+                                  compose-fun)))
           (warn "projection::copy: Won't copy. The resulting dimensions are ~
                  too small.")))
     ps))
