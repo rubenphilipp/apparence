@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  18:29:00 Mon Mar 25 2024 CET
+;;; $$ Last modified:  23:20:01 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -305,22 +305,9 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
 ;;; assuming coordinates and dimensions of projection-surface and projection
 ;;; share the same scale!!
 ;;; RP  Sat Mar  2 21:59:40 2024
-;;; sharing the scale means that projection-height or -width of the projection
-;;; and the surface-height or -width of the projection-surface are equal, e.g.:
-#|
-(let* ((infile "/path/to/test.jpg")
-       (projection (make-projection infile :projection-height 100))
-       (ps (make-projection-surface :surface-width 200
-                                    :surface-height 100
-                                    :x-scaler 1/10
-                                    :y-scaler 1/10
-                                    :color '(255 255 255 255))))
-  (put-it ps projection :dest-x 100 :dest-y 50)
-  (system-open-file (write-jpg ps)))
-|#
-;;; this ensures that both the projection and the projection-surface share the
-;;; same scale
-;;; RP  Mon Mar 25 16:02:19 2024
+
+;;; the compose-fun is used by the compose function. it must take two (imago)
+;;; colors as its argument and must return a new (imago) color.
 (defmethod put-it ((ps projection-surface) (pn projection)
                    &key
                      height
@@ -330,7 +317,8 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                      (dest-y 0)
                      (dest-x 0)
                      (interpolation
-                      (get-apr-config :default-interpolation)))
+                      (get-apr-config :default-interpolation))
+                     (compose-fun #'apr-default-compose-op))
   ;;; ****
   (unless (initialized ps)
     (error "projection-surface::put-it: The projection-surface object has not ~
@@ -344,7 +332,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                      (x-scaler ps)))
         (pn->ps-y (/ (y-scaler pn)
                    (y-scaler ps)))
-        (tmp-pn pn))
+        (tmp-pn (clone pn)))
     ;; scale the src if necessary
     (unless (= 1.0 pn->ps-x pn->ps-y)
       ;; warn when image is upscaled
@@ -361,27 +349,27 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
           (src-y (round (/ src-y (y-scaler ps))))
           (src-x (round (/ src-x (x-scaler ps))))
           (dest-y (round (/ dest-y (y-scaler ps))))
-          (dest-x (round (/ dest-x (x-scaler ps))))
-          ;; this is the temporary placeholder for image to put onto the
-          ;; ps
-          ;; RP  Mon Mar 25 18:15:27 2024
-          (tmp-canvas (imago::make-rgb-image (width ps) (height ps)
-                                             (make-color 0 0 0 0))))
+          (dest-x (round (/ dest-x (x-scaler ps)))))
       (if (every #'(lambda (x)
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
           (progn
-            ;; copy the pn image onto the tmp-canvas
-            (imago::copy tmp-canvas (data tmp-pn)
-                         :height height
-                         :width width
-                         :src-y src-y
-                         :src-x src-x
-                         :dest-y dest-y
-                         :dest-x dest-x)
+            ;; crop the src if necessary
+            (when (or width height)
+              (let* ((img (data tmp-pn))
+                     (width (if width
+                                width
+                                (imago::image-width img)))
+                     (height (if height
+                                 height
+                                 (imago::image-height img))))
+                (setf (data tmp-pn)
+                      (imago::crop (data tmp-pn) src-x src-y width height))))
             ;; now do the actual "putting"
             (setf (data (data ps))
-                  (imago::compose nil (data (data ps)) tmp-canvas 0 0
+                  (imago::compose nil (data (data ps)) (data tmp-pn)
+                                  dest-x dest-y
+                                  ;; TODO: set to compose-fun
                                   #'apr-default-compose-op)))
           (warn "projection::copy: Won't copy. The resulting dimensions are ~
                  too small.")))

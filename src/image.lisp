@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  22:39:04 Mon Mar 25 2024 CET
+;;; $$ Last modified:  23:16:40 Mon Mar 25 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -627,9 +627,10 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
                         (b (8bit->float b))
                         (tmp-result (+ (* alpha-a a)
                                        (* b alpha-b (- 1 alpha-a)))))
+                   ;; prevent floating point division by zero
                    (if (< 0 alpha-c)
                        (/ tmp-result alpha-c)
-                       0))))
+                       1.0))))
         (let ((alpha-c (float->8bit (get-alpha a2 a1))))
           (imago::make-color
            (float->8bit (get-color a2 a1 alpha-c r2 r1))
