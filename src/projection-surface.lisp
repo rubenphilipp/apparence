@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  19:37:14 Tue Mar 26 2024 CET
+;;; $$ Last modified:  00:29:35 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -394,6 +394,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                               (pn-origin 0.5)
                               (interpolation
                                (get-apr-config :default-interpolation))
+                              (compose-fun #'apr-default-compose-op)
                               (verbose (get-apr-config :verbose)))
   ;;; ****
   (unless (initialized ps)
@@ -418,7 +419,8 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                            :src-x src-x
                            :src-y src-y
                            :image-origin pn-origin
-                           :canvas-origin ps-origin)))))
+                           :canvas-origin ps-origin
+                           :compose-fun compose-fun)))))
   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  15:55:59 Tue Mar 26 2024 CET
+;;; $$ Last modified:  00:27:42 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -345,10 +345,14 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
-;;; - :height. Cf. copy.
-;;; - :width. Cf. copy.
-;;; - :src-y. Cf. copy.  Default = 0.
-;;; - :src-x. Cf. copy.  Default = 0.
+;;; - :height. The height of the src-image. When NIL, the original height will
+;;;   be used. Default = NIL
+;;; - :width. The width of the src-image. When NIL, the original width will be
+;;;   used. Default = NIL
+;;; - :src-y. When a :height is given, this determines to top-offset in the src.
+;;;   Default = 0
+;;; - :src-x. When a width is given, this determines the left-offset in the src.
+;;;   Default = 0
 ;;; - :canvas-origin. The horizontal position of the origin (i.e. the center) on
 ;;;   the canvas. This value is relative to the width of the canvas and must be
 ;;;   a number between 0.0 and 1.0.  Default = 0.0
@@ -357,6 +361,13 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;;   between 0.0 and 1.0.  Default = 0.5
 ;;; - :verbose. A boolean value. When T, then some information is printed during
 ;;;   the process.  Default = (get-apr-config :verbose)
+;;; - :compose-fun. The default compositing function used to derive the color
+;;;   for each pixel. This function must take two arguments:
+;;;   - The dest-color (imago-color)
+;;;   - The src-color (imago-color)
+;;;   And must return an imago-color (cf. apr-default-compose-op, as well as
+;;;   compositing.lisp and imago.lisp).
+;;;   Default = #'apr-default-compose-op
 ;;; 
 ;;; RETURN VALUE
 ;;; The modified canvas object. 
@@ -379,6 +390,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                               (src-x 0)
                               (canvas-origin 0.0)
                               (image-origin 0.5)
+                              (compose-fun #'apr-default-compose-op)
                               (verbose (get-apr-config :verbose)))
   ;;; ****
   (unless (initialized cv)
@@ -433,7 +445,8 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
        (when verbose
          (format t "canvas::put-it-circular: no-split~%"))
        (put-it canvas image :dest-x (first image-x-coords)
-                            :dest-y y))
+                            :dest-y y
+                            :compose-fun compose-fun))
       ((and (> 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
        (when verbose
@@ -442,13 +455,15 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
        ;; starting with the "left" part (i.e. the right part of the img)
        (put-it canvas image :width (second image-x-coords)
                             :src-x (abs (first image-x-coords))
-                            :dest-y y)
+                            :dest-y y
+                            :compose-fun compose-fun)
        ;; now the "right" part
        (put-it canvas image :width (abs (first image-x-coords))
                             :src-x 0
                             :dest-x (+ canvas-width
                                      (first image-x-coords))
-                          :dest-y y))
+                            :dest-y y
+                            :compose-fun compose-fun))
       ((and (<= 0 (first image-x-coords))
             (< canvas-width (second image-x-coords)))
        (when verbose
@@ -459,13 +474,15 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                                       (first image-x-coords))
                             :src-x 0
                             :dest-x (first image-x-coords)
-                            :dest-y y)
+                            :dest-y y
+                            :compose-fun compose-fun)
        ;; now the left part
        (put-it canvas image :width (- (second image-x-coords)
                                       canvas-width)
                             :src-x (- canvas-width
                                       (first image-x-coords))
-                            :dest-x 0 :dest-y y))
+                            :dest-x 0 :dest-y y
+                            :compose-fun compose-fun))
       (t (error "the width of the image to be projected is greater than ~
                  the width of the projection screen.")))
     ;; finally, return the altered canvas object
