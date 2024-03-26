@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  14:58:34 Tue Mar 26 2024 CET
+;;; $$ Last modified:  16:27:44 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -299,6 +299,35 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                                      :id id))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; This method scales the image contained on a projection to the dimensions
+;;; of a given projections surface and returns the scaled image-object.
+;;; RP  Tue Mar 26 16:25:09 2024
+(defmethod autoscale-pn->image ((pn projection) (ps projection-surface)
+                                &key
+                                  (interpolation
+                                   (get-apr-config :default-interpolation)))
+  ;;; ****
+  (let ((pn->ps-x (/ (x-scaler pn)
+                     (x-scaler ps)))
+        (pn->ps-y (/ (y-scaler pn)
+                     (y-scaler ps)))
+        (tmp-img (data pn)))
+    ;; scale the src if necessary
+    (unless (= 1.0 pn->ps-x pn->ps-y)
+      ;; warn when image is upscaled
+      (when (or (< 1.0 pn->ps-x) (< 1.0 pn->ps-y))
+        (when (get-apr-config :verbose)
+          (warn "projection-surface::put-it-circular: The projection image ~
+                 will be upscaled by a factor of ~
+                 x: ~a, y: ~a." (float pn->ps-x) (float pn->ps-y))))
+      ;; "clone" the src
+      (setf tmp-img (make-image (data pn)))
+      (scale tmp-img pn->ps-x pn->ps-y :interpolation interpolation))
+    tmp-img))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; put methods for projections
 ;;; all values relative to the projection(-surface) scale
@@ -328,22 +357,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
             been initialized."))
   ;;; NB: scalers in ps are different from scalers in pn
   ;;; RP  Sat Mar  2 23:59:24 2024
-  (let ((pn->ps-x (/ (x-scaler pn)
-                     (x-scaler ps)))
-        (pn->ps-y (/ (y-scaler pn)
-                   (y-scaler ps)))
-        (tmp-pn (clone pn)))
-    ;; scale the src if necessary
-    (unless (= 1.0 pn->ps-x pn->ps-y)
-      ;; warn when image is upscaled
-      (when (or (< 1.0 pn->ps-x) (< 1.0 pn->ps-y))
-        (when (get-apr-config :verbose)
-          (warn "projection-surface::put-it: The projection image will be ~
-                 upscaled by a factor of ~
-                 x: ~a, y: ~a." (float pn->ps-x) (float pn->ps-y))))
-      ;; clone the src
-      (setf tmp-pn (make-image (data pn)))
-      (scale tmp-pn pn->ps-x pn->ps-y :interpolation interpolation))
+  (let ((tmp-pn (autoscale-pn->image pn ps :interpolation interpolation)))
     (let ((height (when height (round (/ height (y-scaler ps)))))
           (width (when width (round (/ width (x-scaler ps)))))
           (src-y (round (/ src-y (y-scaler ps))))
@@ -388,27 +402,12 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
   (unless (initialized pn)
     (error "projection-surface::put-it-circular: The projection object has not ~
             been initialized."))
-  (let ((pn->ps-x (/ (x-scaler pn)
-                     (x-scaler ps)))
-        (pn->ps-y (/ (y-scaler pn)
-                   (y-scaler ps)))
-        (tmp-img pn))
-    ;; scale the src if necessary
-    (unless (= 1.0 pn->ps-x pn->ps-y)
-      ;; warn when image is upscaled
-      (when (or (< 1.0 pn->ps-x) (< 1.0 pn->ps-y))
-        (when (get-apr-config :verbose)
-          (warn "projection-surface::put-it-circular: The projection image ~
-                 will be upscaled by a factor of ~
-                 x: ~a, y: ~a." pn->ps-x pn->ps-y)))
-      ;; "clone" the src
-      (setf tmp-img (make-image (data pn)))
-      (scale tmp-img pn->ps-x pn->ps-y :interpolation interpolation))
-    (let ((height (when height (round (/ height (y-scaler pn)))))
-          (width (when width (round (/ width (x-scaler pn)))))
-          (src-y (round (/ src-y (y-scaler pn))))
-          (src-x (round (/ src-x (x-scaler pn))))
-          (y (round (/ y (/ 1 (y-scaler ps))))))
+  (let ((tmp-img (autoscale-pn->image pn ps :interpolation interpolation)))
+    (let ((height (when height (round (/ height (y-scaler ps)))))
+          (width (when width (round (/ width (x-scaler ps)))))
+          (src-y (round (/ src-y (y-scaler ps))))
+          (src-x (round (/ src-x (x-scaler ps))))
+          (y (round (/ y (y-scaler ps)))))
       (if (every #'(lambda (x)
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
