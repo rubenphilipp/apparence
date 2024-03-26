@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  16:27:44 Tue Mar 26 2024 CET
+;;; $$ Last modified:  19:37:14 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -318,7 +318,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
       ;; warn when image is upscaled
       (when (or (< 1.0 pn->ps-x) (< 1.0 pn->ps-y))
         (when (get-apr-config :verbose)
-          (warn "projection-surface::put-it-circular: The projection image ~
+          (warn "projection-surface::autoscale-pn->image: The projection image ~
                  will be upscaled by a factor of ~
                  x: ~a, y: ~a." (float pn->ps-x) (float pn->ps-y))))
       ;; "clone" the src
