@@ -5,7 +5,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  00:26:24 Sun Mar 24 2024 CET
+$$ Last modified:  21:20:41 Tue Mar 26 2024 CET
 #+end_comment
 
 *Please note:* This program is at a very early stage and under
@@ -25,12 +25,9 @@ Tested with SBCL on MacOS and Linux (Ubuntu 22.04).
 
 ** Installation
 
-If the dependencies won't install, try using [[https://ultralisp.org/][Ultralisp]] as a source for QuickLisp
-packages:
-
-#+begin_src lisp
-(ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
-#+end_src
+Please check the dependencies (see below) before using apparence. It might be
+necessary, even when using Quicklisp, to manually download the code, as some of
+the modules/systems are not listed in Quicklisp's main distribution. 
 
 *** Inkscape
 
@@ -65,7 +62,21 @@ Use this command:
 
 The major dependencies are:
 
+** Lisp
+
+- [[https://alexandria.common-lisp.dev][alexandria]]
 - [[https://github.com/tokenrove/imago][imago]]
-- [[https://github.com/ormf/cm][cm]]
-- [[https://gitlab.com/inkscape/inkscape][inkscape]] (for svg to image conversion)
+- [[https://github.com/wmannis/cl-svg][cl-svg]]
+- [[https://github.com/ormf/cm][Common Music (cm)]]
+- [[https://github.com/soemraws/parse-float][parse-float]]
+- [[https://github.com/ruricolist/serapeum][serapeum]]
+- [[https://github.com/lmj/lparallel][lparallel]]
+- [[https://github.com/volkers/vgplot][vgplot]]
+- [[https://github.com/sjl/cl-pcg/][cl-pcg]]
+- [[https://github.com/edicl/cl-ppcre][cl-ppcre]]
 - [[https://github.com/ak-coram/cl-frugal-uuid/][cl-frugal-uuid]]
+- [[https://github.com/mdedwards/slippery-chicken][slippery-chicken]] (optional)
+
+** Other
+
+- [[https://gitlab.com/inkscape/inkscape][inkscape]] (for svg to image conversion)
