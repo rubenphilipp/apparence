@@ -15,11 +15,12 @@
 ;;; CREATED
 ;;; 2024-03-01
 ;;;
-;;; $$ Last modified:  13:09:54 Mon Mar 25 2024 CET
+;;; $$ Last modified:  13:50:19 Tue Mar 26 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
 
+(set-apr-config :verbose t)
 
 (let* (;; set the data for the sequence before starting the parallel-process
        (mantle-height-px 2770)
@@ -54,8 +55,7 @@
                  (y (floor (interpl i y-env-sc :base 1.16)))
                  (start-time (get-universal-time))
                  (outfile (format nil "~a~4,'0d.jpg" outdir i))
-                 (new-width (max .5 (* (projection-width pn)
-                                       (abs (sin i)))))
+                 (new-width (* (projection-width pn) .3))
                  ;; this cloning is okay as it does not excessively strain
                  ;; performance
                  (ps (clone cm)))

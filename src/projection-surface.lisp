@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  23:37:26 Mon Mar 25 2024 CET
+;;; $$ Last modified:  12:52:52 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -403,7 +403,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                      (x-scaler ps)))
         (pn->ps-y (/ (y-scaler pn)
                    (y-scaler ps)))
-        (tmp-pn pn))
+        (tmp-img pn))
     ;; scale the src if necessary
     (unless (= 1.0 pn->ps-x pn->ps-y)
       ;; warn when image is upscaled
@@ -412,9 +412,9 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
           (warn "projection-surface::put-it-circular: The projection image ~
                  will be upscaled by a factor of ~
                  x: ~a, y: ~a." pn->ps-x pn->ps-y)))
-      ;; clone the src
-      (setf tmp-pn (make-image (data pn)))
-      (scale tmp-pn pn->ps-x pn->ps-y :interpolation interpolation))
+      ;; "clone" the src
+      (setf tmp-img (make-image (data pn)))
+      (scale tmp-img pn->ps-x pn->ps-y :interpolation interpolation))
     (let ((height (when height (round (/ height (y-scaler pn)))))
           (width (when width (round (/ width (x-scaler pn)))))
           (src-y (round (/ src-y (y-scaler pn))))
@@ -423,7 +423,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
       (if (every #'(lambda (x)
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
-          (put-it-circular ps tmp-pn azimuth y
+          (put-it-circular ps tmp-img azimuth y
                            :verbose verbose
                            :width width
                            :height height

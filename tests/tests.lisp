@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  00:24:18 Tue Mar 26 2024 CET
+;;; $$ Last modified:  01:10:06 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -126,9 +126,12 @@
   (let* ((cv (apr:make-canvas 1000 500 :color '(0 0 0 0)))
          (img (apr:make-rgb-image 250 200
                                   :initial-color
-                                  (apr::make-color 233 200 188))))
+                                  (apr::make-color 233 200 188)))
+         (outfile "/tmp/put-it-circular.jpg"))
     (apr:put-it-circular cv img 350 0)
-    (is (typep (data cv) 'apr:image))))
+    (apr::write-jpg cv :outfile outfile)
+    (is (and (typep (data cv) 'apr:image)
+             (probe-file outfile)))))
 
 ;;; test-image1
 ;;; RP  Thu Feb 29 21:19:14 2024

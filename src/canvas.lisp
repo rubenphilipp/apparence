@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  00:52:14 Tue Mar 26 2024 CET
+;;; $$ Last modified:  13:51:54 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -291,7 +291,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;;   algorithm. 
 ;;; 
 ;;; RETURN VALUE
-;;; Cf. copy.
+;;; The canvas object. 
 ;;;
 ;;; EXAMPLE
 #|
@@ -327,11 +327,12 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                         height
                         (height tmp-img))))
         (setf (data tmp-img)
-              (imago::crop (data tmp-img) src-x src-y width height)))
-      (setf (data (data cv))
-            (imago::compose nil (data (data cv)) (data tmp-img)
-                            dest-x dest-y
-                            compose-fun)))))
+              (imago::crop (data tmp-img) src-x src-y width height))))
+    (setf (data (data cv))
+          (imago::compose nil (data (data cv)) (data tmp-img)
+                          dest-x dest-y
+                          compose-fun)))
+  cv)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* canvas/put-it-circular
@@ -381,7 +382,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
   (system-open-file "/tmp/test.png"))
 |#
 ;;; SYNOPSIS
-(defmethod put-it-circular ((cv canvas) image azimuth y
+(defmethod put-it-circular ((cv canvas) (image image) azimuth y
                             &key
                               height
                               width
@@ -392,20 +393,20 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                               (verbose (get-apr-config :verbose)))
   ;;; ****
   (unless (initialized cv)
-    (error "canvas::put-it-circular-aux: The canvas object has not been ~
+    (error "canvas::put-it-circular: The canvas object has not been ~
             initialized."))
   (unless (and (<= 0.0 image-origin) (>= 1.0 image-origin))
-    (error "canvas::put-it-circular-aux: The image-origin must be ~
+    (error "canvas::put-it-circular: The image-origin must be ~
             >= 0.0 and <= 1.0"))
   (unless (and (<= 0.0 canvas-origin) (>= 1.0 canvas-origin))
-    (error "canvas::put-it-circular-aux: The canvas-origin must be ~
+    (error "canvas::put-it-circular: The canvas-origin must be ~
             >= 0.0 and <= 1.0"))
   (when (>= y (height cv))
-    (error "canvas::put-it-circular-aux: The y-coordinate is >= the height of ~
+    (error "canvas::put-it-circular: The y-coordinate is >= the height of ~
             the canvas."))
-  (unless (typep image 'image)
-    (error "canvas::put-it-circular-aux: The image is not an image, but ~a"
-           (type-of image)))
+  ;; (unless (typep image 'image)
+  ;;   (error "canvas::put-it-circular: The image is not an image, but ~a"
+  ;;          (type-of image)))
   (when (or height width (/= 0 src-y) (/= 0 src-x))
     (let ((new-height (if height height (height image)))
           (new-width (if width width (width image)))
@@ -416,7 +417,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
       (setf image img-tmp)))
   (let* (;;(canvas (data cv))
          (canvas cv)
-         (canvas-width (width (data cv)))
+         (canvas-width (width cv)) ;;(width (data cv)))
          (img-width (width image))
          ;; anchor point (x-axis from left) on image, i.e. the origin x-coords
          (img-anchor (floor (* img-width image-origin)))
@@ -440,12 +441,14 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
     (cond
       ((and (<= 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
+       (when verbose
+         (format t "canvas::put-it-circular: no-split~%"))
        (put-it canvas image :dest-x (first image-x-coords)
                             :dest-y y))
       ((and (> 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
        (when verbose
-         (print "left->right"))
+         (format t "canvas::put-it-circular: left->right~%"))
        ;; wrap left->right
        ;; starting with the "left" part (i.e. the right part of the img)
        (put-it canvas image :width (second image-x-coords)
@@ -460,7 +463,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
       ((and (<= 0 (first image-x-coords))
             (< canvas-width (second image-x-coords)))
        (when verbose
-         (print "right->left"))
+         (format t "canvas::put-it-circular: right->left~%"))
        ;; wrap right->left
        ;; starting with the right part (the left part of the img)
        (put-it canvas image :width (- canvas-width
