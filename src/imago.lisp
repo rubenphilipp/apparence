@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  00:03:12 Wed Mar 27 2024 CET
+;;; $$ Last modified:  00:36:23 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -83,7 +83,7 @@
 ;;; - :a-accessor. The accessor for the a color in the body (this is the value
 ;;;   of color2, as color1 is the dest and color2 is the src). Default = a.
 ;;; - :b-accessor. The accessor for the b color in the body (this is the value
-;;;   of color2, as color1 is the dest and color2 is the src). Default = b.
+;;;   of color1, as color1 is the dest and color2 is the src). Default = b.
 ;;;
 ;;; EXAMPLE
 #|
