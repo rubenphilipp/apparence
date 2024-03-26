@@ -15,12 +15,12 @@
 ;;; CREATED
 ;;; 2024-03-01
 ;;;
-;;; $$ Last modified:  13:50:19 Tue Mar 26 2024 CET
+;;; $$ Last modified:  14:22:42 Tue Mar 26 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
 
-(set-apr-config :verbose t)
+;;(set-apr-config :verbose t)
 
 (let* (;; set the data for the sequence before starting the parallel-process
        (mantle-height-px 2770)

@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  13:51:54 Tue Mar 26 2024 CET
+;;; $$ Last modified:  15:55:59 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -315,23 +315,12 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
   ;;; ****
   (unless (initialized cv)
     (error "canvas::put-it: The canvas object has not been initialized."))
-  ;; (unless (typep img 'image)
-  ;;   (error "canvas::put-it: The img must be of type image."))
-  (let ((tmp-img img))
-    (when (or width height)
-      (setf tmp-img (clone img))
-      (let ((width (if width
-                       width
-                       (width tmp-img)))
-            (height (if height
-                        height
-                        (height tmp-img))))
-        (setf (data tmp-img)
-              (imago::crop (data tmp-img) src-x src-y width height))))
-    (setf (data (data cv))
-          (imago::compose nil (data (data cv)) (data tmp-img)
-                          dest-x dest-y
-                          compose-fun)))
+  (setf (data cv)
+        (put-it (data cv) img
+                :dest-x dest-x :dest-y dest-y
+                :src-x src-x :src-y src-y
+                :width width :height height
+                :compose-fun compose-fun))
   cv)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

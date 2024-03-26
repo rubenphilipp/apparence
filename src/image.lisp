@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  23:16:40 Mon Mar 25 2024 CET
+;;; $$ Last modified:  16:00:09 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -637,6 +637,55 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
            (float->8bit (get-color a2 a1 alpha-c g2 g1))
            (float->8bit (get-color a2 a1 alpha-c b2 b1))
            alpha-c))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod put-it ((dest image) (src image)
+                   &key
+                     height
+                     width
+                     (src-y 0)
+                     (src-x 0)
+                     (dest-y 0)
+                     (dest-x 0)
+                     (compose-fun #'apr-default-compose-op))
+  ;;; ****
+  (let ((tmp-src src))
+    (when (or width height)
+      (setf tmp-src (clone src))
+      (let ((width (if width
+                       width
+                       (width tmp-src)))
+            (height (if height
+                        height
+                        (height tmp-src))))
+        (setf (data tmp-src)
+              (imago::crop (data tmp-src) src-x src-y width height))))
+    ;; compose does not support negative dest-coords -> crop
+    (when (or (and dest-x (> 0 dest-x))
+              (and dest-y (> 0 dest-y)))
+      (let* ((width (if width
+                        width
+                        (width tmp-src)))
+             (height (if height
+                         height
+                         (height tmp-src)))
+             (crop-x (if (> 0 dest-x) (abs dest-x) 0))
+             (crop-y (if (> 0 dest-y) (abs dest-y) 0))
+             (crop-w (- width crop-x))
+             (crop-h (- height crop-y)))
+        (setf (data tmp-src)
+              (imago::crop (data tmp-src) crop-x crop-y crop-w crop-h))
+        (when (> 0 dest-x)
+          (setf dest-x 0))
+        (when (> 0 dest-y)
+          (setf dest-y 0))))
+    (setf (data dest)
+          (imago::compose nil (data dest) (data tmp-src)
+                          dest-x dest-y
+                          compose-fun)))
+  dest)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF image.lisp

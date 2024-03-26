@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  12:52:52 Tue Mar 26 2024 CET
+;;; $$ Last modified:  14:58:34 Tue Mar 26 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -353,23 +353,12 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
       (if (every #'(lambda (x)
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
-          (progn
-            ;; crop the src if necessary
-            (when (or width height)
-              (let* ((img (data tmp-pn))
-                     (width (if width
-                                width
-                                (imago::image-width img)))
-                     (height (if height
-                                 height
-                                 (imago::image-height img))))
-                (setf (data tmp-pn)
-                      (imago::crop (data tmp-pn) src-x src-y width height))))
-            ;; now do the actual "putting"
-            (setf (data (data ps))
-                  (imago::compose nil (data (data ps)) (data tmp-pn)
-                                  dest-x dest-y
-                                  compose-fun)))
+          (setf (data ps)
+                (put-it (data ps) tmp-pn
+                        :dest-x dest-x :dest-y dest-y
+                        :src-x src-x :src-y src-y
+                        :width width :height height
+                        :compose-fun compose-fun))
           (warn "projection::copy: Won't copy. The resulting dimensions are ~
                  too small.")))
     ps))
