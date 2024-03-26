@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<script src="./robodoc.js"></script>
+<title>imago.lisp</title>
+<!-- Source: ./src/imago.lisp -->
+<!-- Generated with ROBODoc Version 4.99.44 (Nov 13 2022) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc"></a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./robo_sourcefiles.html#top">Sourcefiles</a>
+<a class="menuitem" href="./masterindex.html#top">Index</a>
+<a class="menuitem" href="./robo_generics.html#top">Generics</a>
+<a class="menuitem" href="./robo_classes.html#top">Classes</a>
+<a class="menuitem" href="./robo_functions.html#top">Functions</a>
+<a class="menuitem" href="./robo_modules.html#top">Modules</a>
+<a class="menuitem" href="./robo_methods.html#top">Methods</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<hr />
+<a name="apr2fimago"></a>
+<a name="robo2"></a><h2>apr/imago [ Modules ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_modules.html#robo_top_of_doc">Modules</a> ]</p>
+<p class="item_name">NAME</p>
+<pre> <strong>imago</strong>
+</pre>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-26
+</pre>
+<p class="item_name">PURPOSE</p>
+<pre> Implementation of functionality related to the <strong>imago</strong> library. 
+
+ CLASS HIERARCHY
+ none. no classes defined. 
+
+ $$ Last modified:  00:03:12 Wed Mar 27 2024 CET
+</pre>
+
+<hr />
+<a name="imago2fapr2ddefault2dcompose2dop"></a>
+<a name="robo35"></a><h2>imago/apr-default-compose-op [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-26
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This is the default compose operator, to be used, e.g. via <a href="#robo2">imago</a>::compose.
+ By default, this uses the Porter/Duff A-Over-B algorithm for generating the
+ the resulting color.
+
+ This function is meant to be used with the <a href="#robo2">imago</a>::compose function.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> Two <a href="#robo2">imago</a>-colors, where color1 is the dest (B), and color2 is the src (A)
+ color (cf. compose-op).
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> An <a href="#robo2">imago</a>-color (integer). 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((c1 (<a href="#robo2">imago</a>::make-color 23 45 19 22))
+      (c2 (<a href="#robo2">imago</a>::make-color 83 15 44 255)))
+  (<strong>apr-default-compose-op</strong> c1 c2))
+;; =&gt; 4283640847
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>apr-default-compose-op</strong> (color1 color2)
+</pre>
+
+<hr />
+<a name="imago2fcompose2dop"></a>
+<a name="robo36"></a><h2>imago/compose-op [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-26
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro is a shortcut to apply a <a href="./compositing_lisp.html#robo0">compositing</a> operator (e.g. a-over-b-op)
+ to two <a href="#robo2">imago</a>-colors, as demanded by <a href="#robo2">imago</a>::compose. It converts both colors
+ to rgba-lists (cf. rgba-list-p) to be used in the actual compose-operator
+ and provides them in the body of the macro (accessible via the accessors as
+ defined in the key arguments).
+
+ Note: In order to pass the resulting value back to <a href="#robo2">imago</a>::compose, it is
+       necessary to apply the function <a href="#robo37">rgba-list-&gt;color</a> to the resulting
+       value (if it is an rgba-list); cf. <a href="#robo35">apr-default-compose-op</a>. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The first <a href="#robo2">imago</a>-color (i.e. the dest-, in Porter/Duff-terms the B-color).
+ - The second <a href="#robo2">imago</a>-color (i.e. the src-, in Porter/Duff-terms the A-color).
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> - :a-accessor. The accessor for the a color in the body (this is the value
+   of color2, as color1 is the dest and color2 is the src). Default = a.
+ - :b-accessor. The accessor for the b color in the body (this is the value
+   of color2, as color1 is the dest and color2 is the src). Default = b.
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((c1 (<a href="#robo2">imago</a>::make-color 23 45 19 22))
+      (c2 (<a href="#robo2">imago</a>::make-color 83 15 44 255)))
+  (<strong>compose-op</strong> (c1 c2 :a-accessor a :b-accessor b)
+    (print a)
+    (print b)))
+;; =&gt; (in the REPL)
+;; (0.3254902 0.17254902 0.058823533 1.0) 
+;; (0.09019608 0.07450981 0.1764706 0.08627451) 
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>compose-op</strong> ((color1 color2
+                       &amp;key
+                         ;; Color a and be are the colors in the Porter/Duff
+                         ;; sense, not in <a href="#robo2">imago</a>'s logic.
+                         ;; The colors are rgba-lists. 
+                         (a-accessor 'a)
+                         (b-accessor 'b))
+                      &amp;body body)
+</pre>
+
+<hr />
+<a name="imago2frgba2dlist2d3ecolor"></a>
+<a name="robo37"></a><h2>imago/rgba-list-&gt;color [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-26
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts a rgba-list (cf. rgba-list-p) to an <a href="#robo2">imago</a>::color.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The rgba-list to convert. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> An <a href="#robo2">imago</a>::color (which is not an object but an integer). 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>rgba-list-&gt;color</strong> '(.3 .4 .1 1)) ;; =&gt; 4283196953
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>rgba-list-&gt;color</strong> (list)
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-27 00:10:08</p>
+</div> <!-- footer -->
+</body>
+</html>

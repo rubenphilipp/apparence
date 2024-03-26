@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<script src="./robodoc.js"></script>
+<title>compositing.lisp</title>
+<!-- Source: ./src/compositing.lisp -->
+<!-- Generated with ROBODoc Version 4.99.44 (Nov 13 2022) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc"></a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./robo_sourcefiles.html#top">Sourcefiles</a>
+<a class="menuitem" href="./masterindex.html#top">Index</a>
+<a class="menuitem" href="./robo_generics.html#top">Generics</a>
+<a class="menuitem" href="./robo_classes.html#top">Classes</a>
+<a class="menuitem" href="./robo_functions.html#top">Functions</a>
+<a class="menuitem" href="./robo_modules.html#top">Modules</a>
+<a class="menuitem" href="./robo_methods.html#top">Methods</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<hr />
+<a name="apr2fcompositing"></a>
+<a name="robo0"></a><h2>apr/compositing [ Modules ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_modules.html#robo_top_of_doc">Modules</a> ]</p>
+<p class="item_name">NAME</p>
+<pre> <strong>compositing</strong>
+</pre>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-26
+</pre>
+<p class="item_name">PURPOSE</p>
+<pre> This module implements <a href="./image_lisp.html#robo10">image</a> <strong>compositing</strong> algorithms. 
+
+ CLASS HIERARCHY
+ none. no classes defined. 
+
+ $$ Last modified:  22:26:02 Tue Mar 26 2024 CET
+</pre>
+
+<hr />
+<a name="compositing2fa2dover2db2dop"></a>
+<a name="robo19"></a><h2>compositing/a-over-b-op [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">compositing</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-26
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This is an implementation of the Porter/Duff A Over B algorithm.
+
+ Literature:
+ - Porter, Thomas, und Tom Duff. 1984. „Compositing Digital Images“. In
+   Proceedings of the 11th Annual Conference on Computer Graphics and
+   Interactive Techniques,
+   253–59. ACM. <a href="https://doi.org/10.1145/800031.808606">https://doi.org/10.1145/800031.808606</a>.
+ - <a href="https://ssp.impulsetrain.com/porterduff.html">https://ssp.impulsetrain.com/porterduff.html</a>
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> Two rgba-lists (cf. rgba-list-p) for color a and b. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> A new rgba-list for the new pixel color. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((a '(.3 .4 .6 .2))
+      (b '(.4 .1 .2 .9)))
+  (<strong>a-over-b-op</strong> a b))
+;; =&gt; (0.37826088 0.16521741 0.28695652 0.91999996)
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>a-over-b-op</strong> (a b)
+</pre>
+
+<hr />
+<a name="compositing2frgba2dlist2dp"></a>
+<a name="robo20"></a><h2>compositing/rgba-list-p [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">compositing</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-26
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Tests if a given item is a rgba-list.  An rgba-list is a four-element list
+ with each element e being a floating point value 0 &lt;= e &lt;= 1. The order is:
+ (r b g a).
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The thing to be tested. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> Either T or NIL. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>rgba-list-p</strong> '(1 0 1 .2)) =&gt; T
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>rgba-list-p</strong> (thing)
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/compositing.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-27 00:10:08</p>
+</div> <!-- footer -->
+</body>
+</html>
