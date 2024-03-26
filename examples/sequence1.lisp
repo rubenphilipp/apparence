@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-03-01
 ;;;
-;;; $$ Last modified:  14:22:42 Tue Mar 26 2024 CET
+;;; $$ Last modified:  16:31:25 Tue Mar 26 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -35,7 +35,7 @@
                                  :height mantle-height-px))
        (outdir "/tmp/seq-test/")
        (azim-env '(0 0 20 180 50 100 75 -20 100 24))
-       (y-env '(0 -100 30 0 60 40 70 40 85 0 100 10))
+       (y-env '(0 -5 30 0 60 20 70 6 85 0 100 -10))
        (frames 100)
        ;; this helps discerning the global progress
        (frame-counter 1)
