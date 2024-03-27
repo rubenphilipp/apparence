@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  16:04:49 Wed Mar 27 2024 CET
+;;; $$ Last modified:  17:16:22 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -71,11 +71,11 @@
 ;;; and provides them in the body of the macro (accessible via the accessors as
 ;;; defined in the key arguments).
 ;;;
-;;; The function apr-default-compose-fun illustrates a use case of this macro. 
+;;; The function a-over-b-fun illustrates a use case of this macro. 
 ;;;
 ;;; Note: In order to pass the resulting value back to imago::compose, it is
 ;;;       necessary to apply the function rgba-list->color to the resulting
-;;;       value (if it is an rgba-list); cf. apr-default-compose-fun. 
+;;;       value (if it is an rgba-list); cf. a-over-b-fun. 
 ;;;
 ;;; ARGUMENTS
 ;;; - The first imago-color (i.e. the dest-, in Porter/Duff-terms the B-color).
@@ -119,6 +119,126 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* imago/a-over-b-fun
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-27
+;;; 
+;;; DESCRIPTION
+;;; This is the compositing function A Over B to be used for example in
+;;; imago::compose. 
+;;;
+;;; ARGUMENTS
+;;; Two imago-colors. 
+;;; 
+;;; RETURN VALUE
+;;; A new imago-color. 
+;;;
+;;; SYNOPSIS
+(defun a-over-b-fun (color1 color2)
+  ;;; ****
+  (compose-op (color1 color2)
+    (rgba-list->color (a-over-b-op a b))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* imago/a-in-b-fun
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-27
+;;; 
+;;; DESCRIPTION
+;;; This is the compositing function A In B to be used for example in
+;;; imago::compose. 
+;;;
+;;; ARGUMENTS
+;;; Two imago-colors. 
+;;; 
+;;; RETURN VALUE
+;;; A new imago-color. 
+;;;
+;;; SYNOPSIS
+(defun a-in-b-fun (color1 color2)
+  ;;; ****
+  (compose-op (color1 color2)
+    (rgba-list->color (a-in-b-op a b))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* imago/a-out-b-fun
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-27
+;;; 
+;;; DESCRIPTION
+;;; This is the compositing function A Out B to be used for example in
+;;; imago::compose. 
+;;;
+;;; ARGUMENTS
+;;; Two imago-colors. 
+;;; 
+;;; RETURN VALUE
+;;; A new imago-color. 
+;;;
+;;; SYNOPSIS
+(defun a-out-b-fun (color1 color2)
+  ;;; ****
+  (compose-op (color1 color2)
+    (rgba-list->color (a-out-b-op a b))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* imago/a-xout-b-fun
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-27
+;;; 
+;;; DESCRIPTION
+;;; This is the compositing function A Xout B to be used for example in
+;;; imago::compose. 
+;;;
+;;; ARGUMENTS
+;;; Two imago-colors. 
+;;; 
+;;; RETURN VALUE
+;;; A new imago-color. 
+;;;
+;;; SYNOPSIS
+(defun a-xout-b-fun (color1 color2)
+  ;;; ****
+  (compose-op (color1 color2)
+    (rgba-list->color (a-xout-b-op a b))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* imago/a-atop-b-fun
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-27
+;;; 
+;;; DESCRIPTION
+;;; This is the compositing function A Atop B to be used for example in
+;;; imago::compose. 
+;;;
+;;; ARGUMENTS
+;;; Two imago-colors. 
+;;; 
+;;; RETURN VALUE
+;;; A new imago-color. 
+;;;
+;;; SYNOPSIS
+(defun a-atop-b-fun (color1 color2)
+  ;;; ****
+  (compose-op (color1 color2)
+    (rgba-list->color (a-atop-b-op a b))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****f* imago/apr-default-compose-fun
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -150,8 +270,9 @@
 ;;; SYNOPSIS
 (defun apr-default-compose-fun (color1 color2)
   ;;; ****
-  (compose-op (color1 color2 :a-accessor a :b-accessor b)
-    (rgba-list->color (a-over-b-op a b))))
+  (funcall #'a-over-b-fun color1 color2))
+  ;; (compose-op (color1 color2 :a-accessor a :b-accessor b)
+  ;;   (rgba-list->color (a-over-b-op a b)))
     
 
 

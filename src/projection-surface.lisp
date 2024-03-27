@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  16:09:56 Wed Mar 27 2024 CET
+;;; $$ Last modified:  17:06:31 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -347,7 +347,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                      (dest-x 0)
                      (interpolation
                       (get-apr-config :default-interpolation))
-                     (compose-fun #'apr-default-compose-fun))
+                     (compose-fun #'a-over-b-fun))
   ;;; ****
   (unless (initialized ps)
     (error "projection-surface::put-it: The projection-surface object has not ~
@@ -394,7 +394,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                               (pn-origin 0.5)
                               (interpolation
                                (get-apr-config :default-interpolation))
-                              (compose-fun #'apr-default-compose-fun)
+                              (compose-fun #'a-over-b-fun)
                               (verbose (get-apr-config :verbose)))
   ;;; ****
   (unless (initialized ps)

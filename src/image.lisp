@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  16:10:06 Wed Mar 27 2024 CET
+;;; $$ Last modified:  17:07:29 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -607,7 +607,7 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
                      (src-x 0)
                      (dest-y 0)
                      (dest-x 0)
-                     (compose-fun #'apr-default-compose-fun))
+                     (compose-fun #'a-over-b-fun))
   ;;; ****
   (let ((tmp-src src))
     (when (or width height)
