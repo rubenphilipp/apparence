@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  18:21:13 Wed Mar 27 2024 CET
+;;; $$ Last modified:  19:54:45 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -105,8 +105,6 @@
 ;; => (0.37826088 0.16521741 0.28695652 0.91999996)
 ;;; SYNOPSIS
 |#
-
-
 (defmacro porter-duff-comp (&optional (f-a 1) (f-b '(- 1 a-a)))
   ;;; ****
   `(lambda (a b)

@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  18:48:47 Wed Mar 27 2024 CET
+;;; $$ Last modified:  19:57:08 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -337,7 +337,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
 
 ;;; the compose-fun is used by the compose function. it must take two (imago)
 ;;; colors as its argument and must return a new (imago) color.
-(defmethod put-it ((ps projection-surface) (pn projection)
+(defmethod put-it ((dest projection-surface) (src projection)
                    &key
                      height
                      width
@@ -350,26 +350,26 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                       (get-apr-config :default-interpolation))
                      (compose-fun #'a-over-b-fun))
   ;;; ****
-  (unless (initialized ps)
+  (unless (initialized dest)
     (error "projection-surface::put-it: The projection-surface object has not ~
             been initialized."))
-  (unless (initialized pn)
+  (unless (initialized src)
     (error "projection-surface::put-it: The projection object has not ~
             been initialized."))
-  ;;; NB: scalers in ps are different from scalers in pn
+  ;;; NB: scalers in dest are different from scalers in src
   ;;; RP  Sat Mar  2 23:59:24 2024
-  (let ((tmp-pn (autoscale-pn->image pn ps :interpolation interpolation)))
-    (let ((height (when height (round (/ height (y-scaler ps)))))
-          (width (when width (round (/ width (x-scaler ps)))))
-          (src-y (round (/ src-y (y-scaler ps))))
-          (src-x (round (/ src-x (x-scaler ps))))
-          (dest-y (round (/ dest-y (y-scaler ps))))
-          (dest-x (round (/ dest-x (x-scaler ps)))))
+  (let ((tmp-src (autoscale-pn->image src dest :interpolation interpolation)))
+    (let ((height (when height (round (/ height (y-scaler dest)))))
+          (width (when width (round (/ width (x-scaler dest)))))
+          (src-y (round (/ src-y (y-scaler dest))))
+          (src-x (round (/ src-x (x-scaler dest))))
+          (dest-y (round (/ dest-y (y-scaler dest))))
+          (dest-x (round (/ dest-x (x-scaler dest)))))
       (if (every #'(lambda (x)
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
-          (setf (data ps)
-                (put-it (data ps) tmp-pn
+          (setf (data dest)
+                (put-it (data dest) tmp-src
                         :dest-x dest-x :dest-y dest-y
                         :src-x src-x :src-y src-y
                         :width width :height height
@@ -377,7 +377,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                         :compose-fun compose-fun))
           (warn "projection::copy: Won't copy. The resulting dimensions are ~
                  too small.")))
-    ps))
+    dest))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

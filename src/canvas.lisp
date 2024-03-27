@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  19:15:42 Wed Mar 27 2024 CET
+;;; $$ Last modified:  19:58:21 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -269,8 +269,8 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; compositing function (compose-fun) to both images. 
 ;;;
 ;;; ARGUMENTS
-;;; - The canvas object.
-;;; - The image object. 
+;;; - The canvas object (the destination).
+;;; - The image object (the source). 
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
@@ -307,7 +307,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
   (write-png cv :outfile "~/Downloads/cv-test.png"))
 |#
 ;;; SYNOPSIS
-(defmethod put-it ((cv canvas) (img image)
+(defmethod put-it ((dest canvas) (src image)
                    &key
                      height
                      width
@@ -318,16 +318,16 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                      complete?
                      (compose-fun #'a-over-b-fun))
   ;;; ****
-  (unless (initialized cv)
+  (unless (initialized dest)
     (error "canvas::put-it: The canvas object has not been initialized."))
-  (setf (data cv)
-        (put-it (data cv) img
+  (setf (data dest)
+        (put-it (data dest) src
                 :dest-x dest-x :dest-y dest-y
                 :src-x src-x :src-y src-y
                 :width width :height height
                 :complete? complete?
                 :compose-fun compose-fun))
-  cv)
+  dest)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* canvas/put-it-circular
