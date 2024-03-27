@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  19:15:52 Wed Mar 27 2024 CET
+;;; $$ Last modified:  19:38:21 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -648,7 +648,6 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
         (put-it tmp-src2 tmp-src
                 :dest-x dest-x :dest-y dest-y
                 :src-x src-x :src-y src-y
-                :width width :height height
                 :complete? nil)
         (setf dest-x 0
               dest-y 0
