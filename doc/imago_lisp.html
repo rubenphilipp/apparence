@@ -47,12 +47,12 @@
  CLASS HIERARCHY
  none. no classes defined. 
 
- $$ Last modified:  00:36:23 Wed Mar 27 2024 CET
+ $$ Last modified:  16:04:49 Wed Mar 27 2024 CET
 </pre>
 
 <hr />
-<a name="imago2fapr2ddefault2dcompose2dop"></a>
-<a name="robo35"></a><h2>imago/apr-default-compose-op [ Functions ]</h2>
+<a name="imago2fapr2ddefault2dcompose2dfun"></a>
+<a name="robo35"></a><h2>imago/apr-default-compose-fun [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -78,11 +78,11 @@
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((c1 (<a href="#robo2">imago</a>::make-color 23 45 19 22))
       (c2 (<a href="#robo2">imago</a>::make-color 83 15 44 255)))
-  (<strong>apr-default-compose-op</strong> c1 c2))
+  (<strong>apr-default-compose-fun</strong> c1 c2))
 ;; =&gt; 4283640847
 </pre>
 <p class="item_name">SYNOPSIS</p>
-<pre class="source">(defun <strong>apr-default-compose-op</strong> (color1 color2)
+<pre class="source">(defun <strong>apr-default-compose-fun</strong> (color1 color2)
 </pre>
 
 <hr />
@@ -103,9 +103,11 @@
  and provides them in the body of the macro (accessible via the accessors as
  defined in the key arguments).
 
+ The function <a href="#robo35">apr-default-compose-fun</a> illustrates a use case of this macro. 
+
  Note: In order to pass the resulting value back to <a href="#robo2">imago</a>::compose, it is
        necessary to apply the function <a href="#robo37">rgba-list-&gt;color</a> to the resulting
-       value (if it is an rgba-list); cf. <a href="#robo35">apr-default-compose-op</a>. 
+       value (if it is an rgba-list); cf. <a href="#robo35">apr-default-compose-fun</a>. 
 </pre>
 <p class="item_name">ARGUMENTS</p>
 <pre> - The first <a href="#robo2">imago</a>-color (i.e. the dest-, in Porter/Duff-terms the B-color).
@@ -167,7 +169,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-27 00:36:38</p>
+<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-27 16:11:23</p>
 </div> <!-- footer -->
 </body>
 </html>

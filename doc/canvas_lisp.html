@@ -51,7 +51,7 @@
  CLASS HIERARCHY
  <a href="./named-object_lisp.html#robo11">named-object</a> -&gt; <strong>canvas</strong>
 
- $$ Last modified:  00:27:42 Wed Mar 27 2024 CET
+ $$ Last modified:  16:10:16 Wed Mar 27 2024 CET
 </pre>
 
 <hr />
@@ -131,7 +131,7 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
  - :dest-x. The x coordinate of the location the <a href="./image_lisp.html#robo10">image</a> object will be placed
    on the <a href="#robo8">canvas</a>. Default = 0
  - :compose-fun. The default function for performing the <a href="./compositing_lisp.html#robo0">compositing</a>.
-   Default = #'<a href="./imago_lisp.html#robo35">apr-default-compose-op</a>, which is the Porter/Duff A over B
+   Default = #'<a href="./imago_lisp.html#robo35">apr-default-compose-fun</a>, which is the Porter/Duff A over B
    algorithm. 
 </pre>
 <p class="item_name">RETURN VALUE</p>
@@ -154,7 +154,7 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
                      (src-x 0)
                      (dest-y 0)
                      (dest-x 0)
-                     (compose-fun #'apr-default-compose-op))
+                     (compose-fun #'apr-default-compose-fun))
 </pre>
 
 <hr />
@@ -202,9 +202,9 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
    for each pixel. This function must take two arguments:
    - The dest-color (<a href="./imago_lisp.html#robo2">imago</a>-color)
    - The src-color (<a href="./imago_lisp.html#robo2">imago</a>-color)
-   And must return an <a href="./imago_lisp.html#robo2">imago</a>-color (cf. <a href="./imago_lisp.html#robo35">apr-default-compose-op</a>, as well as
+   And must return an <a href="./imago_lisp.html#robo2">imago</a>-color (cf. <a href="./imago_lisp.html#robo35">apr-default-compose-fun</a>, as well as
    <a href="./compositing_lisp.html#robo_top_of_doc">compositing.lisp</a> and <a href="./imago_lisp.html#robo_top_of_doc">imago.lisp</a>).
-   Default = #'<a href="./imago_lisp.html#robo35">apr-default-compose-op</a>
+   Default = #'<a href="./imago_lisp.html#robo35">apr-default-compose-fun</a>
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The modified <a href="#robo8">canvas</a> object. 
@@ -226,7 +226,7 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
                               (src-x 0)
                               (<a href="#robo8">canvas</a>-origin 0.0)
                               (<a href="./image_lisp.html#robo10">image</a>-origin 0.5)
-                              (compose-fun #'apr-default-compose-op)
+                              (compose-fun #'apr-default-compose-fun)
                               (verbose (<a href="./globals_lisp.html#robo24">get-apr-config</a> :verbose)))
 </pre>
 
@@ -306,7 +306,7 @@ data: #&lt;RGB-IMAGE (100x200) {700EE3E293}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-27 00:36:38</p>
+<p>Generated from ./src/canvas.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-27 16:11:23</p>
 </div> <!-- footer -->
 </body>
 </html>
