@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  14:08:46 Wed Mar 27 2024 CET
+;;; $$ Last modified:  21:04:40 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -96,8 +96,8 @@
         (loop for line = (read-line in nil)
               while line do (format t "~&~a" line))
         (close in))))
-  +sbcl t
-  +-sbcl (values))
+  #+sbcl t
+  #+-sbcl (values))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF apparence.asd
