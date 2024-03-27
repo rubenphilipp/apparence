@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  00:27:42 Wed Mar 27 2024 CET
+;;; $$ Last modified:  16:10:16 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -287,7 +287,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; - :dest-x. The x coordinate of the location the image object will be placed
 ;;;   on the canvas. Default = 0
 ;;; - :compose-fun. The default function for performing the compositing.
-;;;   Default = #'apr-default-compose-op, which is the Porter/Duff A over B
+;;;   Default = #'apr-default-compose-fun, which is the Porter/Duff A over B
 ;;;   algorithm. 
 ;;; 
 ;;; RETURN VALUE
@@ -311,7 +311,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                      (src-x 0)
                      (dest-y 0)
                      (dest-x 0)
-                     (compose-fun #'apr-default-compose-op))
+                     (compose-fun #'apr-default-compose-fun))
   ;;; ****
   (unless (initialized cv)
     (error "canvas::put-it: The canvas object has not been initialized."))
@@ -365,9 +365,9 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;;   for each pixel. This function must take two arguments:
 ;;;   - The dest-color (imago-color)
 ;;;   - The src-color (imago-color)
-;;;   And must return an imago-color (cf. apr-default-compose-op, as well as
+;;;   And must return an imago-color (cf. apr-default-compose-fun, as well as
 ;;;   compositing.lisp and imago.lisp).
-;;;   Default = #'apr-default-compose-op
+;;;   Default = #'apr-default-compose-fun
 ;;; 
 ;;; RETURN VALUE
 ;;; The modified canvas object. 
@@ -390,7 +390,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                               (src-x 0)
                               (canvas-origin 0.0)
                               (image-origin 0.5)
-                              (compose-fun #'apr-default-compose-op)
+                              (compose-fun #'apr-default-compose-fun)
                               (verbose (get-apr-config :verbose)))
   ;;; ****
   (unless (initialized cv)

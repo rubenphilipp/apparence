@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  22:26:02 Tue Mar 26 2024 CET
+;;; $$ Last modified:  16:08:59 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -110,7 +110,31 @@
             (get-color (fourth a) (fourth b) alpha-c (third a) (third b))
             alpha-c))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; A atop B (Porter/Duff)
 
+(defun a-atop-b-op (a b)
+  (unless (and (rgba-list-p a) (rgba-list-p b))
+    (error "compositing::a-atop-b-op: Both parameters need to be of type ~
+            rgba-list."))
+  (labels ((get-alpha (alpha-a alpha-b)
+               (+ (* alpha-a alpha-b)
+                  (* (- 1 alpha-a) alpha-b)))
+           (get-color (alpha-a alpha-b alpha-c a b)
+             (let ((tmp-result (+ (* alpha-a a alpha-b)
+                                  (* alpha-b b (- 1 alpha-a)))))
+               (if (< 0 alpha-c)
+                   (/ tmp-result alpha-c)
+                   1.0))))
+    (let ((alpha-c (get-alpha (fourth a) (fourth b))))
+      (list (get-color (fourth a) (fourth b) alpha-c (first a) (first b))
+            (get-color (fourth a) (fourth b) alpha-c (second a) (second b))
+            (get-color (fourth a) (fourth b) alpha-c (third a) (third b))
+            alpha-c))))
+
+(defun a-atop-b-fun (color1 color2)
+  (compose-op (color1 color2)
+    (rgba-list->color (a-atop-b-op a b))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

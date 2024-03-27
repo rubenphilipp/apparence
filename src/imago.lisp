@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  15:24:20 Wed Mar 27 2024 CET
+;;; $$ Last modified:  16:04:49 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -71,11 +71,11 @@
 ;;; and provides them in the body of the macro (accessible via the accessors as
 ;;; defined in the key arguments).
 ;;;
-;;; The function apr-default-compose-op illustrates a use case of this macro. 
+;;; The function apr-default-compose-fun illustrates a use case of this macro. 
 ;;;
 ;;; Note: In order to pass the resulting value back to imago::compose, it is
 ;;;       necessary to apply the function rgba-list->color to the resulting
-;;;       value (if it is an rgba-list); cf. apr-default-compose-op. 
+;;;       value (if it is an rgba-list); cf. apr-default-compose-fun. 
 ;;;
 ;;; ARGUMENTS
 ;;; - The first imago-color (i.e. the dest-, in Porter/Duff-terms the B-color).
@@ -119,7 +119,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* imago/apr-default-compose-op
+;;; ****f* imago/apr-default-compose-fun
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
@@ -144,11 +144,11 @@
 #|
 (let ((c1 (imago::make-color 23 45 19 22))
       (c2 (imago::make-color 83 15 44 255)))
-  (apr-default-compose-op c1 c2))
+  (apr-default-compose-fun c1 c2))
 ;; => 4283640847
 |#
 ;;; SYNOPSIS
-(defun apr-default-compose-op (color1 color2)
+(defun apr-default-compose-fun (color1 color2)
   ;;; ****
   (compose-op (color1 color2 :a-accessor a :b-accessor b)
     (rgba-list->color (a-over-b-op a b))))
