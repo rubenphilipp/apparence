@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  00:36:23 Wed Mar 27 2024 CET
+;;; $$ Last modified:  15:24:20 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -70,6 +70,8 @@
 ;;; to rgba-lists (cf. rgba-list-p) to be used in the actual compose-operator
 ;;; and provides them in the body of the macro (accessible via the accessors as
 ;;; defined in the key arguments).
+;;;
+;;; The function apr-default-compose-op illustrates a use case of this macro. 
 ;;;
 ;;; Note: In order to pass the resulting value back to imago::compose, it is
 ;;;       necessary to apply the function rgba-list->color to the resulting
