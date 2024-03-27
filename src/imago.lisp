@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  17:16:22 Wed Mar 27 2024 CET
+;;; $$ Last modified:  18:08:30 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -191,7 +191,7 @@
     (rgba-list->color (a-out-b-op a b))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* imago/a-xout-b-fun
+;;; ****f* imago/a-xor-b-fun
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
@@ -199,7 +199,7 @@
 ;;; 2024-03-27
 ;;; 
 ;;; DESCRIPTION
-;;; This is the compositing function A Xout B to be used for example in
+;;; This is the compositing function A Xor B to be used for example in
 ;;; imago::compose. 
 ;;;
 ;;; ARGUMENTS
@@ -209,10 +209,10 @@
 ;;; A new imago-color. 
 ;;;
 ;;; SYNOPSIS
-(defun a-xout-b-fun (color1 color2)
+(defun a-xor-b-fun (color1 color2)
   ;;; ****
   (compose-op (color1 color2)
-    (rgba-list->color (a-xout-b-op a b))))
+    (rgba-list->color (a-xor-b-op a b))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****f* imago/a-atop-b-fun

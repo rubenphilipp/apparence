@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  17:07:29 Wed Mar 27 2024 CET
+;;; $$ Last modified:  19:15:52 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -607,6 +607,7 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
                      (src-x 0)
                      (dest-y 0)
                      (dest-x 0)
+                     complete?
                      (compose-fun #'a-over-b-fun))
   ;;; ****
   (let ((tmp-src src))
@@ -639,10 +640,26 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
           (setf dest-x 0))
         (when (> 0 dest-y)
           (setf dest-y 0))))
-    (setf (data dest)
-          (imago::compose nil (data dest) (data tmp-src)
-                          dest-x dest-y
-                          compose-fun)))
+    (let ((tmp-src2 tmp-src))
+      (when (and complete? (or
+                            (< (width tmp-src) (width dest))
+                            (< (height tmp-src) (height dest))))
+        (setf tmp-src2 (make-rgb-image (width dest) (height dest)))
+        (put-it tmp-src2 tmp-src
+                :dest-x dest-x :dest-y dest-y
+                :src-x src-x :src-y src-y
+                :width width :height height
+                :complete? nil)
+        (setf dest-x 0
+              dest-y 0
+              src-x 0
+              src-y 0
+              height nil
+              width nil))
+      (setf (data dest)
+            (imago::compose nil (data dest) (data tmp-src2)
+                            dest-x dest-y
+                            compose-fun))))
   dest)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

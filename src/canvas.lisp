@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  17:06:58 Wed Mar 27 2024 CET
+;;; $$ Last modified:  19:15:42 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -286,6 +286,10 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;;   on the canvas. Default = 0
 ;;; - :dest-x. The x coordinate of the location the image object will be placed
 ;;;   on the canvas. Default = 0
+;;;- :complete? When T, the complete canvas will be re-rendered in the
+;;;   compositing process. Otherwise, just the part of the img will be
+;;;   considered during compositing. Enabling this might be necessary when using
+;;;   e.g. the #'a-in-b-fun. Default = NIL
 ;;; - :compose-fun. The default function for performing the compositing.
 ;;;   Default = #'a-over-b-fun, which is the Porter/Duff A over B
 ;;;   algorithm. 
@@ -311,6 +315,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                      (src-x 0)
                      (dest-y 0)
                      (dest-x 0)
+                     complete?
                      (compose-fun #'a-over-b-fun))
   ;;; ****
   (unless (initialized cv)
@@ -320,6 +325,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
                 :dest-x dest-x :dest-y dest-y
                 :src-x src-x :src-y src-y
                 :width width :height height
+                :complete? complete?
                 :compose-fun compose-fun))
   cv)
 

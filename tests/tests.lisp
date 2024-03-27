@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  01:10:06 Tue Mar 26 2024 CET
+;;; $$ Last modified:  19:31:11 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -499,6 +499,38 @@
                            :src-x 5 :src-y 8)
     (write-png ps :outfile outfile)
     (is (probe-file outfile))))
+
+;;; test-compositing
+;;; RP  Wed Mar 27 19:17:08 2024
+(test test-compositing
+      (let* ((img1 (make-rgb-image
+                    200 200
+                    :initial-color (imago::make-color 30 65 90 255)))
+             (img2 (make-rgb-image
+                    200 200
+                    :initial-color (imago::make-color 34 199 200 255)))
+             (outfile "/tmp/test-")
+             (outfiles '()))
+        (loop for operator in '(a-over-b-fun
+                                a-in-b-fun
+                                a-out-b-fun
+                                a-xor-b-fun
+                                a-atop-b-fun)
+              for out = (concatenate 'string
+                                     outfile
+                                     (write-to-string operator)
+                                     ".png")
+              for cv = (make-canvas 500 500 :color '(0 0 0 0))
+              do
+                 (put-it cv img1 :compose-fun #'a-over-b-fun
+                                 :dest-x 0 :dest-y 0)
+                 (put-it cv img2 :compose-fun (symbol-function operator)
+                                 :dest-x 150 :dest-y 150
+                                 :width 100 :height 100
+                                 :complete? t)
+                 (push out outfiles)
+                 (write-png cv :outfile out))
+        (is (every #'pathnamep (mapcar #'probe-file outfiles)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp

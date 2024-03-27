@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  17:06:31 Wed Mar 27 2024 CET
+;;; $$ Last modified:  18:48:47 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -345,6 +345,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                      (src-x 0)
                      (dest-y 0)
                      (dest-x 0)
+                     complete?
                      (interpolation
                       (get-apr-config :default-interpolation))
                      (compose-fun #'a-over-b-fun))
@@ -372,6 +373,7 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                         :dest-x dest-x :dest-y dest-y
                         :src-x src-x :src-y src-y
                         :width width :height height
+                        :complete? complete?
                         :compose-fun compose-fun))
           (warn "projection::copy: Won't copy. The resulting dimensions are ~
                  too small.")))

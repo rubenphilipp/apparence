@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  17:16:36 Wed Mar 27 2024 CET
+;;; $$ Last modified:  18:21:13 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -105,6 +105,26 @@
 ;; => (0.37826088 0.16521741 0.28695652 0.91999996)
 ;;; SYNOPSIS
 |#
+
+
+(defmacro porter-duff-comp (&optional (f-a 1) (f-b '(- 1 a-a)))
+  ;;; ****
+  `(lambda (a b)
+     (unless (and (rgba-list-p a) (rgba-list-p b))
+       (error "compositing::porter-duff-comp: Both parameters need to be of ~
+               type rgba-list."))
+     (flet ((get-color (a-a a-b c-a c-b)
+              (+ (* a-a ,f-a c-a)
+                         (* a-b ,f-b c-b))))
+       (let* ((a-a (fourth a))
+              (a-b (fourth b))
+              (a-c (+ (* a-a ,f-a)
+                     (* a-b ,f-b))))
+         (list (get-color (fourth a) (fourth b) (first a) (first b))
+               (get-color (fourth a) (fourth b) (second a) (second b))
+               (get-color (fourth a) (fourth b) (third a) (third b))
+               a-c)))))
+#|
 (defmacro porter-duff-comp (&optional (f-a 1) (f-b '(- 1 a-a)))
   ;;; ****
   `(lambda (a b)
@@ -112,11 +132,13 @@
        (error "compositing::porter-duff-comp: Both parameters need to be of ~
                type rgba-list."))
      (flet ((get-color (a-a a-b a-c c-a c-b)
+              ;; (+ (* a-a ,f-a c-a)
+              ;;            (* a-b ,f-b c-b))))
               (let ((tmp-result
                       (+ (* a-a ,f-a c-a)
                          (* a-b ,f-b c-b))))
                 (if (< 0 a-c)
-                    (/ tmp-result a-c)
+                    (/ tmp-result 1 a-c)
                     1.0))))
        (let* ((a-a (fourth a))
               (a-b (fourth b))
@@ -126,6 +148,7 @@
                (get-color (fourth a) (fourth b) a-c (second a) (second b))
                (get-color (fourth a) (fourth b) a-c (third a) (third b))
                a-c)))))
+|#
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****f* compositing/a-over-b-op
@@ -175,7 +198,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun a-xout-b-op (a b)
+(defun a-xor-b-op (a b)
   (funcall (porter-duff-comp (- 1 a-b) (- 1 a-a)) a b))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
