@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  22:26:08 Tue Mar 26 2024 CET
+;;; $$ Last modified:  14:08:46 Wed Mar 27 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -82,6 +82,22 @@
 ;;                    (fboundp symb))
 ;;                (eql (symbol-package symb) package))
 ;;       (export symb package))))
+
+(in-package :cl-user)
+
+(defun apr (&optional (logo t))
+  (declare (special +apparence-src-path+))
+  (setf *package* (find-package :apparence))
+  (when logo
+    (let* ((apr-logo (concatenate 'string +apparence-src-path+
+                                 "txt/apr-ascii-logo-small.txt"))
+           (in (open apr-logo :if-does-not-exist nil)))
+      (when in
+        (loop for line = (read-line in nil)
+              while line do (format t "~&~a" line))
+        (close in))))
+  +sbcl t
+  +-sbcl (values))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF apparence.asd
