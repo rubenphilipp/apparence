@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-03-01
 ;;;
-;;; $$ Last modified:  16:31:25 Tue Mar 26 2024 CET
+;;; $$ Last modified:  19:50:16 Thu Mar 28 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -52,7 +52,7 @@
         ;; this starts a "stopwatch" for each image generating subprocess
         (with-stopwatch ()
           (let* ((azim (interpl i azim-env-sc :base 1.12))
-                 (y (floor (interpl i y-env-sc :base 1.16)))
+                 (y (interpl i y-env-sc :base 1.16))
                  (start-time (get-universal-time))
                  (outfile (format nil "~a~4,'0d.jpg" outdir i))
                  (new-width (* (projection-width pn) .3))
@@ -70,10 +70,10 @@
                   (put-it-circular ps pn azim y :canvas-origin 0
                                                 :image-origin 0.5
                                                 :src-x
-                                                (floor (- (/ (projection-width
-                                                              pn)
-                                                             2)
-                                                          (/ new-width 2)))
+                                                (- (/ (projection-width
+                                                       pn)
+                                                      2)
+                                                   (/ new-width 2))
                                                 :width new-width)
                   ;; note: jpgs are faster than pngs
                   (write-jpg ps :outfile outfile)

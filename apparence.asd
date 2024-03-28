@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:04:40 Wed Mar 27 2024 CET
+;;; $$ Last modified:  01:37:37 Thu Mar 28 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -89,15 +89,18 @@
   (declare (special +apparence-src-path+))
   (setf *package* (find-package :apparence))
   (when logo
-    (let* ((apr-logo (concatenate 'string +apparence-src-path+
-                                 "txt/apr-ascii-logo-small.txt"))
+    (let* (;;thanks to https://www.asciiart.eu/image-to-ascii for the logos
+           (apr-logos (uiop:directory-files
+                       (concatenate 'string +apparence-src-path+
+                                    "txt/logo/")
+                       "*.txt"))
+           (apr-logo (nth (random (length apr-logos)) apr-logos))
            (in (open apr-logo :if-does-not-exist nil)))
       (when in
         (loop for line = (read-line in nil)
               while line do (format t "~&~a" line))
         (close in))))
-  #+sbcl t
-  #+-sbcl (values))
+    t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF apparence.asd
