@@ -13,7 +13,7 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  01:37:37 Thu Mar 28 2024 CET
+;;; $$ Last modified:  16:59:47 Fri Mar 29 2024 CET
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -39,7 +39,8 @@
                "cl-pcg"
                "imago"
                "imago/pngload"
-               "imago/jpeg-turbo")
+               "imago/jpeg-turbo"
+               "easing")
   :pathname "src/"
   :components ((:file "package")
                (:file "named-object")

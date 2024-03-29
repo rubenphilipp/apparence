@@ -5,7 +5,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:20:41 Tue Mar 26 2024 CET
+$$ Last modified:  17:00:08 Fri Mar 29 2024 CET
 #+end_comment
 
 *Please note:* This program is at a very early stage and under
@@ -75,6 +75,7 @@ The major dependencies are:
 - [[https://github.com/sjl/cl-pcg/][cl-pcg]]
 - [[https://github.com/edicl/cl-ppcre][cl-ppcre]]
 - [[https://github.com/ak-coram/cl-frugal-uuid/][cl-frugal-uuid]]
+- [[https://github.com/vydd/easing/][easing]]
 - [[https://github.com/mdedwards/slippery-chicken][slippery-chicken]] (optional)
 
 ** Other

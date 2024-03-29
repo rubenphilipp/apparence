@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  22:27:21 Mon Mar 25 2024 CET
+;;; $$ Last modified:  18:18:09 Fri Mar 29 2024 CET
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -874,6 +874,53 @@
   (if (and (numberp x) (<= 0 x))
       (floor (rescale x 0.0 1.0 0 255))
       0))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/interpolate-easing
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-03-29
+;;; 
+;;; DESCRIPTION
+;;; This function interpolates between two values using an easing function (e.g.
+;;; one of those proposed by Robert Penner). The x-range is defined by the
+;;; :duration argument.
+;;; The ease-fun must be a function accepting a number/float as its argument and
+;;; returning a number/float between 0. and 1. to be used as a factor for the
+;;; interpolation. You could use the easing functions from the easing package
+;;; by Danielo Vidovic (e.g. ease:in-sine). 
+;;;
+;;; ARGUMENTS
+;;; - The x-/time-axis value.
+;;; - The start value.
+;;; - The end value.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :duration. A number indicating the duration of the easing. This implies
+;;;   the value range for the x-argument. Default = 1.0
+;;; - :ease-fun. The function used for easing (see above).
+;;;   Default = #'ease:in-sine
+;;; 
+;;; RETURN VALUE
+;;; The interpolated value. 
+;;;
+;;; EXAMPLE
+#|
+(interpolate-easing 50 0 100 :duration 100
+                             :ease-fun #'ease:in-bounce)
+;; => 23.4375
+|#
+;;; SYNOPSIS
+(defun interpolate-easing (x y-start y-end &key
+                                             (duration 1.0)
+                                             (ease-fun #'ease:in-sine))
+  ;;; ****
+  (+ y-start (* (- y-end y-start) (funcall ease-fun (/ x duration)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF utilities.lisp
