@@ -3,7 +3,7 @@
 ;;; sequence2.lisp
 ;;;
 ;;; NAME
-;;; timeline
+;;; sequence2
 ;;;
 ;;; DESCRIPTION
 ;;; An example using the with-timeline macro and easing functions.
@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-03-30
 ;;;
-;;; $$ Last modified:  21:07:48 Sun Mar 31 2024 CEST
+;;; $$ Last modified:  21:10:37 Sun Mar 31 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)

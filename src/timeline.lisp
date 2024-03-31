@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  20:46:02 Sun Mar 31 2024 CEST
+;;; $$ Last modified:  22:32:35 Sun Mar 31 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -155,7 +155,7 @@
                          ,tl-duration-acc ,tl-end-acc))
      (let ((,tl-abs-time-acc ,time)
            (,tl-start-acc ,start))
-       (declare (ignorable ,tl-abs-time-acc))
+       (declare (ignorable ,tl-abs-time-acc ,tl-start-acc))
        (when (and (<= ,start ,time) (>= ,tl-end-acc ,time))
          ,@body))))
 
