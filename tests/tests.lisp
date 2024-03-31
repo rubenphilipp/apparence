@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  19:31:11 Wed Mar 27 2024 CET
+;;; $$ Last modified:  19:31:06 Sun Mar 31 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -531,6 +531,15 @@
                  (push out outfiles)
                  (write-png cv :outfile out))
         (is (every #'pathnamep (mapcar #'probe-file outfiles)))))
+
+;;; test-with-timeline1
+(test test-with-timeline1
+      (let ((res (loop for i from 1 to 10
+                       collect
+                       (with-timeline (i 3 :end 8 )
+                         apr::tl-time))))
+        (is (equal '(0 1 2 3 4 5)
+                   (remove nil res)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
