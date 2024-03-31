@@ -55,7 +55,7 @@
 
 <hr />
 <a name="svg2fmake2dsvg2dtoplevel"></a>
-<a name="robo52"></a><h2>svg/make-svg-toplevel [ Functions ]</h2>
+<a name="robo53"></a><h2>svg/make-svg-toplevel [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">svg</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -93,7 +93,7 @@
 
 <hr />
 <a name="svg2fsvg2d3epng"></a>
-<a name="robo53"></a><h2>svg/svg-&gt;png [ Methods ]</h2>
+<a name="robo54"></a><h2>svg/svg-&gt;png [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">svg</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -112,38 +112,38 @@
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
- - :outfile. The output filename. Default = "/tmp/<a href="./image_lisp.html#robo10">image</a>.png"
+ - :outfile. The output filename. Default = "/tmp/<a href="./image_lisp.html#robo11">image</a>.png"
  - :tmp-dir. A path to a directory where the temp-files are stored.
 
- further arguments are inherited from <a href="./utilities_lisp.html#robo69">svg-file-&gt;png</a>.
+ further arguments are inherited from <a href="./utilities_lisp.html#robo72">svg-file-&gt;png</a>.
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The output filename. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((<a href="./canvas_lisp.html#robo8">canvas</a> (cl-<a href="#robo7">svg</a>::<a href="#robo52">make-svg-toplevel</a> 'cl-<a href="#robo7">svg</a>:<a href="#robo7">svg</a>-1.1-toplevel
+<pre class="source">(let ((<a href="./canvas_lisp.html#robo9">canvas</a> (cl-<a href="#robo7">svg</a>::<a href="#robo53">make-svg-toplevel</a> 'cl-<a href="#robo7">svg</a>:<a href="#robo7">svg</a>-1.1-toplevel
                                          :width 400
                                          :height 300)))
-  (cl-<a href="#robo7">svg</a>:draw <a href="./canvas_lisp.html#robo8">canvas</a>
+  (cl-<a href="#robo7">svg</a>:draw <a href="./canvas_lisp.html#robo9">canvas</a>
       (:rect :x 10 :y 10
              :width 100 :height (* 100 4/3)
              :fill "rgba(90,90,90,1)"))
-  (<strong>svg-&gt;png</strong> <a href="./canvas_lisp.html#robo8">canvas</a>))
-;; =&gt; "/tmp/<a href="./image_lisp.html#robo10">image</a>.png"
+  (<strong>svg-&gt;png</strong> <a href="./canvas_lisp.html#robo9">canvas</a>))
+;; =&gt; "/tmp/<a href="./image_lisp.html#robo11">image</a>.png"
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmethod <strong>svg-&gt;png</strong> ((<a href="#robo7">svg</a> cl-<a href="#robo7">svg</a>::<a href="#robo7">svg</a>-toplevel)
                      &amp;key
-                       (outfile "/tmp/<a href="./image_lisp.html#robo10">image</a>.png")
+                       (outfile "/tmp/<a href="./image_lisp.html#robo11">image</a>.png")
                        (dpi 300)
-                       (tmp-dir (<a href="./globals_lisp.html#robo25">get-apr-config</a> :default-tmp-dir))
+                       (tmp-dir (<a href="./globals_lisp.html#robo26">get-apr-config</a> :default-tmp-dir))
                        width
                        height)
 </pre>
 
 <hr />
 <a name="svg2fwrite2dsvg"></a>
-<a name="robo54"></a><h2>svg/write-svg [ Methods ]</h2>
+<a name="robo55"></a><h2>svg/write-svg [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">svg</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -160,31 +160,31 @@
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword arguments:
- - :outfile. The output filename. Default = "/tmp/<a href="./image_lisp.html#robo10">image</a>.<a href="#robo7">svg</a>"
+ - :outfile. The output filename. Default = "/tmp/<a href="./image_lisp.html#robo11">image</a>.<a href="#robo7">svg</a>"
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The output filename. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((<a href="./canvas_lisp.html#robo8">canvas</a> (cl-<a href="#robo7">svg</a>::<a href="#robo52">make-svg-toplevel</a> 'cl-<a href="#robo7">svg</a>:<a href="#robo7">svg</a>-1.1-toplevel
+<pre class="source">(let ((<a href="./canvas_lisp.html#robo9">canvas</a> (cl-<a href="#robo7">svg</a>::<a href="#robo53">make-svg-toplevel</a> 'cl-<a href="#robo7">svg</a>:<a href="#robo7">svg</a>-1.1-toplevel
                                          :width 400
                                          :height 300)))
-  (cl-<a href="#robo7">svg</a>:draw <a href="./canvas_lisp.html#robo8">canvas</a>
+  (cl-<a href="#robo7">svg</a>:draw <a href="./canvas_lisp.html#robo9">canvas</a>
       (:rect :x 10 :y 10
              :width 100 :height (* 100 4/3)
              :fill "rgba(90,90,90,1)"))
-  (<strong>write-svg</strong> <a href="./canvas_lisp.html#robo8">canvas</a>))
-;; =&gt; "/tmp/<a href="./image_lisp.html#robo10">image</a>.<a href="#robo7">svg</a>"
+  (<strong>write-svg</strong> <a href="./canvas_lisp.html#robo9">canvas</a>))
+;; =&gt; "/tmp/<a href="./image_lisp.html#robo11">image</a>.<a href="#robo7">svg</a>"
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmethod <strong>write-svg</strong> ((<a href="#robo7">svg</a> cl-<a href="#robo7">svg</a>::<a href="#robo7">svg</a>-toplevel)
                       &amp;key
-                        (outfile "/tmp/<a href="./image_lisp.html#robo10">image</a>.<a href="#robo7">svg</a>"))
+                        (outfile "/tmp/<a href="./image_lisp.html#robo11">image</a>.<a href="#robo7">svg</a>"))
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/svg.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-27 20:00:34</p>
+<p>Generated from ./src/svg.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-31 19:33:35</p>
 </div> <!-- footer -->
 </body>
 </html>

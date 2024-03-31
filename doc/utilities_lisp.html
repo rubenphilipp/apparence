@@ -29,7 +29,7 @@
 <div id="content">
 <hr />
 <a name="utilities2faspect2dratio"></a>
-<a name="robo55"></a><h2>utilities/aspect-ratio [ Functions ]</h2>
+<a name="robo57"></a><h2>utilities/aspect-ratio [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -39,10 +39,10 @@
 <pre> 2024-02-23
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> Returns the <strong>aspect-ratio</strong> (w/h) of a given <a href="./image_lisp.html#robo10">image</a>. 
+<pre> Returns the <strong>aspect-ratio</strong> (w/h) of a given <a href="./image_lisp.html#robo11">image</a>. 
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> An <a href="./image_lisp.html#robo10">image</a> object. 
+<pre> An <a href="./image_lisp.html#robo11">image</a> object. 
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> none
@@ -51,12 +51,12 @@
 <pre> The aspect ratio. 
 </pre>
 <p class="item_name">SYNOPSIS</p>
-<pre class="source">(defun <strong>aspect-ratio</strong> (<a href="./image_lisp.html#robo10">image</a>)
+<pre class="source">(defun <strong>aspect-ratio</strong> (<a href="./image_lisp.html#robo11">image</a>)
 </pre>
 
 <hr />
 <a name="utilities2fdegrees2d3eradians"></a>
-<a name="robo56"></a><h2>utilities/degrees-&gt;radians [ Functions ]</h2>
+<a name="robo58"></a><h2>utilities/degrees-&gt;radians [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -84,7 +84,7 @@
 
 <hr />
 <a name="utilities2ffround2dto2ddigits"></a>
-<a name="robo57"></a><h2>utilities/fround-to-digits [ Functions ]</h2>
+<a name="robo59"></a><h2>utilities/fround-to-digits [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -116,7 +116,7 @@
 
 <hr />
 <a name="utilities2fget2drandom2duuid"></a>
-<a name="robo58"></a><h2>utilities/get-random-uuid [ Functions ]</h2>
+<a name="robo60"></a><h2>utilities/get-random-uuid [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -148,8 +148,54 @@
 </pre>
 
 <hr />
+<a name="utilities2finterpolate2deasing"></a>
+<a name="robo61"></a><h2>utilities/interpolate-easing [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-29
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function interpolates between two values using an easing function (e.g.
+ one of those proposed by Robert Penner). The x-range is defined by the
+ :duration argument.
+ The ease-fun must be a function accepting a number/float as its argument and
+ returning a number/float between 0. and 1. to be used as a factor for the
+ interpolation. You could use the easing functions from the easing <a href="./package_lisp.html#robo3">package</a>
+ by Danielo Vidovic (e.g. ease:in-sine). 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The x-/time-axis value.
+ - The start value.
+ - The end value.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :duration. A number indicating the duration of the easing. This implies
+   the value range for the x-argument. Default = 1.0
+ - :ease-fun. The function used for easing (see above).
+   Default = #'ease:in-sine
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The interpolated value. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>interpolate-easing</strong> 50 0 100 :duration 100
+                             :ease-fun #'ease:in-bounce)
+;; =&gt; 23.4375
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>interpolate-easing</strong> (x y-start y-end &amp;key
+                                             (duration 1.0)
+                                             (ease-fun #'ease:in-sine))
+</pre>
+
+<hr />
 <a name="utilities2fload2dfrom2dsame2ddir"></a>
-<a name="robo59"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
+<a name="robo62"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -175,7 +221,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsame2ddir"></a>
-<a name="robo60"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
+<a name="robo63"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -204,7 +250,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsrc2ddir"></a>
-<a name="robo61"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
+<a name="robo64"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -231,7 +277,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelope"></a>
-<a name="robo62"></a><h2>utilities/plot-envelope [ Functions ]</h2>
+<a name="robo65"></a><h2>utilities/plot-envelope [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -264,7 +310,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelopes"></a>
-<a name="robo63"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
+<a name="robo66"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -310,7 +356,7 @@
 
 <hr />
 <a name="utilities2fradians2d3edegrees"></a>
-<a name="robo64"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
+<a name="robo67"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -329,7 +375,7 @@
 <pre> The value in degrees. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(<strong>radians-&gt;degrees</strong> (<a href="#robo56">degrees-&gt;radians</a> -90))
+<pre class="source">(<strong>radians-&gt;degrees</strong> (<a href="#robo58">degrees-&gt;radians</a> -90))
 ;; =&gt; -90.0
 </pre>
 <p class="item_name">SYNOPSIS</p>
@@ -338,7 +384,7 @@
 
 <hr />
 <a name="utilities2frgb2dp"></a>
-<a name="robo65"></a><h2>utilities/rgb-p [ Functions ]</h2>
+<a name="robo68"></a><h2>utilities/rgb-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -366,7 +412,7 @@
 
 <hr />
 <a name="utilities2frgba2dp"></a>
-<a name="robo66"></a><h2>utilities/rgba-p [ Functions ]</h2>
+<a name="robo69"></a><h2>utilities/rgba-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -396,7 +442,7 @@
 
 <hr />
 <a name="utilities2fshell"></a>
-<a name="robo67"></a><h2>utilities/shell [ Functions ]</h2>
+<a name="robo70"></a><h2>utilities/shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -429,7 +475,7 @@
 
 <hr />
 <a name="utilities2fsimple2dshell"></a>
-<a name="robo68"></a><h2>utilities/simple-shell [ Functions ]</h2>
+<a name="robo71"></a><h2>utilities/simple-shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -439,14 +485,14 @@
 <pre> 2023-07-16
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> Run a <a href="#robo67">shell</a> command from lisp and return the exit code.
+<pre> Run a <a href="#robo70">shell</a> command from lisp and return the exit code.
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> - The <a href="#robo67">shell</a> command (i.e., most likely, path to the binary)
+<pre> - The <a href="#robo70">shell</a> command (i.e., most likely, path to the binary)
  
  OPTIONAL ARGUMENTS:
  rest:
- - The arguments to the <a href="#robo67">shell</a> program.
+ - The arguments to the <a href="#robo70">shell</a> program.
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The the exit-code of the process.
@@ -457,7 +503,7 @@
 
 <hr />
 <a name="utilities2fsvg2dfile2d3epng"></a>
-<a name="robo69"></a><h2>utilities/svg-file-&gt;png [ Functions ]</h2>
+<a name="robo72"></a><h2>utilities/svg-file-&gt;png [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -474,7 +520,7 @@
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
- - :outfile. The output filename. Default = "/tmp/<a href="./image_lisp.html#robo10">image</a>.png"
+ - :outfile. The output filename. Default = "/tmp/<a href="./image_lisp.html#robo11">image</a>.png"
  - :dpi. The dpi for the png.
  - :width. The width of the resulting png file. When omitted, the width as
    specified in the <a href="./svg_lisp.html#robo7">svg</a> will be used, or -- when the height is given -- the
@@ -491,7 +537,7 @@
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defun <strong>svg-file-&gt;png</strong> (<a href="./svg_lisp.html#robo7">svg</a>-file
                       &amp;key
-                        (outfile "/tmp/<a href="./image_lisp.html#robo10">image</a>.png")
+                        (outfile "/tmp/<a href="./image_lisp.html#robo11">image</a>.png")
                         (dpi 300)
                         width
                         height)
@@ -499,7 +545,7 @@
 
 <hr />
 <a name="utilities2fsvg2dfiles2d3epng"></a>
-<a name="robo70"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
+<a name="robo73"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -546,7 +592,7 @@
                          (dpi 300)
                          width
                          height
-                         ;; inherited from <a href="./parallel_lisp.html#robo46">with-kernel</a>
+                         ;; inherited from <a href="./parallel_lisp.html#robo47">with-kernel</a>
                          (num-workers (serapeum::count-cpus))
                          (kernel-name "apparence kernel")
                          (stopwatch? t)
@@ -557,7 +603,7 @@
 
 <hr />
 <a name="utilities2fsystem2dopen2dfile"></a>
-<a name="robo71"></a><h2>utilities/system-open-file [ Functions ]</h2>
+<a name="robo74"></a><h2>utilities/system-open-file [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -581,7 +627,7 @@
 
 <hr />
 <a name="utilities2ftrailing2dslash"></a>
-<a name="robo72"></a><h2>utilities/trailing-slash [ Functions ]</h2>
+<a name="robo75"></a><h2>utilities/trailing-slash [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -606,7 +652,7 @@
 
 <hr />
 <a name="utilities2fwith2dstopwatch"></a>
-<a name="robo73"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
+<a name="robo76"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -666,7 +712,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-27 20:00:34</p>
+<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-31 19:33:35</p>
 </div> <!-- footer -->
 </body>
 </html>

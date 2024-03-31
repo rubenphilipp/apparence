@@ -29,7 +29,7 @@
 <div id="content">
 <hr />
 <a name="apr2fcylinder2dmantle"></a>
-<a name="robo9"></a><h2>apr/cylinder-mantle [ Classes ]</h2>
+<a name="robo10"></a><h2>apr/cylinder-mantle [ Classes ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_classes.html#robo_top_of_doc">Classes</a> ]</p>
 <p class="item_name">NAME</p>
@@ -42,19 +42,19 @@
 <pre> 2024-03-03
 </pre>
 <p class="item_name">PURPOSE</p>
-<pre> This class implements the cylinder mantle <a href="./projection_lisp.html#robo12">projection</a> surface. 
+<pre> This class implements the cylinder mantle <a href="./projection_lisp.html#robo13">projection</a> surface. 
 
  CLASS HIERARCHY
- <a href="./named-object_lisp.html#robo11">named-object</a> -&gt; <a href="./canvas_lisp.html#robo8">canvas</a> -&gt; <a href="./projection-surface_lisp.html#robo13">projection-surface</a> -&gt; <strong>cylinder-mantle</strong>
+ <a href="./named-object_lisp.html#robo12">named-object</a> -&gt; <a href="./canvas_lisp.html#robo9">canvas</a> -&gt; <a href="./projection-surface_lisp.html#robo14">projection-surface</a> -&gt; <strong>cylinder-mantle</strong>
 
  $$ Last modified:  21:36:55 Sun Mar 10 2024 CET
 </pre>
 
 <hr />
 <a name="cylinder2dmantle2fget2dcoordinates"></a>
-<a name="robo22"></a><h2>cylinder-mantle/get-coordinates [ Methods ]</h2>
+<a name="robo23"></a><h2>cylinder-mantle/get-coordinates [ Methods ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo9">cylinder-mantle</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">cylinder-mantle</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
 <pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
 </pre>
@@ -69,7 +69,7 @@
  (clockwise) by an azimuth-offset value.
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> - A <a href="#robo9">cylinder-mantle</a> object.
+<pre> - A <a href="#robo10">cylinder-mantle</a> object.
  - The azimuth (in degrees, clockwise) of the point on the circle, the
    x,y coordinates should be returned. 
 </pre>
@@ -88,7 +88,7 @@
 <pre> A list with the x and y coordinates of the location of the point.
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((cm (<a href="#robo23">make-cylinder-mantle</a> 10 :surface-diameter 10
+<pre class="source">(let ((cm (<a href="#robo24">make-cylinder-mantle</a> 10 :surface-diameter 10
                                    :width 100
                                    :height 200)))
   (<strong>get-coordinates</strong> cm 90 :azimuth-origin-offset 0))
@@ -105,9 +105,9 @@
 
 <hr />
 <a name="cylinder2dmantle2fmake2dcylinder2dmantle"></a>
-<a name="robo23"></a><h2>cylinder-mantle/make-cylinder-mantle [ Functions ]</h2>
+<a name="robo24"></a><h2>cylinder-mantle/make-cylinder-mantle [ Functions ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo9">cylinder-mantle</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">cylinder-mantle</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
 <pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
 </pre>
@@ -115,16 +115,16 @@
 <pre> 2024-02-26
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> Helper function to instantiate a <a href="#robo9">cylinder-mantle</a> object.
- A cylinder mantle is a specialized <a href="./projection-surface_lisp.html#robo13">projection-surface</a>. 
+<pre> Helper function to instantiate a <a href="#robo10">cylinder-mantle</a> object.
+ A cylinder mantle is a specialized <a href="./projection-surface_lisp.html#robo14">projection-surface</a>. 
  
  Please note that you cannot set both the diameter and the width (i.e. the
  circumference) value when instantiating the object.
 
  NB: The unit for positions/coordinates do not use a specified unit
  (e.g. meters or px). This facilitates working on surfaces of an arbitrary
- <a href="./image_lisp.html#robo33">scale</a> without deciding for the final output <a href="./image_lisp.html#robo33">scale</a>. The conversion, e.g. to
- pixel values, will take place when creating a <a href="./canvas_lisp.html#robo8">canvas</a> from a <a href="./projection_lisp.html#robo12">projection</a>
+ <a href="./image_lisp.html#robo34">scale</a> without deciding for the final output <a href="./image_lisp.html#robo34">scale</a>. The conversion, e.g. to
+ pixel values, will take place when creating a <a href="./canvas_lisp.html#robo9">canvas</a> from a <a href="./projection_lisp.html#robo13">projection</a>
  surface.
 </pre>
 <p class="item_name">ARGUMENTS</p>
@@ -136,20 +136,20 @@
    NB: Do not set this value when a :width value is given. 
  - :surface-width. The width/circumference of the cylindrical mantle.
    NB: Do not set this value when a :diameter value is given.
- - :x-scaler. A scaler (ratio <a href="./canvas_lisp.html#robo8">canvas</a>-width/surface-width) to link the
-   dimensions of the <a href="./canvas_lisp.html#robo8">canvas</a> (in the data slot) to the dimensions of the
-   <a href="./projection_lisp.html#robo12">projection</a>.
- - :y-scaler. A scaler (ratio <a href="./canvas_lisp.html#robo8">canvas</a>-height/surface-height) to link the
-   dimensions of the <a href="./image_lisp.html#robo10">image</a> (in the data slot) to the dimensions of the
-   <a href="./projection_lisp.html#robo12">projection</a>.
- - :width. The width (in px, thus an integer) of the <a href="./canvas_lisp.html#robo8">canvas</a>. 
- - :height. The height (in px, thus an integer) of the <a href="./canvas_lisp.html#robo8">canvas</a>.
- - :color. The initial color of the <a href="./canvas_lisp.html#robo8">canvas</a>, as a rgb(a) list.
+ - :x-scaler. A scaler (ratio <a href="./canvas_lisp.html#robo9">canvas</a>-width/surface-width) to link the
+   dimensions of the <a href="./canvas_lisp.html#robo9">canvas</a> (in the data slot) to the dimensions of the
+   <a href="./projection_lisp.html#robo13">projection</a>.
+ - :y-scaler. A scaler (ratio <a href="./canvas_lisp.html#robo9">canvas</a>-height/surface-height) to link the
+   dimensions of the <a href="./image_lisp.html#robo11">image</a> (in the data slot) to the dimensions of the
+   <a href="./projection_lisp.html#robo13">projection</a>.
+ - :width. The width (in px, thus an integer) of the <a href="./canvas_lisp.html#robo9">canvas</a>. 
+ - :height. The height (in px, thus an integer) of the <a href="./canvas_lisp.html#robo9">canvas</a>.
+ - :color. The initial color of the <a href="./canvas_lisp.html#robo9">canvas</a>, as a rgb(a) list.
    Default = '(0 0 0 0)
  - :id. The id of the cylinder.
 </pre>
 <p class="item_name">RETURN VALUE</p>
-<pre> The new <a href="#robo9">cylinder-mantle</a> object. 
+<pre> The new <a href="#robo10">cylinder-mantle</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(<strong>make-cylinder-mantle</strong> 47 :surface-diameter 38
@@ -183,7 +183,7 @@ data: #&lt;RGB-IMAGE (8192x2770) {7009314413}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/cylinder-mantle.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-27 20:00:34</p>
+<p>Generated from ./src/cylinder-mantle.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-31 19:33:35</p>
 </div> <!-- footer -->
 </body>
 </html>
