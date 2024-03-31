@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  19:57:08 Wed Mar 27 2024 CET
+;;; $$ Last modified:  20:17:57 Sun Mar 31 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -312,7 +312,9 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                      (x-scaler ps)))
         (pn->ps-y (/ (y-scaler pn)
                      (y-scaler ps)))
-        (tmp-img (data pn)))
+        (tmp-img pn)
+        ;; (tmp-img (data pn))
+        )
     ;; scale the src if necessary
     (unless (= 1.0 pn->ps-x pn->ps-y)
       ;; warn when image is upscaled
