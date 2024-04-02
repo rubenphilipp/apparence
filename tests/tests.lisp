@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  19:31:06 Sun Mar 31 2024 CEST
+;;; $$ Last modified:  23:58:39 Tue Apr  2 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -540,6 +540,128 @@
                          apr::tl-time))))
         (is (equal '(0 1 2 3 4 5)
                    (remove nil res)))))
+
+;;; test-sc1
+#+slippery-chicken
+(test test-sc1
+      (let* ((num-seqs 55)
+             (proc (sc:procession num-seqs '(1 2 3 4)))
+             (hello 
+               (sc:make-slippery-chicken
+                '+hello-slippery+ 
+                :composer "ME"
+                :title "hello slippery chicken noodles"
+                :year "2024"
+                :tempo-map '((1 (q 144 "fast")))
+                :ensemble '(((vln (violin :midi-channel 1))
+                             (perc (vibraphone :midi-channel 4))
+                             (bsn (bassoon :midi-channel 9))))
+                :rthm-seq-palette '((1 ((((5 8) - s x 4 -  - s e s - (e)))
+                                        :pitch-seq-palette ((1 2 5 4 1 3 6)
+                                                            (5 3 2 6 4 1 2))))
+                                    (2 ((((5 8) - s s s - (s)  (e) - s x 4 -))
+                                        :pitch-seq-palette ((1 3 2 6 4 2 3))))
+                                    (3 ((((5 8) (e) - e s s - - s e s -))
+                                        :pitch-seq-palette ((1 4 2 3 6 3))))
+                                    (4 ((((5 8) - s e s -  e (e) - s s -))
+                                        :pitch-seq-palette ((4 1 2 5 2 3)))))
+                :set-palette '((1 ((d2 f2 ef3 b3 g4 af4 a4 bf5)))
+                               (2 ((b1 e2 d3 bf3 f4 g4 a4 fs5)))
+                               (3 ((ef2 a2 d3 b2 a3 f4 c5 fs5 bf5)))
+                               (4 ((cs2 bf2 fs3 e4 c5 g5 d6))))
+                :set-limits-high '((vln (0 c5 75 c7 100 c5))
+                                   (perc (0 a4 75 f6 100 a4))
+                                   (bsn (0 g3 75 a4 100 g3)))
+                :set-limits-low '((vln (0 c4 75 g5 100 c4))
+                                  (perc (0 f3 75 g4 100 f3))
+                                  (bsn (0 bf1 75 g3 100 bf1)))
+                :set-map `((1 ,proc))
+                :rthm-seq-map `((1 ((vln ,proc)
+                                    (perc ,(sc::wrap-list proc 4))
+                                    (bsn ,(sc::wrap-list proc 7)))))))
+             (sc-events (sc:get-events-sorted-by-time hello))
+             (sc-data
+               (mapcar #'(lambda (e)
+                           (when (sc:pitch-or-chord e)
+                             (list (sc:start-time e)
+                                   (sc:duration e)
+                                   (sc:midi-note
+                                    (if (sc:is-chord e)
+                                        (first (sc:data (sc:pitch-or-chord e)))
+                                        (sc:pitch-or-chord e)))
+                                   (sc:player e))))
+                       sc-events))
+             (colors '((vln . (10 29 190 255))
+                       (perc . (20 200 28 255))
+                       (bsn . (100 10 29 255))))
+             (dur (sc:duration (sc:piece hello)))
+             (dur-frames (+ (secs->frames dur) (get-apr-config :fps))) 
+             (out-width 900)
+             (out-height 400)
+             (surface-width 90)
+             (surface-height 40)
+             ;; the projection-surface (which serves as a "canvas")
+             (ps (make-projection-surface :surface-width surface-width
+                                          :surface-height surface-height
+                                          :width out-width
+                                          :height out-height
+                                          :color '(255 255 255 255)))
+             (frame-counter 1)
+             (outdir "/tmp/sc-seq/"))
+        (ensure-directories-exist outdir)
+        (with-kernel ()
+          (lparallel:pdotimes (i dur-frames)
+            (with-stopwatch ()
+              (let ((tmp-ps (clone ps))
+                    (outfile (format nil "~a~4,'0d.jpg" outdir i)))
+                (loop for e in sc-data
+                      when (second e)
+                        do
+                           (with-timeline ((frames->secs i) (first e)
+                                           :duration (second e)
+                                           :tl-time-acc tl-time
+                                           :tl-duration-acc tl-duration)
+                             (let* ((color (alexandria:assoc-value
+                                            colors (fourth e)))
+                                    (tmp-img (make-rgb-image
+                                              20 20
+                                              :initial-color
+                                              (imago::make-color
+                                               ;; grayscale
+                                               (first color)
+                                               (second color)
+                                               (third color)
+                                               (+ 100
+                                                  (random 155)))))
+                                    (tmp-pn (make-projection
+                                             tmp-img
+                                             :projection-height .8))
+                                    (pn-x (cm::rescale (third e) 0 128 0 90)) 
+                                    (pn-y (list 1 30)))
+                               ;; put the tmp-img onto the projection-surface
+                               (put-it tmp-ps tmp-pn
+                                       :dest-x pn-x
+                                       :dest-y (interpolate-easing
+                                                tl-time
+                                                (first pn-y)
+                                                (second pn-y)
+                                                :duration
+                                                tl-duration
+                                                :ease-fun
+                                                #'ease:out-bounce)))))
+                (write-jpg tmp-ps :outfile outfile)
+                (format t "File: ~a~%~
+                     Frame: ~a/~a~%~
+                     Duration: ~a sec~%"
+                        outfile
+                        frame-counter dur-frames
+                        (apr::sw-delta))
+                (incf frame-counter)))))
+        (is (probe-file (concatenate 'string
+                                     outdir
+                                     "0000.jpg")))))
+      
+      
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
