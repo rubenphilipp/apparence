@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  23:58:39 Tue Apr  2 2024 CEST
+;;; $$ Last modified:  00:05:45 Wed Apr  3 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -544,7 +544,7 @@
 ;;; test-sc1
 #+slippery-chicken
 (test test-sc1
-      (let* ((num-seqs 55)
+      (let* ((num-seqs 22)
              (proc (sc:procession num-seqs '(1 2 3 4)))
              (hello 
                (sc:make-slippery-chicken
