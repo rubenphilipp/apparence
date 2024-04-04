@@ -13,7 +13,7 @@
 ;;; This module implements some helper methods for slippery-chicken objects.
 ;;;
 ;;;
-;;; $$ Last modified:  00:56:38 Fri Mar 22 2024 CET
+;;; $$ Last modified:  20:58:54 Thu Apr  4 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -49,7 +49,9 @@
   ;;; ****
   (let ((start (frame-start event :round-fun round-fun
                                   :frame-rate frame-rate)))
-    (+ start (secs->frames (sc::duration event)))))
+    (+ start (secs->frames (sc::duration event)
+                           :round-fun round-fun
+                           :frame-rate frame-rate))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

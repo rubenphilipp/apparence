@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  13:49:48 Wed Mar 27 2024 CET
+;;; $$ Last modified:  20:53:03 Thu Apr  4 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -35,7 +35,7 @@
 ;;; 
 (defparameter *apparence-config-data*
   `(;; the default fps
-    (:fps . 25)
+    (:fps . 30)
     ;; default interpolation mode
     (:default-interpolation . :nearest-neighbor)
     ;; the command for to the inkscape binary
