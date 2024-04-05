@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  17:55:40 Fri Apr  5 2024 CEST
+;;; $$ Last modified:  18:16:35 Fri Apr  5 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -150,7 +150,8 @@
 ;;; - :class. The cl-svg class. Default = 'cl-svg:svg-1.1-toplevel
 ;;; - :width. The width of the svg.
 ;;; - :height. The height of the svg.
-;;; - :viewbox. The svg viewbox coordinates (e.g. "0 0 700 700")
+;;; - :args. Further keyword arguments to be passed to cl-svg:make-svg-toplevel
+;;;   as a list. Example: '(:style "background-color:black;")
 ;;; 
 ;;; RETURN VALUE
 ;;; The new cl-svg:svg-toplevel object. 
@@ -158,19 +159,20 @@
 ;;; EXAMPLE
 #|
 (make-svg-toplevel :width 100
-                   :height 200)
-;; => #<CL-SVG:SVG-1.1-TOPLEVEL {7006DD7CA3}>
+                   :height 200
+                   :args '(:style "background-color: #ffffff;"))
+;; => #<CL-SVG:SVG-1.1-TOPLEVEL {701AC30883}>
 |#
 ;;; SYNOPSIS
 (defun make-svg-toplevel (&key
                             (class 'cl-svg:svg-1.1-toplevel)
-                            width height viewbox)
+                            width height args)
   ;;; ****
-  (cl-svg:make-svg-toplevel class
-                            :width width
-                            :height height
-                            :viewbox viewbox))
-
+  (unless (or (null args) (listp args))
+    (error "svg::make-svg-toplevel: The args must be either nil or a list."))
+  (apply #'cl-svg:make-svg-toplevel
+         (append (list class :width width :height height)
+                 args)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF svg.lisp
