@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  17:56:02 Fri Apr  5 2024 CEST
+;;; $$ Last modified:  19:28:20 Fri Apr  5 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -921,6 +921,132 @@
                                              (ease-fun #'ease:in-sine))
   ;;; ****
   (+ y-start (* (- y-end y-start) (funcall ease-fun (/ x duration)))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/image-seq->video
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-04-05
+;;; 
+;;; DESCRIPTION
+;;; This function converts an image-seq (which is a collection of images, where
+;;; each image represents a frame of a video) from a given path (which should
+;;; be the directory containing the image files) to a video file using ffmpeg.
+;;;
+;;; NB: The files must be numerated according to their appearance in the video. 
+;;;
+;;; ARGUMENTS
+;;; - The path to the directory containing the images.
+;;; - The path to the video file which should be generated (usually a .mp4
+;;;   file when using the default args).
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :fps. The frame-rate for the conversion. Default = (get-apr-config :fps)
+;;; - :glob-pattern. The search pattern for the files in the directory.
+;;;   Default = "*.png"
+;;; - :video-codec. The video codec, ffmpeg should use for conversion.
+;;;   Default = "libx264"
+;;; - :pixel-format. The pixel format ffmpeg should use for creating the video.
+;;;   Default = "yuv420p"
+;;; 
+;;; RETURN VALUE
+;;; The path to the outfile. 
+;;;
+;;; EXAMPLE
+#|
+(image-seq->video "/tmp/tl-seq/" "/tmp/test.mp4" :glob-pattern "*.jpg")
+|#
+;;; SYNOPSIS
+(defun image-seq->video (path outfile &key
+                          (fps (get-apr-config :fps))
+                          (glob-pattern "*.png")
+                          (video-codec "libx264")
+                          (pixel-format "yuv420p"))
+  ;;; ****
+  (let* ((path (trailing-slash path))
+         (command (list (get-apr-config :ffmpeg-command)
+                        "-framerate" (write-to-string fps)
+                        "-pattern_type" "glob"
+                        "-i" (concatenate 'string path glob-pattern)
+                        "-c:v" video-codec
+                        "-pix_fmt" pixel-format
+                        outfile)))
+    (apply #'shell command)
+    outfile))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/video->image-seq
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-04-05
+;;; 
+;;; DESCRIPTION
+;;; This function converts a video file (e.g. a mp4) to a sequence of images,
+;;; one for each frame, as specified by the :fps argument. 
+;;;
+;;; ARGUMENTS
+;;; - The path to the video-file which should be converted.
+;;; - The path to the directory where the resulting image files should be
+;;;   located. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments
+;;; - :outfile-pattern. The pattern which will be used to generate the output
+;;;   file-names. Default = "%04d.png"
+;;; - :fps. The frame-rate for the image conversion.
+;;;   Default = (get-apr-config :fps)
+;;; - :start. The start offset in the video (in seconds). Default = 0
+;;; - :num-frames. The number of frames to generate (starting from the :start).
+;;;   When NIL, all frames from :start will be converted to images. 
+;;;   Default = NIL
+;;; 
+;;; RETURN VALUE
+;;; The path to the output directory.
+;;;
+;;; EXAMPLE
+#|
+(video->image-seq "/tmp/test.mp4" "/tmp/testseq/" :fps 25)
+|#
+;;; SYNOPSIS
+(defun video->image-seq (vidfile outdir
+                         &key
+                           (outfile-pattern "%04d.png")
+                           (fps (get-apr-config :fps))
+                           ;; start offset in seconds
+                           (start 0)
+                           num-frames)
+  ;;; ****
+  (unless (probe-file vidfile)
+    (error "utilities::video->image-seq: The vidfile does not exist. "))
+  (unless (numberp start)
+    (error "utilities::video->image-seq: The start must be a number."))
+  (unless (or (null num-frames) (integerp num-frames))
+    (error "utilities::video->image-seq: The value of num-frames must either ~
+            NIL or an integer."))
+  (ensure-directories-exist outdir)
+  (let* ((outdir (trailing-slash outdir))
+         (outfiles (concatenate 'string outdir outfile-pattern))
+         (command (list (get-apr-config :ffmpeg-command)
+                        "-ss" (write-to-string start)
+                        "-i" vidfile
+                        "-vf" (concatenate 'string "fps="
+                                           (write-to-string fps)))))
+    (when num-frames
+      (setf command (append command
+                            (list "-frames:v" (write-to-string num-frames)))))
+    (setf command (append command
+                          (list outfiles)))
+    (apply #'shell command)
+    outdir))
+  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF utilities.lisp

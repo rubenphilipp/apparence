@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  20:53:03 Thu Apr  4 2024 CEST
+;;; $$ Last modified:  18:36:43 Fri Apr  5 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -40,6 +40,10 @@
     (:default-interpolation . :nearest-neighbor)
     ;; the command for to the inkscape binary
     (:inkscape-command . "/opt/homebrew/bin/inkscape")
+    ;; the ffmpeg command
+    (:ffmpeg-command . "/opt/homebrew/bin/ffmpeg")
+    ;; the ffprobe-command
+    (:ffprobe-command . "/opt/homebrew/bin/ffprobe")
     ;; a seed for the pcg generator (see random.lisp)
     (:pcg-seed . 4294967296)
     ;; the default tmp directory (trailing slash!)
