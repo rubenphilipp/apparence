@@ -148,8 +148,55 @@
 </pre>
 
 <hr />
+<a name="utilities2fimage2dseq2d3evideo"></a>
+<a name="robo61"></a><h2>utilities/image-seq-&gt;video [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-05
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts an <a href="./image_lisp.html#robo11">image</a>-seq (which is a collection of images, where
+ each <a href="./image_lisp.html#robo11">image</a> represents a frame of a video) from a given path (which should
+ be the directory containing the <a href="./image_lisp.html#robo11">image</a> files) to a video file using ffmpeg.
+
+ NB: The files must be numerated according to their appearance in the video. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The path to the directory containing the images.
+ - The path to the video file which should be generated (usually a .mp4
+   file when using the default args).
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :fps. The frame-rate for the conversion. Default = (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps)
+ - :glob-pattern. The search pattern for the files in the directory.
+   Default = "*.png"
+ - :video-codec. The video codec, ffmpeg should use for conversion.
+   Default = "libx264"
+ - :pixel-format. The pixel format ffmpeg should use for creating the video.
+   Default = "yuv420p"
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The path to the outfile. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>image-seq-&gt;video</strong> "/tmp/tl-seq/" "/tmp/test.mp4" :glob-pattern "*.jpg")
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>image-seq-&gt;video</strong> (path outfile &amp;key
+                          (fps (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps))
+                          (glob-pattern "*.png")
+                          (video-codec "libx264")
+                          (pixel-format "yuv420p"))
+</pre>
+
+<hr />
 <a name="utilities2finterpolate2deasing"></a>
-<a name="robo61"></a><h2>utilities/interpolate-easing [ Functions ]</h2>
+<a name="robo62"></a><h2>utilities/interpolate-easing [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -195,7 +242,7 @@
 
 <hr />
 <a name="utilities2fload2dfrom2dsame2ddir"></a>
-<a name="robo62"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
+<a name="robo63"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -221,7 +268,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsame2ddir"></a>
-<a name="robo63"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
+<a name="robo64"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -250,7 +297,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsrc2ddir"></a>
-<a name="robo64"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
+<a name="robo65"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -277,7 +324,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelope"></a>
-<a name="robo65"></a><h2>utilities/plot-envelope [ Functions ]</h2>
+<a name="robo66"></a><h2>utilities/plot-envelope [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -310,7 +357,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelopes"></a>
-<a name="robo66"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
+<a name="robo67"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -356,7 +403,7 @@
 
 <hr />
 <a name="utilities2fradians2d3edegrees"></a>
-<a name="robo67"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
+<a name="robo68"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -384,7 +431,7 @@
 
 <hr />
 <a name="utilities2frgb2dp"></a>
-<a name="robo68"></a><h2>utilities/rgb-p [ Functions ]</h2>
+<a name="robo69"></a><h2>utilities/rgb-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -412,7 +459,7 @@
 
 <hr />
 <a name="utilities2frgba2dp"></a>
-<a name="robo69"></a><h2>utilities/rgba-p [ Functions ]</h2>
+<a name="robo70"></a><h2>utilities/rgba-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -442,7 +489,7 @@
 
 <hr />
 <a name="utilities2fshell"></a>
-<a name="robo70"></a><h2>utilities/shell [ Functions ]</h2>
+<a name="robo71"></a><h2>utilities/shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -475,7 +522,7 @@
 
 <hr />
 <a name="utilities2fsimple2dshell"></a>
-<a name="robo71"></a><h2>utilities/simple-shell [ Functions ]</h2>
+<a name="robo72"></a><h2>utilities/simple-shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -485,14 +532,14 @@
 <pre> 2023-07-16
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> Run a <a href="#robo70">shell</a> command from lisp and return the exit code.
+<pre> Run a <a href="#robo71">shell</a> command from lisp and return the exit code.
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> - The <a href="#robo70">shell</a> command (i.e., most likely, path to the binary)
+<pre> - The <a href="#robo71">shell</a> command (i.e., most likely, path to the binary)
  
  OPTIONAL ARGUMENTS:
  rest:
- - The arguments to the <a href="#robo70">shell</a> program.
+ - The arguments to the <a href="#robo71">shell</a> program.
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The the exit-code of the process.
@@ -503,7 +550,7 @@
 
 <hr />
 <a name="utilities2fsvg2dfile2d3epng"></a>
-<a name="robo72"></a><h2>utilities/svg-file-&gt;png [ Functions ]</h2>
+<a name="robo73"></a><h2>utilities/svg-file-&gt;png [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -521,7 +568,7 @@
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
  - :outfile. The output filename. Default = "/tmp/<a href="./image_lisp.html#robo11">image</a>.png"
- - :dpi. The dpi for the png.
+ - :dpi. The dpi for the png. Default = 96
  - :width. The width of the resulting png file. When omitted, the width as
    specified in the <a href="./svg_lisp.html#robo7">svg</a> will be used, or -- when the height is given -- the
    width will be derived proportionally from the height (see :height). 
@@ -538,14 +585,14 @@
 <pre class="source">(defun <strong>svg-file-&gt;png</strong> (<a href="./svg_lisp.html#robo7">svg</a>-file
                       &amp;key
                         (outfile "/tmp/<a href="./image_lisp.html#robo11">image</a>.png")
-                        (dpi 300)
+                        (dpi 96)
                         width
                         height)
 </pre>
 
 <hr />
 <a name="utilities2fsvg2dfiles2d3epng"></a>
-<a name="robo73"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
+<a name="robo74"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -603,7 +650,7 @@
 
 <hr />
 <a name="utilities2fsystem2dopen2dfile"></a>
-<a name="robo74"></a><h2>utilities/system-open-file [ Functions ]</h2>
+<a name="robo75"></a><h2>utilities/system-open-file [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -627,7 +674,7 @@
 
 <hr />
 <a name="utilities2ftrailing2dslash"></a>
-<a name="robo75"></a><h2>utilities/trailing-slash [ Functions ]</h2>
+<a name="robo76"></a><h2>utilities/trailing-slash [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -651,8 +698,55 @@
 </pre>
 
 <hr />
+<a name="utilities2fvideo2d3eimage2dseq"></a>
+<a name="robo77"></a><h2>utilities/video-&gt;image-seq [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-05
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts a video file (e.g. a mp4) to a sequence of images,
+ one for each frame, as specified by the :fps argument. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The path to the video-file which should be converted.
+ - The path to the directory where the resulting <a href="./image_lisp.html#robo11">image</a> files should be
+   located. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments
+ - :outfile-pattern. The pattern which will be used to generate the output
+   file-names. Default = "%04d.png"
+ - :fps. The frame-rate for the <a href="./image_lisp.html#robo11">image</a> conversion.
+   Default = (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps)
+ - :start. The start offset in the video (in seconds). Default = 0
+ - :num-frames. The number of frames to generate (starting from the :start).
+   When NIL, all frames from :start will be converted to images. 
+   Default = NIL
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The path to the output directory.
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>video-&gt;image-seq</strong> "/tmp/test.mp4" "/tmp/testseq/" :fps 25)
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>video-&gt;image-seq</strong> (vidfile outdir
+                         &amp;key
+                           (outfile-pattern "%04d.png")
+                           (fps (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps))
+                           ;; start offset in seconds
+                           (start 0)
+                           num-frames)
+</pre>
+
+<hr />
 <a name="utilities2fwith2dstopwatch"></a>
-<a name="robo76"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
+<a name="robo78"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -712,7 +806,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-03-31 21:08:37</p>
+<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-05 19:28:46</p>
 </div> <!-- footer -->
 </body>
 </html>
