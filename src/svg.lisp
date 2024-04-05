@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  13:13:00 Mon Mar 25 2024 CET
+;;; $$ Last modified:  17:55:40 Fri Apr  5 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -112,7 +112,7 @@
 (defmethod svg->png ((svg cl-svg::svg-toplevel)
                      &key
                        (outfile "/tmp/image.png")
-                       (dpi 300)
+                       (dpi 96)
                        (tmp-dir (get-apr-config :default-tmp-dir))
                        width
                        height)

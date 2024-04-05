@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  18:18:09 Fri Mar 29 2024 CET
+;;; $$ Last modified:  17:56:02 Fri Apr  5 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -694,7 +694,7 @@
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
 ;;; - :outfile. The output filename. Default = "/tmp/image.png"
-;;; - :dpi. The dpi for the png.
+;;; - :dpi. The dpi for the png. Default = 96
 ;;; - :width. The width of the resulting png file. When omitted, the width as
 ;;;   specified in the svg will be used, or -- when the height is given -- the
 ;;;   width will be derived proportionally from the height (see :height). 
@@ -713,7 +713,7 @@
 (defun svg-file->png (svg-file
                       &key
                         (outfile "/tmp/image.png")
-                        (dpi 300)
+                        (dpi 96)
                         width
                         height)
   ;;; ****
