@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  19:28:20 Fri Apr  5 2024 CEST
+;;; $$ Last modified:  23:59:18 Fri Apr  5 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -953,6 +953,8 @@
 ;;;   Default = "libx264"
 ;;; - :pixel-format. The pixel format ffmpeg should use for creating the video.
 ;;;   Default = "yuv420p"
+;;; - :verbose. Prints additional messages, when T.
+;;;   Default = (get-apr-config :verbose)
 ;;; 
 ;;; RETURN VALUE
 ;;; The path to the outfile. 
@@ -966,7 +968,8 @@
                           (fps (get-apr-config :fps))
                           (glob-pattern "*.png")
                           (video-codec "libx264")
-                          (pixel-format "yuv420p"))
+                          (pixel-format "yuv420p")
+                          (verbose (get-apr-config :verbose)))
   ;;; ****
   (let* ((path (trailing-slash path))
          (command (list (get-apr-config :ffmpeg-command)
@@ -976,6 +979,9 @@
                         "-c:v" video-codec
                         "-pix_fmt" pixel-format
                         outfile)))
+    (when verbose
+      (format t "~%Started converting image-seq in ~a to video ~a...~%"
+              path outfile))
     (apply #'shell command)
     outfile))
 
@@ -1007,6 +1013,8 @@
 ;;; - :num-frames. The number of frames to generate (starting from the :start).
 ;;;   When NIL, all frames from :start will be converted to images. 
 ;;;   Default = NIL
+;;; - :verbose. Prints additional messages, when T.
+;;;   Default = (get-apr-config :verbose)
 ;;; 
 ;;; RETURN VALUE
 ;;; The path to the output directory.
@@ -1022,7 +1030,8 @@
                            (fps (get-apr-config :fps))
                            ;; start offset in seconds
                            (start 0)
-                           num-frames)
+                           num-frames
+                           (verbose (get-apr-config :verbose)))
   ;;; ****
   (unless (probe-file vidfile)
     (error "utilities::video->image-seq: The vidfile does not exist. "))
@@ -1044,9 +1053,106 @@
                             (list "-frames:v" (write-to-string num-frames)))))
     (setf command (append command
                           (list outfiles)))
+    (when verbose
+      (format t "~%Started extracting images from video ~a to ~a...~%"
+              vidfile outdir))
     (apply #'shell command)
     outdir))
-  
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; functions/macros related to alists
+;;; RP  Fri Apr  5 22:51:26 2024
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#|
+(alistp '((a . b))) ;; => T
+(alistp '((a b))) ;; => NIL
+|#
+(defun alistp (thing)
+  (and (listp thing)
+       (every #'consp thing)
+       (every #'(lambda (x)
+                  (not (listp (cdr x))))
+              thing)))
+
+;;; additionally tests, if id already exists
+(defmacro assoc-add (alist key value &key
+                                       force?
+                                       (test #'eql)
+                                       (verbose (get-apr-config :verbose)))
+  ;;; ****
+  `(let ((current (assoc-value ,alist ,key :test ,test)))
+     (cond ((and current ,force?)
+            (when ,verbose
+              (warn "utilities::assoc-add: Key ~a already exists. Overwrite."
+                    ,key))
+            (setf (assoc-value ,alist ,key :test ,test) ,value))
+           ((null current)
+            (setf (assoc-value ,alist ,key :test ,test) ,value))
+           (t (error "utilities::assoc-add: Key ~a already exists." ,key)))
+     ,alist))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmacro assoc-remove (alist key &key (test #'eql))
+  ;;; ****
+  `(setf ,alist (remove-if #'(lambda (x)
+                               (funcall ,test (car x) ,key))
+                           ,alist)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#|
+(assoc-unique? '((a . b) (c . d) (a . x))) ;; => NIL
+|#
+(defun assoc-unique? (alist)
+  ;;; ****
+  (unless (alistp alist)
+    (error "utilities::assoc-unique?: The alist is not of type alist"))
+  (loop for item in alist
+        with keys = '()
+        do
+           (when (find (car item) keys)
+             (return nil))
+           (push (car item) keys)
+        finally
+           (return t)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#|
+(list->alist '((1 bla)
+               (3 blub)
+               (2 bli))
+             :sort t
+             :unique t)
+;; => ((1 . BLA) (2 . BLI) (3 . BLUB))
+|#
+(defun list->alist (lst &key unique sort)
+  ;;; ****
+  (unless (and (listp lst) (every #'(lambda (x)
+                                      (and (listp x)
+                                           (eq (length x) 2)))
+                                  lst))
+    (error "utilities::list->alist: The lst must be a list with at least one ~
+            sublist containing exactly two elements."))
+  (loop for item in lst
+        with result = '()
+        with keys = '()
+        do
+           (when (and unique (find (car item) keys))
+             (error "utilities::list->alist: The key \"~a\" is already present ~
+                     in the alist."
+                    (car item)))
+           (push (cons (first item) (second item)) result)
+           (push (car item) keys)
+        finally
+           (if sort
+               (return (sort result #'< :key #'car))
+               (return result))))
+
+
+           
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF utilities.lisp

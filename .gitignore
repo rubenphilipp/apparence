@@ -142,6 +142,7 @@ flycheck_*.el
 !/tests/**/*.jpg
 !/tests/**/*.png
 !/tests/**/*.svg
+!/tests/**/*.mp4
 
 ################################################################################
 ### exception for example images

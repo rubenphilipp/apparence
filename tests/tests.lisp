@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  20:59:24 Thu Apr  4 2024 CEST
+;;; $$ Last modified:  14:39:17 Sat Apr  6 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -660,6 +660,11 @@
         (is (probe-file (concatenate 'string
                                      outdir
                                      "0000.jpg")))))
+
+;;; test-image-file-seq-1
+(test test-image-file-seq-1
+      (let* ((ifs (make-image-file-seq-from-video (test-pathname "test1.mp4"))))
+        (is (typep (get-image ifs 2) 'image))))
       
       
 
