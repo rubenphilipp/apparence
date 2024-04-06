@@ -137,22 +137,6 @@ flycheck_*.el
 *.max
 
 ################################################################################
-### exception for test images/vids
-
-!/tests/**/*.jpg
-!/tests/**/*.png
-!/tests/**/*.svg
-!/tests/**/*.mp4
-
-################################################################################
-### exception for example images
-
-!/examples/**/*.jpg
-!/examples/**/*.png
-!/examples/**/*.svg
-!/examples/**/*.mp4
-
-################################################################################
 
 upload-doc.sh
 
@@ -210,3 +194,19 @@ Temporary Items
 *.webm
 
 # End of https://www.toptal.com/developers/gitignore/api/audio,emacs,macos,images,video
+
+################################################################################
+### exception for test images/vids
+
+!/tests/**/*.jpg
+!/tests/**/*.png
+!/tests/**/*.svg
+!/tests/**/*.mp4
+
+################################################################################
+### exception for example images
+
+!/examples/**/*.jpg
+!/examples/**/*.png
+!/examples/**/*.svg
+!/examples/**/*.mp4
