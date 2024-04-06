@@ -137,7 +137,7 @@ flycheck_*.el
 *.max
 
 ################################################################################
-### exception for test images
+### exception for test images/vids
 
 !/tests/**/*.jpg
 !/tests/**/*.png
