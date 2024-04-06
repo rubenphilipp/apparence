@@ -17,7 +17,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> seq -> image-file-seq
 ;;;
-;;; $$ Last modified:  15:17:57 Sat Apr  6 2024 CEST
+;;; $$ Last modified:  15:37:26 Sat Apr  6 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -336,10 +336,15 @@ data: #<RGB-IMAGE (500x300) {7008616523}>
                         warn?)
   ;;; ****
   (let* ((path (get-frame ifs datum :warn? warn? :in-seconds in-seconds))
-         (image
-           (make-image-from-file path
-                                 :id id
-                                 :default-interpolation default-interpolation)))
+         (image nil))
+    (if path
+        (setf image
+              (make-image-from-file path
+                                    :id id
+                                    :default-interpolation
+                                    default-interpolation))
+        (when warn?
+          (warn "image-file-seq::get-image: No data for frame ~a." datum)))
     image))
     
 
