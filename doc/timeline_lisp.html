@@ -52,7 +52,7 @@
 
 <hr />
 <a name="timeline2fwith2dtimeline"></a>
-<a name="robo56"></a><h2>timeline/with-timeline [ Generics ]</h2>
+<a name="robo62"></a><h2>timeline/with-timeline [ Generics ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">timeline</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -100,7 +100,7 @@
  - :tl-duration-acc. The accessor to the <a href="#robo8">timeline</a> duration (in seconds).
    Default = 'tl-duration
  - :round-fun. A function used for rounding. Default = #'round
- - :fps. The frames per seconds. Default = (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps)
+ - :fps. The frames per seconds. Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps)
  
  BODY
  
@@ -112,10 +112,10 @@
  of the body form. Otherwise NIL. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let* ((seq-length 3.5)
-       (seq-frames (secs-&gt;frames seq-length)))
+<pre class="source">(let* ((<a href="./seq_lisp.html#robo16">seq</a>-length 3.5)
+       (<a href="./seq_lisp.html#robo16">seq</a>-frames (secs-&gt;frames <a href="./seq_lisp.html#robo16">seq</a>-length)))
   (remove nil
-          (loop for i from 1 to seq-frames
+          (loop for i from 1 to <a href="./seq_lisp.html#robo16">seq</a>-frames
                 collect
                 (<strong>with-timeline</strong> ((frames-&gt;secs i) 1.0 :duration 1.0
                                 :tl-time-acc tl-time)
@@ -148,13 +148,13 @@
                             (tl-end-acc 'tl-end)
                             (tl-duration-acc 'tl-duration)
                             (round-fun #'round)
-                            (fps (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps)))
+                            (fps (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps)))
                          &amp;body body)
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/timeline.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-05 19:28:46</p>
+<p>Generated from ./src/timeline.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-06 15:22:53</p>
 </div> <!-- footer -->
 </body>
 </html>

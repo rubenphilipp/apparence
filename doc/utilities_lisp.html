@@ -29,7 +29,7 @@
 <div id="content">
 <hr />
 <a name="utilities2faspect2dratio"></a>
-<a name="robo57"></a><h2>utilities/aspect-ratio [ Functions ]</h2>
+<a name="robo63"></a><h2>utilities/aspect-ratio [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -56,7 +56,7 @@
 
 <hr />
 <a name="utilities2fdegrees2d3eradians"></a>
-<a name="robo58"></a><h2>utilities/degrees-&gt;radians [ Functions ]</h2>
+<a name="robo64"></a><h2>utilities/degrees-&gt;radians [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -84,7 +84,7 @@
 
 <hr />
 <a name="utilities2ffround2dto2ddigits"></a>
-<a name="robo59"></a><h2>utilities/fround-to-digits [ Functions ]</h2>
+<a name="robo65"></a><h2>utilities/fround-to-digits [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -116,7 +116,7 @@
 
 <hr />
 <a name="utilities2fget2drandom2duuid"></a>
-<a name="robo60"></a><h2>utilities/get-random-uuid [ Functions ]</h2>
+<a name="robo66"></a><h2>utilities/get-random-uuid [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -149,7 +149,7 @@
 
 <hr />
 <a name="utilities2fimage2dseq2d3evideo"></a>
-<a name="robo61"></a><h2>utilities/image-seq-&gt;video [ Functions ]</h2>
+<a name="robo67"></a><h2>utilities/image-seq-&gt;video [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -159,7 +159,7 @@
 <pre> 2024-04-05
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> This function converts an <a href="./image_lisp.html#robo11">image</a>-seq (which is a collection of images, where
+<pre> This function converts an <a href="./image_lisp.html#robo11">image</a>-<a href="./seq_lisp.html#robo16">seq</a> (which is a collection of images, where
  each <a href="./image_lisp.html#robo11">image</a> represents a frame of a video) from a given path (which should
  be the directory containing the <a href="./image_lisp.html#robo11">image</a> files) to a video file using ffmpeg.
 
@@ -172,31 +172,34 @@
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
- - :fps. The frame-rate for the conversion. Default = (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps)
+ - :fps. The frame-rate for the conversion. Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps)
  - :glob-pattern. The search pattern for the files in the directory.
    Default = "*.png"
  - :video-codec. The video codec, ffmpeg should use for conversion.
    Default = "libx264"
  - :pixel-format. The pixel format ffmpeg should use for creating the video.
    Default = "yuv420p"
+ - :verbose. Prints additional messages, when T.
+   Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :verbose)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The path to the outfile. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(<strong>image-seq-&gt;video</strong> "/tmp/tl-seq/" "/tmp/test.mp4" :glob-pattern "*.jpg")
+<pre class="source">(<strong>image-seq-&gt;video</strong> "/tmp/tl-<a href="./seq_lisp.html#robo16">seq</a>/" "/tmp/test.mp4" :glob-pattern "*.jpg")
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defun <strong>image-seq-&gt;video</strong> (path outfile &amp;key
-                          (fps (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps))
+                          (fps (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps))
                           (glob-pattern "*.png")
                           (video-codec "libx264")
-                          (pixel-format "yuv420p"))
+                          (pixel-format "yuv420p")
+                          (verbose (<a href="./globals_lisp.html#robo28">get-apr-config</a> :verbose)))
 </pre>
 
 <hr />
 <a name="utilities2finterpolate2deasing"></a>
-<a name="robo62"></a><h2>utilities/interpolate-easing [ Functions ]</h2>
+<a name="robo68"></a><h2>utilities/interpolate-easing [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -242,7 +245,7 @@
 
 <hr />
 <a name="utilities2fload2dfrom2dsame2ddir"></a>
-<a name="robo63"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
+<a name="robo69"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -268,7 +271,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsame2ddir"></a>
-<a name="robo64"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
+<a name="robo70"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -297,7 +300,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsrc2ddir"></a>
-<a name="robo65"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
+<a name="robo71"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -324,7 +327,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelope"></a>
-<a name="robo66"></a><h2>utilities/plot-envelope [ Functions ]</h2>
+<a name="robo72"></a><h2>utilities/plot-envelope [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -357,7 +360,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelopes"></a>
-<a name="robo67"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
+<a name="robo73"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -403,7 +406,7 @@
 
 <hr />
 <a name="utilities2fradians2d3edegrees"></a>
-<a name="robo68"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
+<a name="robo74"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -422,7 +425,7 @@
 <pre> The value in degrees. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(<strong>radians-&gt;degrees</strong> (<a href="#robo58">degrees-&gt;radians</a> -90))
+<pre class="source">(<strong>radians-&gt;degrees</strong> (<a href="#robo64">degrees-&gt;radians</a> -90))
 ;; =&gt; -90.0
 </pre>
 <p class="item_name">SYNOPSIS</p>
@@ -431,7 +434,7 @@
 
 <hr />
 <a name="utilities2frgb2dp"></a>
-<a name="robo69"></a><h2>utilities/rgb-p [ Functions ]</h2>
+<a name="robo75"></a><h2>utilities/rgb-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -459,7 +462,7 @@
 
 <hr />
 <a name="utilities2frgba2dp"></a>
-<a name="robo70"></a><h2>utilities/rgba-p [ Functions ]</h2>
+<a name="robo76"></a><h2>utilities/rgba-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -489,7 +492,7 @@
 
 <hr />
 <a name="utilities2fshell"></a>
-<a name="robo71"></a><h2>utilities/shell [ Functions ]</h2>
+<a name="robo77"></a><h2>utilities/shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -522,7 +525,7 @@
 
 <hr />
 <a name="utilities2fsimple2dshell"></a>
-<a name="robo72"></a><h2>utilities/simple-shell [ Functions ]</h2>
+<a name="robo78"></a><h2>utilities/simple-shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -532,14 +535,14 @@
 <pre> 2023-07-16
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> Run a <a href="#robo71">shell</a> command from lisp and return the exit code.
+<pre> Run a <a href="#robo77">shell</a> command from lisp and return the exit code.
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> - The <a href="#robo71">shell</a> command (i.e., most likely, path to the binary)
+<pre> - The <a href="#robo77">shell</a> command (i.e., most likely, path to the binary)
  
  OPTIONAL ARGUMENTS:
  rest:
- - The arguments to the <a href="#robo71">shell</a> program.
+ - The arguments to the <a href="#robo77">shell</a> program.
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The the exit-code of the process.
@@ -550,7 +553,7 @@
 
 <hr />
 <a name="utilities2fsvg2dfile2d3epng"></a>
-<a name="robo73"></a><h2>utilities/svg-file-&gt;png [ Functions ]</h2>
+<a name="robo79"></a><h2>utilities/svg-file-&gt;png [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -592,7 +595,7 @@
 
 <hr />
 <a name="utilities2fsvg2dfiles2d3epng"></a>
-<a name="robo74"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
+<a name="robo80"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -639,7 +642,7 @@
                          (dpi 300)
                          width
                          height
-                         ;; inherited from <a href="./parallel_lisp.html#robo47">with-kernel</a>
+                         ;; inherited from <a href="./parallel_lisp.html#robo53">with-kernel</a>
                          (num-workers (serapeum::count-cpus))
                          (kernel-name "apparence kernel")
                          (stopwatch? t)
@@ -650,7 +653,7 @@
 
 <hr />
 <a name="utilities2fsystem2dopen2dfile"></a>
-<a name="robo75"></a><h2>utilities/system-open-file [ Functions ]</h2>
+<a name="robo81"></a><h2>utilities/system-open-file [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -674,7 +677,7 @@
 
 <hr />
 <a name="utilities2ftrailing2dslash"></a>
-<a name="robo76"></a><h2>utilities/trailing-slash [ Functions ]</h2>
+<a name="robo82"></a><h2>utilities/trailing-slash [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -699,7 +702,7 @@
 
 <hr />
 <a name="utilities2fvideo2d3eimage2dseq"></a>
-<a name="robo77"></a><h2>utilities/video-&gt;image-seq [ Functions ]</h2>
+<a name="robo83"></a><h2>utilities/video-&gt;image-seq [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -722,11 +725,13 @@
  - :outfile-pattern. The pattern which will be used to generate the output
    file-names. Default = "%04d.png"
  - :fps. The frame-rate for the <a href="./image_lisp.html#robo11">image</a> conversion.
-   Default = (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps)
+   Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps)
  - :start. The start offset in the video (in seconds). Default = 0
  - :num-frames. The number of frames to generate (starting from the :start).
    When NIL, all frames from :start will be converted to images. 
    Default = NIL
+ - :verbose. Prints additional messages, when T.
+   Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :verbose)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The path to the output directory.
@@ -738,15 +743,16 @@
 <pre class="source">(defun <strong>video-&gt;image-seq</strong> (vidfile outdir
                          &amp;key
                            (outfile-pattern "%04d.png")
-                           (fps (<a href="./globals_lisp.html#robo26">get-apr-config</a> :fps))
+                           (fps (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps))
                            ;; start offset in seconds
                            (start 0)
-                           num-frames)
+                           num-frames
+                           (verbose (<a href="./globals_lisp.html#robo28">get-apr-config</a> :verbose)))
 </pre>
 
 <hr />
 <a name="utilities2fwith2dstopwatch"></a>
-<a name="robo78"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
+<a name="robo84"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -806,7 +812,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-05 19:28:46</p>
+<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-06 15:22:53</p>
 </div> <!-- footer -->
 </body>
 </html>
