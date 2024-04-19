@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  23:59:18 Fri Apr  5 2024 CEST
+;;; $$ Last modified:  08:33:30 Fri Apr 19 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -971,7 +971,9 @@
                           (pixel-format "yuv420p")
                           (verbose (get-apr-config :verbose)))
   ;;; ****
-  (let* ((path (trailing-slash path))
+  (let* ((path (uiop:native-namestring
+                (trailing-slash path)))
+         (outfile (uiop:native-namestring outfile))
          (command (list (get-apr-config :ffmpeg-command)
                         "-framerate" (write-to-string fps)
                         "-pattern_type" "glob"
