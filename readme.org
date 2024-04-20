@@ -4,7 +4,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:03:55 Sat Apr 20 2024 CEST
+$$ Last modified:  22:47:40 Sat Apr 20 2024 CEST
 #+end_comment
 
 *Please note:* This program is at a very early stage and under
@@ -24,14 +24,7 @@ Tested with SBCL on MacOS and Linux (Ubuntu 22.04).
 
 ** Installation
 
-Please check the dependencies (see below) before using apparence. It might be
-necessary, even when using Quicklisp, to manually download the code, as some of
-the modules/systems are not listed in Quicklisp's main distribution. 
-
-*** Inkscape
-
-*Note:* On Linux, there is a (known) issue with the ~inkscape~ package when
-installed via ~snap~. It is thus recommended, to use ~apt~ instead of ~snap~. 
+You can find detailed installation instructions here: [[file:install.org][install.org]]. 
 
 ** Performance
 
