@@ -1,0 +1,183 @@
+# -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "en") -*-
+#+CATEGORY: apr
+#+title: Installation Instructions
+#+author: Ruben Philipp
+#+date: 2024-04-20
+#+startup: showall 
+
+#+begin_comment
+$$ Last modified:  22:46:07 Sat Apr 20 2024 CEST
+#+end_comment
+
+This document describes the installation process of apparence using [[https://www.quicklisp.org][Quicklisp]].
+
+# TODO install.sh
+
+** Dependencies
+
+*** Lisp
+
+Though most of the Common Lisp packages apparence depends on are available via
+the Quicklisp dist, some need to be installed manually. The following lines
+should assist you doing this.
+
+#+begin_src shell
+# head to your Quicklisp standard directory
+cd ~/quicklisp/local-projects/
+
+# get the code of the respective dependencies
+git clone https://github.com/ormf/cm.git # Common Music
+git clone https://github.com/ak-coram/cl-frugal-uuid.git # cl-frugal-uuid
+#+end_src
+
+
+*** Binaries
+
+Additionally, apparence depends on a few non-lisp programs.
+
+**** jpeg-turbo
+
+Some of [[https://github.com/tokenrove/imago][imago's]] features depend on [[https://libjpeg-turbo.org][libjpeg-turbo]], which should be present on
+your system.
+
+*MacOS (via homebrew):*
+
+#+begin_src shell
+brew install jpeg-turbo
+#+end_src
+
+**** Inkscape
+
+[[https://inkscape.org][Inkscape]] is used for processing SVG files.
+
+*MacOS (via homebrew):*
+
+#+begin_src shell
+brew install --cask inkscape
+#+end_src
+
+*Linux:*
+
+#+begin_src shell
+apt get inkscape
+#+end_src
+
+/Note:/ On Linux, there is a (known) issue with the ~inkscape~ package when
+installed via ~snap~. It is thus recommended, to use ~apt~ instead of ~snap~.
+
+**** ffmpeg
+
+[[http://ffmpeg.org][ffmpeg]] is mainly used for parsing metadata and generating videos.
+
+*MacOS (via homebrew):*
+
+#+begin_src shell
+brew install ffmpeg
+#+end_src
+
+*Linux:*
+
+#+begin_src shell
+apt get ffmpeg
+#+end_src
+
+** Install apparence
+
+In order to install apparence, put the code to your Quicklisp standard
+directory.
+
+#+begin_src shell
+# head to your Quicklisp standard directory
+cd ~/quicklisp/local-projects/
+
+# get apparence
+git clone https://github.com/rubenphilipp/apparence.git
+#+end_src
+
+Now you should be able to load apparence:
+
+#+begin_src lisp
+(ql:quickload :apparence)
+#+end_src
+
+
+** Configuration
+
+Depending on your system configuration it might be necessary to tweak a few
+settings before using apparence.
+
+Especially if you've installed ffmpeg et al. via homebrew, you might want to
+tell apparence the proper paths to the binary files. If you don't know where
+they are located, try – for example – ~which ffprobe~ in your shell which should
+return the path to the respective program. You, then, might want to add the
+following lines to your Lisp init file (e.g. ~.sbclrc~ in SBCL).
+
+#+begin_src lisp
+(ql:quickload :apparence)
+
+;; configure binary locations
+(apr:set-apr-config :inkscape-command "/opt/homebrew/bin/inkscape")
+(apr:set-apr-config :ffmpeg-command "/opt/homebrew/bin/ffmpeg")
+(apr:set-apr-config :ffprobe-command "/opt/homebrew/bin/ffprobe")
+#+end_src
+
+
+** Pitfalls
+
+*** Compilation errors
+
+Depending on the installation method of the binary dependencies, you might
+encounter errors like these:
+
+#+begin_quote
+[package jpeg-turbo]; clang -o /Users/rubenphilipp/.cache/common-lisp/sbcl-2.3.0-macosx-arm64/Users/rubenphilipp/quicklisp/dists/quicklisp/software/jpeg-turbo-20201220-git/src/grovel__grovel-tmpIGHCU6ZA.o -c -g -Wall -Wundef -Wsign-compare -Wpointer-arith -O3 -g -Wall -fdollars-in-identifiers -fno-omit-frame-pointer -I/usr/local/include -fPIC -I/Users/rubenphilipp/quicklisp/local-projects/cffi/ /Users/rubenphilipp/.cache/common-lisp/sbcl-2.3.0-macosx-arm64/Users/rubenphilipp/quicklisp/dists/quicklisp/software/jpeg-turbo-20201220-git/src/grovel__grovel.c
+/Users/rubenphilipp/.cache/common-lisp/sbcl-2.3.0-macosx-arm64/Users/rubenphilipp/quicklisp/dists/quicklisp/software/jpeg-turbo-20201220-git/src/grovel__grovel.c:6:10: fatal error: 'turbojpeg.h' file not found
+#include <turbojpeg.h>
+         ^~~~~~~~~~~~~
+1 error generated.
+#+end_quote
+
+This indicates that the compiler can't find a required C header file in the
+standard location. Especially if you have installed ~libjpeg-turbo~ or other
+dependencies via homebrew, it is very likely that they are located at a
+location which differs from the common location for include files. Thus, try
+to add the following lines your Lisp init file before loading apparence (resp.
+the package that causes the error).
+
+#+begin_src lisp
+(asdf:load-system :cffi-grovel)
+
+(setf cffi-grovel::*cc-flags*
+      ;; you might want to change the path according to your configuration
+      (append '("-I" "//opt/homebrew/include/")
+              cffi-grovel::*cc-flags*))
+#+end_src
+
+
+*** Heap
+
+When using apparence, you might encounter heap exhaustion errors. As the program
+processes a rather large amount of data (especially during parallel processing),
+it is likely to exhaust the default heap limit of your Common Lisp
+implementation. Thus, it is recommended to set the space limits to a rather high
+value. In SBCL, you can do this – if you are launching the interpreter via the
+terminal – by explicating the maximum memory size as follows:
+
+#+begin_src shell
+sbcl --dynamic-space-size 8192 # set the max heap to 8192 MB
+#+end_src
+
+In Emacs, you can add the following line to your ~.emacs~:
+
+#+begin_src elisp
+(setq inferior-lisp-program "sbcl --dynamic-space-size 16000")
+#+end_src
+
+
+** Testing
+
+If you want to run apparence's regression tests, call this function:
+
+#+begin_src lisp
+(asdf:test-system :apparence)
+#+end_src
