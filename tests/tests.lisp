@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:16:52 Sat Apr 20 2024 CEST
+;;; $$ Last modified:  21:35:46 Sat Apr 20 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -463,6 +463,89 @@
         (is (and (= a 50)
                  (= b 25)
                  (= c 38)))))
+
+;;; test-sc-2
+#+slippery-chicken
+(test test-sc-2
+      (let* ((rthms '(32 16 s. te fs te fe 32 32 64 64))
+             ;;(rthms '(q 32 q s. s. s e te te fe te q))
+             (pitches '(c4 d4))
+             (num-events 10)
+             (tempo 120.0)
+             (events (sc:events-update-time
+                      (loop repeat num-events
+                            for i from 0
+                            with pt-len = (length pitches)
+                            with rt-len = (length rthms)
+                            collect
+                            ;; sorry for the randomness
+                            (sc:make-event (nth (sc:random-rep pt-len (zerop i))
+                                                pitches)
+                                           (nth (sc:random-rep rt-len)
+                                                rthms)))
+                      :tempo tempo))
+             (dur-secs (sc:end-time (car (last events))))
+             (dur-frames (secs->frames dur-secs))
+             (out-width 1920)
+             (out-height 1080)
+             ;; blueprint
+             (ps (make-projection-surface :x-scaler 1
+                                          :y-scaler 1
+                                          :width out-width
+                                          :height out-height
+                                          :color '(255 255 255 255)))
+             (frame-counter 1)
+             (src-vids `((c4 ,(make-image-file-seq-from-video
+                               (test-pathname "test1.mp4")))
+                         (d4 ,(make-image-file-seq-from-video
+                               (test-pathname "test2.mp4")))))
+             (outdir "/tmp/apr-sc-test-2/"))
+        (ensure-directories-exist outdir)
+        (with-kernel ()
+          (lparallel:pdotimes (i dur-frames)
+            (with-stopwatch ()
+              (let ((tmp-ps (clone ps))
+                    (outfile (format nil "~a~4,'0d.jpg" outdir i)))
+                (loop for e in events
+                      for count from 0
+                      do
+                         (with-timeline ((frames->secs i) (sc:start-time e)
+                                         :duration (sc:duration e)
+                                         :tl-time-acc tl-time
+                                         :tl-duration-acc tl-duration)
+                           (let* ((start-offset (* 13 count))
+                                  (ifs (second (find (sc:data
+                                                      (sc:pitch-or-chord e))
+                                                     src-vids :key #'car)))
+                                  ;; always (re-)start video from from first
+                                  ;; frame
+                                  ;; and loop
+                                  (ifs-dur-f (secs->frames (duration ifs)))
+                                  (vid-i (1+ (mod (+
+                                                   (- i (secs->frames
+                                                         (sc:start-time e)))
+                                                   start-offset)
+                                                  ifs-dur-f)))
+                                  (tmp-img (get-image ifs vid-i))
+                                  (tmp-pn (make-projection tmp-img
+                                                           :projection-height
+                                                           out-height
+                                                           :projection-width
+                                                           out-width)))
+                             (compose tmp-ps tmp-pn))))
+                (write-jpg tmp-ps :outfile outfile)
+                (format t "File: ~a~%~
+                     Frame: ~a/~a~%~
+                     Duration: ~a sec~%"
+                        outfile
+                        frame-counter dur-frames
+                        (apr::sw-delta))
+                (incf frame-counter)))))
+        (format t "Converting to video. ~%")
+        (image-seq->video outdir (format nil "~avid.mp4" outdir)
+                          :glob-pattern "*.jpg")
+        (is (and (probe-file (format nil "~a0001.jpg" outdir))
+                 (probe-file (format nil "~avid.mp4" outdir))))))
 
 ;;; test-svg-files->png
 (test test-svg-files->png
