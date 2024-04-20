@@ -1,11 +1,10 @@
-
 # -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "en") -*-
 #+title: apparence
 #+author: Ruben Philipp
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  17:00:08 Fri Mar 29 2024 CET
+$$ Last modified:  21:03:55 Sat Apr 20 2024 CEST
 #+end_comment
 
 *Please note:* This program is at a very early stage and under
