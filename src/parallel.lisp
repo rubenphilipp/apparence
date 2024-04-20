@@ -16,7 +16,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  01:27:41 Sat Mar 23 2024 CET
+;;; $$ Last modified:  00:44:07 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -158,6 +158,64 @@
        (init-kernel ,num-workers :name ,kernel-name)
        ,body-form
        (shutdown-kernel))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****** do-frames
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-04-20
+;;; 
+;;; DESCRIPTION
+;;; This macro (parallely) iterates through the given frames. 
+;;;
+;;; ARGUMENTS
+;;; - var: the accessor for the current frame index.
+;;; - end. an integer indicating the last frame of the sequence.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :start. An integer indicating the start frame of the sequence to be
+;;;   processed. Default = 0
+;;; 
+;;; RETURN VALUE
+;;; The return value of the body form. 
+;;;
+;;; EXAMPLE
+#|
+(do-frames (i 20 :start 10)
+  (print i))
+
+;; =>
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+17 
+18 
+19 NIL
+|#
+;;; SYNOPSIS
+(defmacro do-frames ((var end &key
+                                (start 0))
+                     &body body)
+  ;;; ****
+  ;;; sanity checks
+  (unless (and (integerp end) (< 0 end))
+    (error "parallel::do-frames: end must be > 0 and of type integer."))
+  (unless (and (integerp start) (<= 0 start) (< start end))
+    (error "parallel::do-frames: start must be of type integer, > 0 ~
+            and < end."))
+  `(lparallel:pdotimes (,var ,(- end start))
+     (let ((,var (+ ,var ,start)))
+       ,@body)))
+  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF parallel.lisp
