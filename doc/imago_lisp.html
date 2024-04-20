@@ -63,7 +63,7 @@
 </pre>
 <p class="item_name">DESCRIPTION</p>
 <pre> This is the <a href="./compositing_lisp.html#robo0">compositing</a> function A Atop B to be used for example in
- <a href="#robo2">imago</a>::compose. 
+ <a href="#robo2">imago</a>::<a href="./canvas_lisp.html#robo17">compose</a>. 
 </pre>
 <p class="item_name">ARGUMENTS</p>
 <pre> Two <a href="#robo2">imago</a>-colors. 
@@ -88,7 +88,7 @@
 </pre>
 <p class="item_name">DESCRIPTION</p>
 <pre> This is the <a href="./compositing_lisp.html#robo0">compositing</a> function A In B to be used for example in
- <a href="#robo2">imago</a>::compose. 
+ <a href="#robo2">imago</a>::<a href="./canvas_lisp.html#robo17">compose</a>. 
 </pre>
 <p class="item_name">ARGUMENTS</p>
 <pre> Two <a href="#robo2">imago</a>-colors. 
@@ -113,7 +113,7 @@
 </pre>
 <p class="item_name">DESCRIPTION</p>
 <pre> This is the <a href="./compositing_lisp.html#robo0">compositing</a> function A Out B to be used for example in
- <a href="#robo2">imago</a>::compose. 
+ <a href="#robo2">imago</a>::<a href="./canvas_lisp.html#robo17">compose</a>. 
 </pre>
 <p class="item_name">ARGUMENTS</p>
 <pre> Two <a href="#robo2">imago</a>-colors. 
@@ -138,7 +138,7 @@
 </pre>
 <p class="item_name">DESCRIPTION</p>
 <pre> This is the <a href="./compositing_lisp.html#robo0">compositing</a> function A Over B to be used for example in
- <a href="#robo2">imago</a>::compose. 
+ <a href="#robo2">imago</a>::<a href="./canvas_lisp.html#robo17">compose</a>. 
 </pre>
 <p class="item_name">ARGUMENTS</p>
 <pre> Two <a href="#robo2">imago</a>-colors. 
@@ -163,7 +163,7 @@
 </pre>
 <p class="item_name">DESCRIPTION</p>
 <pre> This is the <a href="./compositing_lisp.html#robo0">compositing</a> function A Xor B to be used for example in
- <a href="#robo2">imago</a>::compose. 
+ <a href="#robo2">imago</a>::<a href="./canvas_lisp.html#robo17">compose</a>. 
 </pre>
 <p class="item_name">ARGUMENTS</p>
 <pre> Two <a href="#robo2">imago</a>-colors. 
@@ -187,15 +187,15 @@
 <pre> 2024-03-26
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> This is the default compose operator, to be used, e.g. via <a href="#robo2">imago</a>::compose.
+<pre> This is the default <a href="./canvas_lisp.html#robo17">compose</a> operator, to be used, e.g. via <a href="#robo2">imago</a>::<a href="./canvas_lisp.html#robo17">compose</a>.
  By default, this uses the Porter/Duff A-Over-B algorithm for generating the
  the resulting color.
 
- This function is meant to be used with the <a href="#robo2">imago</a>::compose function.
+ This function is meant to be used with the <a href="#robo2">imago</a>::<a href="./canvas_lisp.html#robo17">compose</a> function.
 </pre>
 <p class="item_name">ARGUMENTS</p>
 <pre> Two <a href="#robo2">imago</a>-colors, where color1 is the dest (B), and color2 is the src (A)
- color (cf. compose-op).
+ color (cf. <a href="./canvas_lisp.html#robo17">compose</a>-op).
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> An <a href="#robo2">imago</a>-color (integer). 
@@ -223,14 +223,14 @@
 </pre>
 <p class="item_name">DESCRIPTION</p>
 <pre> This macro is a shortcut to apply a <a href="./compositing_lisp.html#robo0">compositing</a> operator (e.g. a-over-b-op)
- to two <a href="#robo2">imago</a>-colors, as demanded by <a href="#robo2">imago</a>::compose. It converts both colors
- to rgba-lists (cf. rgba-list-p) to be used in the actual compose-operator
+ to two <a href="#robo2">imago</a>-colors, as demanded by <a href="#robo2">imago</a>::<a href="./canvas_lisp.html#robo17">compose</a>. It converts both colors
+ to rgba-lists (cf. rgba-list-p) to be used in the actual <a href="./canvas_lisp.html#robo17">compose</a>-operator
  and provides them in the body of the macro (accessible via the accessors as
  defined in the key arguments).
 
  The function <a href="#robo46">a-over-b-fun</a> illustrates a use case of this macro. 
 
- Note: In order to pass the resulting value back to <a href="#robo2">imago</a>::compose, it is
+ Note: In order to pass the resulting value back to <a href="#robo2">imago</a>::<a href="./canvas_lisp.html#robo17">compose</a>, it is
        necessary to apply the function <a href="#robo50">rgba-list-&gt;color</a> to the resulting
        value (if it is an rgba-list); cf. <a href="#robo46">a-over-b-fun</a>. 
 </pre>
@@ -294,7 +294,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-20 18:29:13</p>
+<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-20 21:23:50</p>
 </div> <!-- footer -->
 </body>
 </html>
