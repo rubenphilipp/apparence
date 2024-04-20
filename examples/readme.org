@@ -6,7 +6,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  23:14:45 Sat Apr 20 2024 CEST
+$$ Last modified:  23:16:06 Sat Apr 20 2024 CEST
 #+end_comment
 
 These files could serve as an introduction to apparence. Additionally, it is
@@ -14,21 +14,24 @@ recommended to have a look at the inline code documentation or the [[file:https:
 
 * Overview
 
-- compose.lisp
+** [[file:compose.lisp]]
   #+begin_quote
   This file demonstrates how to use the projection-surface and projection
   classes.
   #+end_quote
-- sequence1.lisp
+  
+** [[file:sequence1.lisp]]
   #+begin_quote
   This example shows how to project a sequence of generated images onto the
   mantle of a cylindrical surface.
   #+end_quote
-- sequence2.lisp
+  
+** [[file:sequence2.lisp]]
   #+begin_quote
   An example using the with-timeline macro and easing functions.
   #+end_quote
-- sequence3.lisp
+  
+** [[file:sequence3.lisp]]
   #+begin_quote
   An example of a sequence using a video file as material. 
   #+end_quote
