@@ -4,7 +4,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  22:47:40 Sat Apr 20 2024 CEST
+$$ Last modified:  23:02:52 Sat Apr 20 2024 CEST
 #+end_comment
 
 *Please note:* This program is at a very early stage and under
@@ -17,10 +17,6 @@ development. Thus, API changes are very likely.
 
 As of now, it still is in a very early stage of development. 
 
-
-* Compatibility
-
-Tested with SBCL on MacOS and Linux (Ubuntu 22.04).
 
 ** Installation
 
@@ -37,7 +33,11 @@ sbcl --dynamic-space-size 8192
 #+end_src
 
 
-* Tests
+** Compatibility
+
+Tested with SBCL on MacOS and Linux (Ubuntu 22.04).
+
+** Tests
 
 Always run tests with a fresh freshly started lisp instance.
 
