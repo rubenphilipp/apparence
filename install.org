@@ -6,12 +6,10 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  22:46:40 Sat Apr 20 2024 CEST
+$$ Last modified:  22:59:49 Sat Apr 20 2024 CEST
 #+end_comment
 
 This document describes the installation process of apparence using [[https://www.quicklisp.org][Quicklisp]].
-
-# TODO install.sh
 
 ** Dependencies
 
@@ -132,8 +130,11 @@ encounter errors like these:
 #+begin_quote
 [package jpeg-turbo]; clang -o /Users/someuser/.cache/common-lisp/sbcl-2.3.0-macosx-arm64/Users/someuser/quicklisp/dists/quicklisp/software/jpeg-turbo-20201220-git/src/grovel__grovel-tmpIGHCU6ZA.o -c -g -Wall -Wundef -Wsign-compare -Wpointer-arith -O3 -g -Wall -fdollars-in-identifiers -fno-omit-frame-pointer -I/usr/local/include -fPIC -I/Users/someuser/quicklisp/local-projects/cffi/ /Users/someuser/.cache/common-lisp/sbcl-2.3.0-macosx-arm64/Users/someuser/quicklisp/dists/quicklisp/software/jpeg-turbo-20201220-git/src/grovel__grovel.c
 /Users/someuser/.cache/common-lisp/sbcl-2.3.0-macosx-arm64/Users/someuser/quicklisp/dists/quicklisp/software/jpeg-turbo-20201220-git/src/grovel__grovel.c:6:10: fatal error: 'turbojpeg.h' file not found
+
 #include <turbojpeg.h>
+
          ^~~~~~~~~~~~~
+         
 1 error generated.
 #+end_quote
 
