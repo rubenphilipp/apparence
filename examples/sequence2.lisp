@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-03-30
 ;;;
-;;; $$ Last modified:  17:37:49 Fri Apr  5 2024 CEST
+;;; $$ Last modified:  21:18:34 Sat Apr 20 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -69,7 +69,7 @@
                                           255 0
                                           :duration tl-duration
                                           :ease-fun #'ease:in-exp))))))
-                (put-it ps2 tmp-pn :dest-x (interpolate-easing tl-time
+                (compose ps2 tmp-pn :dest-x (interpolate-easing tl-time
                                                                (first pn-x)
                                                                (second pn-x)
                                                                :duration

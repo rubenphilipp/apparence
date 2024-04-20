@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  20:17:57 Sun Mar 31 2024 CEST
+;;; $$ Last modified:  21:13:47 Sat Apr 20 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -82,13 +82,13 @@
 (defmethod (setf width) :around (value (ps projection-surface))
   (when (initialized ps)
     (setf (slot-value ps 'surface-width) (* value (x-scaler ps))))
-    ;;(setf (slot-value ps 'x-scaler) (/ (surface-width ps) value)))
+  ;;(setf (slot-value ps 'x-scaler) (/ (surface-width ps) value)))
   (call-next-method))
 
 (defmethod (setf height) :around (value (ps projection-surface))
   (when (initialized ps)
     (setf (slot-value ps 'surface-height) (* value (y-scaler ps))))
-    ;;(setf (slot-value ps 'y-scaler) (/ (surface-height ps) value)))
+  ;;(setf (slot-value ps 'y-scaler) (/ (surface-height ps) value)))
   (call-next-method))
 
 (defmethod (setf surface-width) :after (value (ps projection-surface))
@@ -108,12 +108,12 @@
 (defmethod (setf x-scaler) :after (value (ps projection-surface))
   (when (initialized ps)
     (setf (slot-value ps 'surface-width) (* value (width ps)))))
-    ;;(setf (width ps) (round (* value (width ps))))))
+;;(setf (width ps) (round (* value (width ps))))))
 
 (defmethod (setf y-scaler) :after (value (ps projection-surface))
   (when (initialized ps)
     (setf (slot-value ps 'surface-height) (* value (height ps)))))
-    ;;(setf (height ps) (round (* value (height ps))))))
+;;(setf (height ps) (round (* value (height ps))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -264,14 +264,14 @@
 ;;; EXAMPLE
 #|
 (make-projection-surface :surface-width 20
-                         :surface-height 40
-                         :width 2000
-                         :height 4000)
+:surface-height 40
+:width 2000
+:height 4000)
 ;; =>
 PROJECTION-SURFACE: surface-width: 20, surface-height: 40, 
-        x-scaler: 1/100, y-scaler: 1/100
+x-scaler: 1/100, y-scaler: 1/100
 CANVAS: width: 2000, height: 4000, color: (0 0 0 0), 
-        initialized: T
+initialized: T
 NAMED-OBJECT: id: NIL, tag: NIL, 
 data: 
 IMAGE: width: 2000, height: 4000
@@ -331,7 +331,8 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; put methods for projections
+;;; compositing methods for projections (formerly put-it)
+;;; RP  Sat Apr 20 21:12:55 2024
 ;;; all values relative to the projection(-surface) scale
 ;;; assuming coordinates and dimensions of projection-surface and projection
 ;;; share the same scale!!
@@ -339,24 +340,24 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
 
 ;;; the compose-fun is used by the compose function. it must take two (imago)
 ;;; colors as its argument and must return a new (imago) color.
-(defmethod put-it ((dest projection-surface) (src projection)
-                   &key
-                     height
-                     width
-                     (src-y 0)
-                     (src-x 0)
-                     (dest-y 0)
-                     (dest-x 0)
-                     complete?
-                     (interpolation
-                      (get-apr-config :default-interpolation))
-                     (compose-fun #'a-over-b-fun))
+(defmethod compose ((dest projection-surface) (src projection)
+                    &key
+                      height
+                      width
+                      (src-y 0)
+                      (src-x 0)
+                      (dest-y 0)
+                      (dest-x 0)
+                      complete?
+                      (interpolation
+                       (get-apr-config :default-interpolation))
+                      (compose-fun #'a-over-b-fun))
   ;;; ****
   (unless (initialized dest)
-    (error "projection-surface::put-it: The projection-surface object has not ~
+    (error "projection-surface::compose: The projection-surface object has not ~
             been initialized."))
   (unless (initialized src)
-    (error "projection-surface::put-it: The projection object has not ~
+    (error "projection-surface::compose: The projection object has not ~
             been initialized."))
   ;;; NB: scalers in dest are different from scalers in src
   ;;; RP  Sat Mar  2 23:59:24 2024
@@ -371,12 +372,12 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
           (setf (data dest)
-                (put-it (data dest) tmp-src
-                        :dest-x dest-x :dest-y dest-y
-                        :src-x src-x :src-y src-y
-                        :width width :height height
-                        :complete? complete?
-                        :compose-fun compose-fun))
+                (compose (data dest) tmp-src
+                         :dest-x dest-x :dest-y dest-y
+                         :src-x src-x :src-y src-y
+                         :width width :height height
+                         :complete? complete?
+                         :compose-fun compose-fun))
           (warn "projection::copy: Won't copy. The resulting dimensions are ~
                  too small.")))
     dest))
@@ -384,29 +385,29 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; put-it-circular for projection-surface objects.
+;;; compose-circular for projection-surface objects.
 ;;; cf. canvas/projection-surface for doc
 ;;; RP  Sun Mar  3 17:48:35 2024
-(defmethod put-it-circular ((ps projection-surface) (pn projection)
-                            azimuth y
-                            &key
-                              height
-                              width
-                              (src-y 0)
-                              (src-x 0)
-                              (ps-origin 0.0)
-                              (pn-origin 0.5)
-                              (interpolation
-                               (get-apr-config :default-interpolation))
-                              (compose-fun #'a-over-b-fun)
-                              (verbose (get-apr-config :verbose)))
+(defmethod compose-circular ((ps projection-surface) (pn projection)
+                             azimuth y
+                             &key
+                               height
+                               width
+                               (src-y 0)
+                               (src-x 0)
+                               (ps-origin 0.0)
+                               (pn-origin 0.5)
+                               (interpolation
+                                (get-apr-config :default-interpolation))
+                               (compose-fun #'a-over-b-fun)
+                               (verbose (get-apr-config :verbose)))
   ;;; ****
   (unless (initialized ps)
-    (error "projection-surface::put-it-circular: The projection-surface object ~
-            has not been initialized."))
+    (error "projection-surface::compose-circular: The projection-surface ~
+            object has not been initialized."))
   (unless (initialized pn)
-    (error "projection-surface::put-it-circular: The projection object has not ~
-            been initialized."))
+    (error "projection-surface::compose-circular: The projection object has ~
+            not been initialized."))
   (let ((tmp-img (autoscale-pn->image pn ps :interpolation interpolation)))
     (let ((height (when height (round (/ height (y-scaler ps)))))
           (width (when width (round (/ width (x-scaler ps)))))
@@ -416,16 +417,16 @@ data: #<RGB-IMAGE (2000x4000) {700A9A2B03}>
       (if (every #'(lambda (x)
                      (or (null x) (< -1 x)))
                  (list height width height src-x src-y))
-          (put-it-circular ps tmp-img azimuth y
-                           :verbose verbose
-                           :width width
-                           :height height
-                           :src-x src-x
-                           :src-y src-y
-                           :image-origin pn-origin
-                           :canvas-origin ps-origin
-                           :compose-fun compose-fun)))))
-  
+          (compose-circular ps tmp-img azimuth y
+                            :verbose verbose
+                            :width width
+                            :height height
+                            :src-x src-x
+                            :src-y src-y
+                            :image-origin pn-origin
+                            :canvas-origin ps-origin
+                            :compose-fun compose-fun)))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF projection-surface.lisp

@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  19:58:21 Wed Mar 27 2024 CET
+;;; $$ Last modified:  21:15:10 Sat Apr 20 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -75,7 +75,7 @@
   (let ((c (color cv)))
     ;; just convert color list when a list is given
     (when (or (rgb-p c) (rgba-p c))
-        (setf (slot-value cv 'color) (apply #'make-color c)))))
+      (setf (slot-value cv 'color) (apply #'make-color c)))))
 
 
 (defmethod (setf width) :after (value (cv canvas))
@@ -109,7 +109,7 @@
                              :initial-color (color cv))))
     (copy new (data cv))
     (setf (slot-value cv 'data) new)))
-  
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -200,9 +200,9 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; EXAMPLE
 #|
 (let ((cv (make-instance 'canvas :width 300 :height 200 :color '(55 255 55)))
-      (img (make-rgb-image 50 100)))
-  (copy (data cv) img)
-  (write-png cv :outfile "~/Downloads/cv-test.png"))
+(img (make-rgb-image 50 100)))
+(copy (data cv) img)
+(write-png cv :outfile "~/Downloads/cv-test.png"))
 |#
 ;;; SYNOPSIS
 (defmethod write-png ((cv canvas) &key (outfile "/tmp/canvas.png"))
@@ -240,9 +240,9 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; EXAMPLE
 #|
 (let ((cv (make-instance 'canvas :width 300 :height 200 :color '(55 255 55)))
-      (img (make-rgb-image 50 100)))
-  (copy (data cv) img)
-  (write-jpg cv :outfile "~/Downloads/cv-test.jpg"))
+(img (make-rgb-image 50 100)))
+(copy (data cv) img)
+(write-jpg cv :outfile "~/Downloads/cv-test.jpg"))
 |#
 ;;; SYNOPSIS
 (defmethod write-jpg ((cv canvas) &key
@@ -257,7 +257,7 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* canvas/put-it
+;;; ****f* canvas/compose
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
@@ -300,37 +300,37 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; EXAMPLE
 #|
 (let ((cv (make-canvas 300 200 :color '(255 255 255 0)))
-      (img (make-rgb-image 50 100 :initial-color (make-color 100 233 90)))
-      (img2 (make-rgb-image 50 100 :initial-color (make-color 80 133 90))))
-  (put-it cv img :dest-x 0)
-  (put-it cv img2 :dest-x 20)
-  (write-png cv :outfile "~/Downloads/cv-test.png"))
+(img (make-rgb-image 50 100 :initial-color (make-color 100 233 90)))
+(img2 (make-rgb-image 50 100 :initial-color (make-color 80 133 90))))
+(compose cv img :dest-x 0)
+(compose cv img2 :dest-x 20)
+(write-png cv :outfile "~/Downloads/cv-test.png"))
 |#
 ;;; SYNOPSIS
-(defmethod put-it ((dest canvas) (src image)
-                   &key
-                     height
-                     width
-                     (src-y 0)
-                     (src-x 0)
-                     (dest-y 0)
-                     (dest-x 0)
-                     complete?
-                     (compose-fun #'a-over-b-fun))
+(defmethod compose ((dest canvas) (src image)
+                    &key
+                      height
+                      width
+                      (src-y 0)
+                      (src-x 0)
+                      (dest-y 0)
+                      (dest-x 0)
+                      complete?
+                      (compose-fun #'a-over-b-fun))
   ;;; ****
   (unless (initialized dest)
-    (error "canvas::put-it: The canvas object has not been initialized."))
+    (error "canvas::compose: The canvas object has not been initialized."))
   (setf (data dest)
-        (put-it (data dest) src
-                :dest-x dest-x :dest-y dest-y
-                :src-x src-x :src-y src-y
-                :width width :height height
-                :complete? complete?
-                :compose-fun compose-fun))
+        (compose (data dest) src
+                 :dest-x dest-x :dest-y dest-y
+                 :src-x src-x :src-y src-y
+                 :width width :height height
+                 :complete? complete?
+                 :compose-fun compose-fun))
   dest)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****m* canvas/put-it-circular
+;;; ****m* canvas/compose-circular
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
@@ -381,38 +381,38 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; EXAMPLE
 #|
 (let* ((cv (make-canvas 4000 2000 :color '(0 0 0 0)))
-       (img (make-rgb-image 500 400 :initial-color (make-color 233 200 188))))
-  (put-it-circular cv img 350 0 :width 300 :height 200
-                                :src-y 10 :src-x 20)
-  (write-png cv :outfile "/tmp/test.png")
-  (system-open-file "/tmp/test.png"))
+(img (make-rgb-image 500 400 :initial-color (make-color 233 200 188))))
+(compose-circular cv img 350 0 :width 300 :height 200
+:src-y 10 :src-x 20)
+(write-png cv :outfile "/tmp/test.png")
+(system-open-file "/tmp/test.png"))
 |#
 ;;; SYNOPSIS
-(defmethod put-it-circular ((cv canvas) (image image) azimuth y
-                            &key
-                              height
-                              width
-                              (src-y 0)
-                              (src-x 0)
-                              (canvas-origin 0.0)
-                              (image-origin 0.5)
-                              (compose-fun #'a-over-b-fun)
-                              (verbose (get-apr-config :verbose)))
+(defmethod compose-circular ((cv canvas) (image image) azimuth y
+                             &key
+                               height
+                               width
+                               (src-y 0)
+                               (src-x 0)
+                               (canvas-origin 0.0)
+                               (image-origin 0.5)
+                               (compose-fun #'a-over-b-fun)
+                               (verbose (get-apr-config :verbose)))
   ;;; ****
   (unless (initialized cv)
-    (error "canvas::put-it-circular: The canvas object has not been ~
+    (error "canvas::compose-circular: The canvas object has not been ~
             initialized."))
   (unless (and (<= 0.0 image-origin) (>= 1.0 image-origin))
-    (error "canvas::put-it-circular: The image-origin must be ~
+    (error "canvas::compose-circular: The image-origin must be ~
             >= 0.0 and <= 1.0"))
   (unless (and (<= 0.0 canvas-origin) (>= 1.0 canvas-origin))
-    (error "canvas::put-it-circular: The canvas-origin must be ~
+    (error "canvas::compose-circular: The canvas-origin must be ~
             >= 0.0 and <= 1.0"))
   (when (>= y (height cv))
-    (error "canvas::put-it-circular: The y-coordinate is >= the height of ~
+    (error "canvas::compose-circular: The y-coordinate is >= the height of ~
             the canvas."))
   ;; (unless (typep image 'image)
-  ;;   (error "canvas::put-it-circular: The image is not an image, but ~a"
+  ;;   (error "canvas::compose-circular: The image is not an image, but ~a"
   ;;          (type-of image)))
   (when (or height width (/= 0 src-y) (/= 0 src-x))
     (let ((new-height (if height height (height image)))
@@ -449,46 +449,46 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
       ((and (<= 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
        (when verbose
-         (format t "canvas::put-it-circular: no-split~%"))
-       (put-it canvas image :dest-x (first image-x-coords)
-                            :dest-y y
-                            :compose-fun compose-fun))
+         (format t "canvas::compose-circular: no-split~%"))
+       (compose canvas image :dest-x (first image-x-coords)
+                             :dest-y y
+                             :compose-fun compose-fun))
       ((and (> 0 (first image-x-coords))
             (>= canvas-width (second image-x-coords)))
        (when verbose
-         (format t "canvas::put-it-circular: left->right~%"))
+         (format t "canvas::compose-circular: left->right~%"))
        ;; wrap left->right
        ;; starting with the "left" part (i.e. the right part of the img)
-       (put-it canvas image :width (second image-x-coords)
-                            :src-x (abs (first image-x-coords))
-                            :dest-y y
-                            :compose-fun compose-fun)
+       (compose canvas image :width (second image-x-coords)
+                             :src-x (abs (first image-x-coords))
+                             :dest-y y
+                             :compose-fun compose-fun)
        ;; now the "right" part
-       (put-it canvas image :width (abs (first image-x-coords))
-                            :src-x 0
-                            :dest-x (+ canvas-width
-                                     (first image-x-coords))
-                            :dest-y y
-                            :compose-fun compose-fun))
+       (compose canvas image :width (abs (first image-x-coords))
+                             :src-x 0
+                             :dest-x (+ canvas-width
+                                        (first image-x-coords))
+                             :dest-y y
+                             :compose-fun compose-fun))
       ((and (<= 0 (first image-x-coords))
             (< canvas-width (second image-x-coords)))
        (when verbose
-         (format t "canvas::put-it-circular: right->left~%"))
+         (format t "canvas::compose-circular: right->left~%"))
        ;; wrap right->left
        ;; starting with the right part (the left part of the img)
-       (put-it canvas image :width (- canvas-width
-                                      (first image-x-coords))
-                            :src-x 0
-                            :dest-x (first image-x-coords)
-                            :dest-y y
-                            :compose-fun compose-fun)
+       (compose canvas image :width (- canvas-width
+                                       (first image-x-coords))
+                             :src-x 0
+                             :dest-x (first image-x-coords)
+                             :dest-y y
+                             :compose-fun compose-fun)
        ;; now the left part
-       (put-it canvas image :width (- (second image-x-coords)
-                                      canvas-width)
-                            :src-x (- canvas-width
-                                      (first image-x-coords))
-                            :dest-x 0 :dest-y y
-                            :compose-fun compose-fun))
+       (compose canvas image :width (- (second image-x-coords)
+                                       canvas-width)
+                             :src-x (- canvas-width
+                                       (first image-x-coords))
+                             :dest-x 0 :dest-y y
+                             :compose-fun compose-fun))
       (t (error "the width of the image to be projected is greater than ~
                  the width of the projection screen.")))
     ;; finally, return the altered canvas object

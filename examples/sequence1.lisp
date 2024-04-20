@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-03-01
 ;;;
-;;; $$ Last modified:  19:50:16 Thu Mar 28 2024 CET
+;;; $$ Last modified:  21:18:26 Sat Apr 20 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -67,7 +67,7 @@
                         outfile
                         frame-counter frames)
                 (progn
-                  (put-it-circular ps pn azim y :canvas-origin 0
+                  (compose-circular ps pn azim y :canvas-origin 0
                                                 :image-origin 0.5
                                                 :src-x
                                                 (- (/ (projection-width

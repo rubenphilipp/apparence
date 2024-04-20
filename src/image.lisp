@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  19:38:21 Wed Mar 27 2024 CET
+;;; $$ Last modified:  21:14:31 Sat Apr 20 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -186,9 +186,9 @@
 
 
 (defun make-image-from-jpg (path &key
-                                   id
-                                   (default-interpolation
-                                    (get-apr-config :default-interpolation)))
+                             id
+                             (default-interpolation
+                              (get-apr-config :default-interpolation)))
   ;;; ****
   (let ((data (imago-jpeg-turbo::read-jpg path)))
     (make-image data :id id
@@ -196,9 +196,9 @@
 
 
 (defun make-image-from-png (path &key
-                                   id
-                                   (default-interpolation
-                                    (get-apr-config :default-interpolation)))
+                             id
+                             (default-interpolation
+                              (get-apr-config :default-interpolation)))
   ;;; ****
   (let ((data (imago-pngio::read-png path)))
     (make-image data :id id
@@ -232,9 +232,9 @@
 ;;;
 ;;; SYNOPSIS
 (defun make-image-from-file (path &key
-                                    id
-                                    (default-interpolation
-                                     (get-apr-config :default-interpolation)))
+                              id
+                              (default-interpolation
+                               (get-apr-config :default-interpolation)))
   ;;; ****
   (let ((type (pathname-type path)))
     (cond ((equal "png" type)
@@ -283,16 +283,16 @@
 ;;; EXAMPLE
 #|
 (let ((canvas (cl-svg::make-svg-toplevel 'cl-svg:svg-1.1-toplevel
-                                         :width 400
-                                         :height 300))
-      (image nil))
-  (cl-svg:draw canvas
-      (:rect :x 10 :y 10
-             :width 100 :height (* 100 4/3)
-             :fill "rgba(90,90,90,1)"))
-  (setf image (make-image-from-svg canvas))
-  (write-png image :outfile "/tmp/image.png")
-  (system-open-file "/tmp/image.png"))
+:width 400
+:height 300))
+(image nil))
+(cl-svg:draw canvas
+(:rect :x 10 :y 10
+:width 100 :height (* 100 4/3)
+:fill "rgba(90,90,90,1)"))
+(setf image (make-image-from-svg canvas))
+(write-png image :outfile "/tmp/image.png")
+(system-open-file "/tmp/image.png"))
 |#
 ;;; SYNOPSIS
 (defun make-image-from-svg (svg &key
@@ -321,7 +321,7 @@
     ;; removing garbage
     (delete-file tmp-png)
     image))
-                             
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -354,7 +354,7 @@
 ;;; EXAMPLE
 #|
 (let ((img (make-rgb-image 200 300)))
-  (resize img 400 400))
+(resize img 400 400))
 ;;; =>
 IMAGE: width: 400, height: 400
 NAMED-OBJECT: id: NIL, tag: NIL, 
@@ -399,7 +399,7 @@ data: #<RGB-IMAGE (400x400) {70067BAB33}>
 ;;; EXAMPLE
 #|
 (let ((img (make-rgb-image 200 300)))
-  (scale img 1.5 2.0))
+(scale img 1.5 2.0))
 ;;; =>
 IMAGE: width: 300, height: 600
 NAMED-OBJECT: id: NIL, tag: NIL, 
@@ -455,9 +455,9 @@ data: #<RGB-IMAGE (300x600) {7006A8E413}>
 ;;; EXAMPLE
 #|
 (let ((img1 (make-rgb-image 200 300))
-      (img2 (make-rgb-image 30 30 :initial-color (make-color 20 90 111))))
-  (copy img1 img2 :height 10 :width 10
-                  :dest-x 20 :dest-y 25))
+(img2 (make-rgb-image 30 30 :initial-color (make-color 20 90 111))))
+(copy img1 img2 :height 10 :width 10
+:dest-x 20 :dest-y 25))
 ;;; =>
 IMAGE: width: 200, height: 300
 NAMED-OBJECT: id: NIL, tag: NIL, 
@@ -493,8 +493,8 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
 ;;; EXAMPLE:
 #|
 (let ((img (make-rgb-image 200 200
-                           :initial-color (make-color 129 200 211))))
-  (rotate img 20))
+:initial-color (make-color 129 200 211))))
+(rotate img 20))
 |#
 ;;; NB: Rotation is counterclockwise
 (defmethod rotate ((img image) degree
@@ -533,10 +533,10 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
 ;;; EXAMPLE
 #|
 (let ((img1 (make-rgb-image 200 300))
-      (img2 (make-rgb-image 30 30 :initial-color (make-color 20 90 111))))
-  (copy img1 img2 :height 10 :width 10
-                  :dest-x 20 :dest-y 25)
-  (write-png img1))
+(img2 (make-rgb-image 30 30 :initial-color (make-color 20 90 111))))
+(copy img1 img2 :height 10 :width 10
+:dest-x 20 :dest-y 25)
+(write-png img1))
 |#
 ;;; SYNOPSIS
 (defmethod write-png ((img image) &key (outfile "/tmp/image.png"))
@@ -574,10 +574,10 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
 ;;; EXAMPLE
 #|
 (let ((img1 (make-rgb-image 200 300))
-      (img2 (make-rgb-image 30 30 :initial-color (make-color 20 90 111))))
-  (copy img1 img2 :height 10 :width 10
-                  :dest-x 20 :dest-y 25)
-  (write-jpg img1))
+(img2 (make-rgb-image 30 30 :initial-color (make-color 20 90 111))))
+(copy img1 img2 :height 10 :width 10
+:dest-x 20 :dest-y 25)
+(write-jpg img1))
 |#
 ;;; SYNOPSIS
 (defmethod write-jpg ((img image) &key
@@ -599,16 +599,16 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod put-it ((dest image) (src image)
-                   &key
-                     height
-                     width
-                     (src-y 0)
-                     (src-x 0)
-                     (dest-y 0)
-                     (dest-x 0)
-                     complete?
-                     (compose-fun #'a-over-b-fun))
+(defmethod compose ((dest image) (src image)
+                    &key
+                      height
+                      width
+                      (src-y 0)
+                      (src-x 0)
+                      (dest-y 0)
+                      (dest-x 0)
+                      complete?
+                      (compose-fun #'a-over-b-fun))
   ;;; ****
   (let ((tmp-src src))
     (when (or width height)
@@ -645,10 +645,10 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
                             (< (width tmp-src) (width dest))
                             (< (height tmp-src) (height dest))))
         (setf tmp-src2 (make-rgb-image (width dest) (height dest)))
-        (put-it tmp-src2 tmp-src
-                :dest-x dest-x :dest-y dest-y
-                :src-x src-x :src-y src-y
-                :complete? nil)
+        (compose tmp-src2 tmp-src
+                 :dest-x dest-x :dest-y dest-y
+                 :src-x src-x :src-y src-y
+                 :complete? nil)
         (setf dest-x 0
               dest-y 0
               src-x 0

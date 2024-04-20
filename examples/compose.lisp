@@ -1,9 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; FILE
-;;; put-it.lisp
+;;; compose.lisp
 ;;;
 ;;; NAME
-;;; put-it
+;;; compose
 ;;;
 ;;; DESCRIPTION
 ;;; This file demonstrates how to use the projection-surface and projection
@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-03-25
 ;;;
-;;; $$ Last modified:  17:06:07 Mon Mar 25 2024 CET
+;;; $$ Last modified:  21:18:14 Sat Apr 20 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -48,16 +48,16 @@
                                     :y-scaler 1/10
                                     :color '(255 255 255 255))))
   ;; This places a part of the projection object onto the projection-surface.
-  (put-it ps projection :dest-x 100 :dest-y 20
+  (compose ps projection :dest-x 100 :dest-y 20
                         :width 25)
   ;; ...and this another part. 
-  (put-it ps projection :dest-x 125 :dest-y 45
+  (compose ps projection :dest-x 125 :dest-y 45
                         :width 25 :src-x 25
                         :height 25 :src-y 25)
   ;; This places a resized version of the projection onto the ps.
   ;; Note that the original object needs to be cloned. Otherwise the slots
   ;; of the original objects will be set to the new (scaled) values.
-  (put-it ps (scale (clone projection) .5 .5))
+  (compose ps (scale (clone projection) .5 .5))
   ;; This writes the projection-surface to a jpeg-file and opens it in the
   ;; default program for viewing jpeg-files.
   (system-open-file (write-jpg ps)))
@@ -65,4 +65,4 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; EOF put-it.lisp
+;;; EOF compose.lisp

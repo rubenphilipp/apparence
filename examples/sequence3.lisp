@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-04-06
 ;;;
-;;; $$ Last modified:  15:39:03 Sat Apr  6 2024 CEST
+;;; $$ Last modified:  21:18:42 Sat Apr 20 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -47,7 +47,7 @@
                (pn nil))
           (when vid-img
             (setf pn (make-projection vid-img :projection-height 50))
-            (put-it tmp-ps pn :dest-x 5 :dest-y 5))
+            (compose tmp-ps pn :dest-x 5 :dest-y 5))
           (write-jpg tmp-ps :outfile outfile)
           (format t "File: ~a~%~
                              Frame: ~a/~a~%~
