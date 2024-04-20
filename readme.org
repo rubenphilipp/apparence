@@ -4,7 +4,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  23:06:41 Sat Apr 20 2024 CEST
+$$ Last modified:  23:08:08 Sat Apr 20 2024 CEST
 #+end_comment
 
 *Please note:* This program is at a very early stage and under
@@ -14,6 +14,8 @@ development. Thus, API changes are very likely.
 
 *apparence* (nicknamed ~apr~) is a Common Lisp package aimed at working with
 (moving) images.
+
+Have a look at the [[file:examples/][examples]].
 
 ** Installation
 
