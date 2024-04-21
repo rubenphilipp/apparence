@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-04-06
 ;;;
-;;; $$ Last modified:  13:44:52 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  15:00:53 Sun Apr 21 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -29,7 +29,6 @@
        (outdir (concatenate 'string
                             (get-apr-config :default-tmp-dir)
                             "sequence3/"))
-       (frame-counter 1)
        (ps-w-px 800)
        (ps-h-px 500)
        (ps (make-projection-surface :surface-width 80
@@ -38,24 +37,17 @@
                                     :height ps-h-px)))
   (ensure-directories-exist outdir)
   (with-kernel ()
-    (do-frames (i dur-frames)
-      (with-stopwatch ()
-        (let* ((outfile (format nil "~a~4,'0d.jpg" outdir i))
-               (tmp-ps (clone ps))
-               (vid-img (get-image ifs (mod (frames->secs i) ifs-dur)
-                                   :in-seconds t))
-               (pn nil))
-          (when vid-img
-            (setf pn (make-projection vid-img :projection-height 50))
-            (compose tmp-ps pn :dest-x 5 :dest-y 5))
-          (write-jpg tmp-ps :outfile outfile)
-          (format t "File: ~a~%~
-                             Frame: ~a/~a~%~
-                             Duration: ~a sec~%"
-                  outfile
-                  frame-counter dur-frames
-                  (sw-delta))
-          (incf frame-counter))))))
+    (do-frames (i dur-frames :verbose t)
+      (let* ((outfile (format nil "~a~4,'0d.jpg" outdir i))
+             (tmp-ps (clone ps))
+             (vid-img (get-image ifs (mod (frames->secs i) ifs-dur)
+                                 :in-seconds t))
+             (pn nil))
+        (when vid-img
+          (setf pn (make-projection vid-img :projection-height 50))
+          (compose tmp-ps pn :dest-x 5 :dest-y 5))
+        (write-jpg tmp-ps :outfile outfile)
+        (format t "File: ~a~%" outfile)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

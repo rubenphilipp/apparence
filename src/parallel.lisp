@@ -16,7 +16,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  14:54:05 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  14:56:33 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -224,6 +224,9 @@ Duration: 0 sec
 15 
 Frame: 5/5
 Duration: 0 sec
+
+;;; Note: The seemingly arbitrary order of the processed frames is related to
+;;; the parallel processing. 
 |#
 ;;; SYNOPSIS
 (defmacro do-frames ((var end &key
