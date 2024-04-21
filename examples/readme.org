@@ -6,7 +6,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:44:55 Sun Apr 21 2024 CEST
+$$ Last modified:  21:54:35 Sun Apr 21 2024 CEST
 #+end_comment
 
 These files could serve as an introduction to apparence. Additionally, it is
@@ -28,7 +28,7 @@ recommended to have a look at the inline code documentation or the [[file:https:
   
 ** [[file:sequence2.lisp]]
 
-  An example using the timeline macro and easing functions.
+  An example using the in-timeline macro and easing functions.
 
   
 ** [[file:sequence3.lisp]]

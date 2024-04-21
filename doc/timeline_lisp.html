@@ -47,12 +47,12 @@
  CLASS HIERARCHY
  none. no classes defined. 
 
- $$ Last modified:  21:40:41 Sun Apr 21 2024 CEST
+ $$ Last modified:  21:52:48 Sun Apr 21 2024 CEST
 </pre>
 
 <hr />
-<a name="timeline2ftimeline"></a>
-<a name="robo63"></a><h2>timeline/timeline [ Generics ]</h2>
+<a name="timeline2fin2dtimeline"></a>
+<a name="robo63"></a><h2>timeline/in-timeline [ Generics ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">timeline</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -62,13 +62,13 @@
 <pre> 2024-03-30
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> This macro establishes a local <strong>timeline</strong> context. The body form will only be
+<pre> This macro establishes a local <a href="#robo8">timeline</a> context. The body form will only be
  evaluated when the time is within the time frame as indicated by the start
  and end, resp. start and duration arguments. All time values are given in
  seconds (as a float). Within the form, several local values are available,
  such as the relative and absolute time values of the current time point
- on the given <strong>timeline</strong>. Relative means relative to the start time of the
- <strong>timeline</strong>, while absolute means relative to 0. The variable accessor symbols
+ on the given <a href="#robo8">timeline</a>. Relative means relative to the start time of the
+ <a href="#robo8">timeline</a>, while absolute means relative to 0. The variable accessor symbols
  can be set via the given -acc keywords.
 </pre>
 <p class="item_name">ARGUMENTS</p>
@@ -78,15 +78,15 @@
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
- - :end. The time of the <strong>timeline</strong> (in seconds). Don't use this argument when
+ - :end. The time of the <a href="#robo8">timeline</a> (in seconds). Don't use this argument when
    a :duration is specified. 
- - :duration. The duration of the <strong>timeline</strong> (in seconds). Don't use this
+ - :duration. The duration of the <a href="#robo8">timeline</a> (in seconds). Don't use this
    argument when :end is specified. 
  - :tl-frame-acc. The accessor symbol for the local variable holding the
-   frame index relative to the start of the <strong>timeline</strong>, available within the
+   frame index relative to the start of the <a href="#robo8">timeline</a>, available within the
    body. Default = 'tl-frame
  - :tl-time-acc. The accessor symbol for the local variable holding the time
-   (in seconds) relative to the start of the <strong>timeline</strong>, available within the
+   (in seconds) relative to the start of the <a href="#robo8">timeline</a>, available within the
    body. Default = 'tl-time
  - :tl-abs-frame-acc. The accessor symbol for the local variable holding the
    absolute frame index (relative to 0), available within the body.
@@ -97,7 +97,7 @@
  - :tl-start-acc. The accessor to the start time (seconds).
    Default = 'tl-start
  - :tl-end-acc. The accessor to the end time (seconds). Default = tl-end
- - :tl-duration-acc. The accessor to the <strong>timeline</strong> duration (in seconds).
+ - :tl-duration-acc. The accessor to the <a href="#robo8">timeline</a> duration (in seconds).
    Default = 'tl-duration
  - :round-fun. A function used for rounding. Default = #'round
  - :fps. The frames per seconds. Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps)
@@ -117,7 +117,7 @@
 (remove nil
 (loop for i from 1 to <a href="./seq_lisp.html#robo16">seq</a>-frames
 collect
-(<strong>timeline</strong> ((frames-&gt;secs i) 1.0 :duration 1.0
+(<strong>in-timeline</strong> ((frames-&gt;secs i) 1.0 :duration 1.0
 :tl-time-acc tl-time)
 (list tl-time tl-start tl-end tl-duration)))))
 
@@ -133,28 +133,28 @@ collect
 (0.96000004 1.0 2.0 1.0) (1.0 1.0 2.0 1.0))
 </pre>
 <p class="item_name">SYNOPSIS</p>
-<pre class="source">(defmacro <strong>timeline</strong> ((time start
-                     &amp;key
-                       ;; never set both end and duration
-                       end
-                       duration
-                       ;; relative to <strong>timeline</strong> start
-                       (tl-frame-acc 'tl-frame)
-                       (tl-time-acc 'tl-time)
-                       ;; absolute to the <strong>timeline</strong> context
-                       (tl-abs-frame-acc 'tl-abs-frame)
-                       (tl-abs-time-acc 'tl-abs-time)
-                       (tl-start-acc 'tl-start)
-                       (tl-end-acc 'tl-end)
-                       (tl-duration-acc 'tl-duration)
-                       (round-fun #'round)
-                       (fps (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps)))
-                    &amp;body body)
+<pre class="source">(defmacro <strong>in-timeline</strong> ((time start
+                        &amp;key
+                          ;; never set both end and duration
+                          end
+                          duration
+                          ;; relative to <a href="#robo8">timeline</a> start
+                          (tl-frame-acc 'tl-frame)
+                          (tl-time-acc 'tl-time)
+                          ;; absolute to the <a href="#robo8">timeline</a> context
+                          (tl-abs-frame-acc 'tl-abs-frame)
+                          (tl-abs-time-acc 'tl-abs-time)
+                          (tl-start-acc 'tl-start)
+                          (tl-end-acc 'tl-end)
+                          (tl-duration-acc 'tl-duration)
+                          (round-fun #'round)
+                          (fps (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps)))
+                       &amp;body body)
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/timeline.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-21 21:45:36</p>
+<p>Generated from ./src/timeline.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-21 21:54:10</p>
 </div> <!-- footer -->
 </body>
 </html>
