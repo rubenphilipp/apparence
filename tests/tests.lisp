@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:44:18 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  21:53:38 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -510,33 +510,35 @@
                 (loop for e in events
                       for count from 0
                       do
-                         (timeline ((frames->secs i) (sc:start-time e)
-                                    :duration (sc:duration e)
-                                    :tl-time-acc tl-time
-                                    :tl-duration-acc tl-duration)
-                                   (let* ((start-offset (* 13 count))
-                                          (ifs (second
-                                                (find (sc:data
-                                                       (sc:pitch-or-chord e))
-                                                      src-vids :key #'car)))
-                                          ;; always (re-)start video from
-                                          ;; from first frame and loop
-                                          (ifs-dur-f
-                                            (secs->frames (duration ifs)))
-                                          (vid-i
-                                            (1+ (mod (+
-                                                      (- i (secs->frames
-                                                            (sc:start-time e)))
-                                                           start-offset)
-                                                          ifs-dur-f)))
-                                          (tmp-img (get-image ifs vid-i))
-                                          (tmp-pn
-                                            (make-projection tmp-img
-                                                             :projection-height
-                                                             out-height
-                                                             :projection-width
-                                                             out-width)))
-                                     (compose tmp-ps tmp-pn))))
+                         (in-timeline ((frames->secs i) (sc:start-time e)
+                                       :duration (sc:duration e)
+                                       :tl-time-acc tl-time
+                                       :tl-duration-acc tl-duration)
+                                      (let* ((start-offset (* 13 count))
+                                             (ifs (second
+                                                   (find (sc:data
+                                                          (sc:pitch-or-chord e))
+                                                         src-vids :key #'car)))
+                                             ;; always (re-)start video from
+                                             ;; from first frame and loop
+                                             (ifs-dur-f
+                                               (secs->frames (duration ifs)))
+                                             (vid-i
+                                               (1+ (mod (+
+                                                         (- i
+                                                            (secs->frames
+                                                             (sc:start-time e)))
+                                                         start-offset)
+                                                        ifs-dur-f)))
+                                             (tmp-img (get-image ifs vid-i))
+                                             (tmp-pn
+                                               (make-projection
+                                                tmp-img
+                                                :projection-height
+                                                out-height
+                                                :projection-width
+                                                out-width)))
+                                        (compose tmp-ps tmp-pn))))
                 (write-jpg tmp-ps :outfile outfile)
                 (format t "File: ~a~%~
                      Frame: ~a/~a~%~
@@ -626,12 +628,12 @@
                  (write-png cv :outfile out))
         (is (every #'pathnamep (mapcar #'probe-file outfiles)))))
 
-;;; test-timeline1
-(test test-timeline1
+;;; test-in-timeline1
+(test test-in-timeline1
       (let ((res (loop for i from 1 to 10
                        collect
-                       (timeline (i 3 :end 8 )
-                                 apr::tl-time))))
+                       (in-timeline (i 3 :end 8 )
+                                    apr::tl-time))))
         (is (equal '(0 1 2 3 4 5)
                    (remove nil res)))))
 
@@ -711,41 +713,42 @@
                 (loop for e in sc-data
                       when (second e)
                         do
-                           (timeline ((frames->secs i) (first e)
-                                      :duration (second e)
-                                      :tl-time-acc tl-time
-                                      :tl-duration-acc tl-duration)
-                                     (let* ((color (alexandria:assoc-value
-                                                    colors (fourth e)))
-                                            (tmp-img (make-rgb-image
-                                                      20 20
-                                                      :initial-color
-                                                      (imago::make-color
-                                                       ;; grayscale
-                                                       (first color)
-                                                       (second color)
-                                                       (third color)
-                                                       (+ 100
-                                                          (random 155)))))
-                                            (tmp-pn (make-projection
-                                                     tmp-img
-                                                     :projection-height .8))
-                                            (pn-x
-                                              (cm::rescale (third e)
-                                                           0 128 0 90)) 
-                                            (pn-y (list 1 30)))
-                                       ;; put the tmp-img onto the
-                                       ;; projection-surface
-                                       (compose tmp-ps tmp-pn
-                                                :dest-x pn-x
-                                                :dest-y (interpolate-easing
-                                                         tl-time
-                                                         (first pn-y)
-                                                         (second pn-y)
-                                                         :duration
-                                                         tl-duration
-                                                         :ease-fun
-                                                         #'ease:out-bounce)))))
+                           (in-timeline ((frames->secs i) (first e)
+                                         :duration (second e)
+                                         :tl-time-acc tl-time
+                                         :tl-duration-acc tl-duration)
+                                        (let* ((color (alexandria:assoc-value
+                                                       colors (fourth e)))
+                                               (tmp-img (make-rgb-image
+                                                         20 20
+                                                         :initial-color
+                                                         (imago::make-color
+                                                          ;; grayscale
+                                                          (first color)
+                                                          (second color)
+                                                          (third color)
+                                                          (+ 100
+                                                             (random 155)))))
+                                               (tmp-pn (make-projection
+                                                        tmp-img
+                                                        :projection-height .8))
+                                               (pn-x
+                                                 (cm::rescale (third e)
+                                                              0 128 0 90)) 
+                                               (pn-y (list 1 30)))
+                                          ;; put the tmp-img onto the
+                                          ;; projection-surface
+                                          (compose tmp-ps tmp-pn
+                                                   :dest-x pn-x
+                                                   :dest-y
+                                                   (interpolate-easing
+                                                    tl-time
+                                                    (first pn-y)
+                                                    (second pn-y)
+                                                    :duration
+                                                    tl-duration
+                                                    :ease-fun
+                                                    #'ease:out-bounce)))))
                 (write-jpg tmp-ps :outfile outfile)
                 (format t "File: ~a~%~
                      Frame: ~a/~a~%~

@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-03-30
 ;;;
-;;; $$ Last modified:  21:44:36 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  21:53:47 Sun Apr 21 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -50,7 +50,7 @@
                                              (imago::color-blue color)
                                              alpha)))
                    tmp-pn)))
-          (timeline ((frames->secs i) .2 :end 5.0)
+          (in-timeline ((frames->secs i) .2 :end 5.0)
             (let ((tmp-pn
                     (change-alpha pn
                                   ;; fade in and out

@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  21:40:41 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  21:52:48 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -24,19 +24,19 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun timeline-aux (time start end duration
-                     &optional
-                       (fps (get-apr-config :fps))
-                       (round-fun #'round))
+(defun in-timeline-aux (time start end duration
+                        &optional
+                          (fps (get-apr-config :fps))
+                          (round-fun #'round))
   ;;; ****
   (when (and end duration)
-    (error "timeline::timeline-aux: You can't set both end and duration ~
+    (error "timeline::in-timeline-aux: You can't set both end and duration ~
             of a timeline."))
   (when (or (not start) (not (or end duration)))
-    (error "timeline::timeline-aux: You have to set a value for start as ~
+    (error "timeline::in-timeline-aux: You have to set a value for start as ~
             well as for end or duration."))
   (when (and end (<= end start))
-    (error "timeline::timeline-aux: The end of the timeline must be ~
+    (error "timeline::in-timeline-aux: The end of the timeline must be ~
             greater than the start."))
   (if end
       (setf duration (- end start))
@@ -49,7 +49,7 @@
     (values rel-sec rel-frame abs-frame duration end)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****** timeline/timeline
+;;; ****** timeline/in-timeline
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
@@ -114,7 +114,7 @@
 (remove nil
 (loop for i from 1 to seq-frames
 collect
-(timeline ((frames->secs i) 1.0 :duration 1.0
+(in-timeline ((frames->secs i) 1.0 :duration 1.0
 :tl-time-acc tl-time)
 (list tl-time tl-start tl-end tl-duration)))))
 
@@ -130,27 +130,27 @@ collect
 (0.96000004 1.0 2.0 1.0) (1.0 1.0 2.0 1.0))
 |#
 ;;; SYNOPSIS
-(defmacro timeline ((time start
-                     &key
-                       ;; never set both end and duration
-                       end
-                       duration
-                       ;; relative to timeline start
-                       (tl-frame-acc 'tl-frame)
-                       (tl-time-acc 'tl-time)
-                       ;; absolute to the timeline context
-                       (tl-abs-frame-acc 'tl-abs-frame)
-                       (tl-abs-time-acc 'tl-abs-time)
-                       (tl-start-acc 'tl-start)
-                       (tl-end-acc 'tl-end)
-                       (tl-duration-acc 'tl-duration)
-                       (round-fun #'round)
-                       (fps (get-apr-config :fps)))
-                    &body body)
+(defmacro in-timeline ((time start
+                        &key
+                          ;; never set both end and duration
+                          end
+                          duration
+                          ;; relative to timeline start
+                          (tl-frame-acc 'tl-frame)
+                          (tl-time-acc 'tl-time)
+                          ;; absolute to the timeline context
+                          (tl-abs-frame-acc 'tl-abs-frame)
+                          (tl-abs-time-acc 'tl-abs-time)
+                          (tl-start-acc 'tl-start)
+                          (tl-end-acc 'tl-end)
+                          (tl-duration-acc 'tl-duration)
+                          (round-fun #'round)
+                          (fps (get-apr-config :fps)))
+                       &body body)
   ;;; ****
   `(multiple-value-bind (,tl-time-acc ,tl-frame-acc ,tl-abs-frame-acc
                          ,tl-duration-acc ,tl-end-acc)
-       (timeline-aux ,time ,start ,end ,duration ,fps ,round-fun)
+       (in-timeline-aux ,time ,start ,end ,duration ,fps ,round-fun)
      (declare (ignorable ,tl-time-acc ,tl-frame-acc ,tl-abs-frame-acc
                          ,tl-duration-acc ,tl-end-acc))
      (let ((,tl-abs-time-acc ,time)
