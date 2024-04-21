@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-04-06
 ;;;
-;;; $$ Last modified:  21:18:42 Sat Apr 20 2024 CEST
+;;; $$ Last modified:  13:44:52 Sun Apr 21 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -38,7 +38,7 @@
                                     :height ps-h-px)))
   (ensure-directories-exist outdir)
   (with-kernel ()
-    (lparallel:pdotimes (i dur-frames)
+    (do-frames (i dur-frames)
       (with-stopwatch ()
         (let* ((outfile (format nil "~a~4,'0d.jpg" outdir i))
                (tmp-ps (clone ps))

@@ -16,7 +16,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  00:44:07 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  14:46:45 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -170,52 +170,102 @@
 ;;; 2024-04-20
 ;;; 
 ;;; DESCRIPTION
-;;; This macro (parallely) iterates through the given frames. 
+;;; This macro (parallely) iterates through the given number of frames.
 ;;;
 ;;; ARGUMENTS
-;;; - var: the accessor for the current frame index.
+;;; - var. the accessor for the current frame index as a symbol.
 ;;; - end. an integer indicating the last frame of the sequence.
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
 ;;; - :start. An integer indicating the start frame of the sequence to be
 ;;;   processed. Default = 0
+;;; - :frame-counter-accessor. A symbol which can be used in the body of the
+;;;   form to access the value of the frame counter (always starting from 1).
+;;;   This could be used e.g. to track the progress of the process.
+;;;   Default = 'frame-counter
+;;; - :stopwatch?. A boolean indicating whether to measure the running time of
+;;;   the kernel (when T; via with-stopwatch). Default = t
+;;; - :sw-start-accessor. The accessor (symbol) to the stopwatch start time.
+;;;   Default = kernel-start
+;;; - :sw-delta-fun. The function-name (symbol) for the delta-function
+;;;   (cf. with-stopwatch). Default = 'kernel-delta
+;;; - :sw-reset-fun. The function-name (symbol) for the reset-function
+;;;   (cf. with-stopwatch). Default = 'kernel-reset
+;;; - :verbose. A boolean indicating whether additional information should be
+;;;   printed. When T, the progress of the process as well as its duration (in
+;;;   secs) will be printed. Default = (get-apr-config :verbose)
 ;;; 
 ;;; RETURN VALUE
 ;;; The return value of the body form. 
 ;;;
 ;;; EXAMPLE
 #|
-(do-frames (i 20 :start 10)
+(do-frames (i 20 :start 15 :verbose t)
   (print i))
 
 ;; =>
-10 
-11 
-12 
-13 
-14 
-15 
-16 
-17 
+19 
+Frame: 1/5
+Duration: 0 sec
+
 18 
-19 NIL
+Frame: 2/5
+Duration: 0 sec
+
+17 
+Frame: 3/5
+Duration: 0 sec
+
+16 
+Frame: 4/5
+Duration: 0 sec
+
+15 
+Frame: 5/5
+Duration: 0 sec
 |#
 ;;; SYNOPSIS
 (defmacro do-frames ((var end &key
-                                (start 0))
+                                (start 0)
+                                (frame-counter-accessor 'frame-counter)
+                                (stopwatch? t)
+                                (sw-start-accessor 'kernel-start)
+                                (sw-delta-fun 'kernel-delta)
+                                (sw-reset-fun 'kernel-reset)
+                                (verbose (get-apr-config :verbose)))
                      &body body)
   ;;; ****
-  ;;; sanity checks
-  (unless (and (integerp end) (< 0 end))
-    (error "parallel::do-frames: end must be > 0 and of type integer."))
-  (unless (and (integerp start) (<= 0 start) (< start end))
-    (error "parallel::do-frames: start must be of type integer, > 0 ~
-            and < end."))
-  `(lparallel:pdotimes (,var ,(- end start))
-     (let ((,var (+ ,var ,start)))
-       ,@body)))
-  
+  (with-gensyms (st nd)
+    (let ((form
+            `(let ,(append
+                    `((,frame-counter-accessor 1))
+                    `((,st
+                       (if (symbolp ,start) (symbol-value ,start) ,start)))
+                    `((,nd (if (symbolp ,end) (symbol-value ,end) ,end))))
+               (unless (and (integerp ,nd) (< 0 ,nd))
+                 (error "parallel::do-frames: end must be > 0 and of type ~
+                         integer."))
+               (unless (and (integerp ,st) (<= 0 ,st) (< ,st ,nd))
+                 (error "parallel::do-frames: start must be of type integer, ~
+                         > 0 and < end."))
+               (lparallel:pdotimes (,var (- ,nd ,st))
+                 (let ((,var (+ ,var ,st)))
+                   ,(if stopwatch?
+                        `(with-stopwatch (:start-accessor ,sw-start-accessor
+                                          :delta-fun ,sw-delta-fun
+                                          :reset-fun ,sw-reset-fun)
+                           ,@body
+                           ,(when verbose
+                              `(format t "~%Frame: ~a/~a~%~
+                                          Duration: ~a sec~%"
+                                       ,frame-counter-accessor (- ,nd ,st)
+                                       (,sw-delta-fun)))
+                           (incf ,frame-counter-accessor))
+                        `(progn
+                           ,@body
+                           (incf ,frame-counter-accessor))))))))
+      form)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF parallel.lisp

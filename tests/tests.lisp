@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:35:46 Sat Apr 20 2024 CEST
+;;; $$ Last modified:  13:42:20 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -443,10 +443,10 @@
       (let ((res1 0)
             (res2 0))
         (with-kernel ()
-          (lparallel:pdotimes (i 10)
+          (do-frames (i 10)
             (incf res1)))
         (with-kernel (:stopwatch? nil)
-          (lparallel:pdotimes (i 10)
+          (do-frames (i 10)
             (incf res2)))
         (is (and (= res1 10)
                  (= res2 10)))))
@@ -502,7 +502,7 @@
              (outdir "/tmp/apr-sc-test-2/"))
         (ensure-directories-exist outdir)
         (with-kernel ()
-          (lparallel:pdotimes (i dur-frames)
+          (do-frames (i dur-frames)
             (with-stopwatch ()
               (let ((tmp-ps (clone ps))
                     (outfile (format nil "~a~4,'0d.jpg" outdir i)))
@@ -700,7 +700,7 @@
              (outdir "/tmp/sc-seq/"))
         (ensure-directories-exist outdir)
         (with-kernel ()
-          (lparallel:pdotimes (i dur-frames)
+          (do-frames (i dur-frames)
             (with-stopwatch ()
               (let ((tmp-ps (clone ps))
                     (outfile (format nil "~a~4,'0d.jpg" outdir i)))

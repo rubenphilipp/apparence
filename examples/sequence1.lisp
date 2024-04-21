@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-03-01
 ;;;
-;;; $$ Last modified:  21:18:26 Sat Apr 20 2024 CEST
+;;; $$ Last modified:  13:44:32 Sun Apr 21 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -48,7 +48,7 @@
     ;; this starts a "stopwatch" for the whole process
     (with-stopwatch ()
       ;; this is the main image generating loop
-      (lparallel:pdotimes (i frames)
+      (do-frames (i frames)
         ;; this starts a "stopwatch" for each image generating subprocess
         (with-stopwatch ()
           (let* ((azim (interpl i azim-env-sc :base 1.12))

@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-03-30
 ;;;
-;;; $$ Last modified:  21:18:34 Sat Apr 20 2024 CEST
+;;; $$ Last modified:  13:44:40 Sun Apr 21 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -38,7 +38,7 @@
        (outdir "/tmp/tl-seq/"))
   (ensure-directories-exist outdir)
   (with-kernel ()
-    (lparallel:pdotimes (i dur-frames)
+    (do-frames (i dur-frames)
       (with-stopwatch ()
         (let ((outfile (format nil "~a~4,'0d.jpg" outdir i))
               (ps2 (clone ps))
