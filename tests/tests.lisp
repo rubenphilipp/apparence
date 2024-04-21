@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  13:42:20 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  17:29:09 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -675,7 +675,7 @@
                            (when (sc:pitch-or-chord e)
                              (list (sc:start-time e)
                                    (sc:duration e)
-                                   (sc:midi-note
+                                   (sc::midi-note
                                     (if (sc:is-chord e)
                                         (first (sc:data (sc:pitch-or-chord e)))
                                         (sc:pitch-or-chord e)))
