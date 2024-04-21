@@ -13,13 +13,13 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  01:38:42 Sat Apr  6 2024 CEST
+;;; $$ Last modified:  14:47:15 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defsystem "apparence"
   :description "Common Lisp library for working with (moving) images."
-  :version "0.0.1"
+  :version "0.1.0"
   :author "Ruben Philipp <me@rubenphilipp.com>"
   :license "GPL Version 2.0 or later"
   :serial t 
