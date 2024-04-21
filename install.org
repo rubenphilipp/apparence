@@ -6,7 +6,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  22:59:49 Sat Apr 20 2024 CEST
+$$ Last modified:  20:10:54 Sun Apr 21 2024 CEST
 #+end_comment
 
 This document describes the installation process of apparence using [[https://www.quicklisp.org][Quicklisp]].
@@ -26,6 +26,7 @@ cd ~/quicklisp/local-projects/
 # get the code of the respective dependencies
 git clone https://github.com/ormf/cm.git # Common Music
 git clone https://github.com/ak-coram/cl-frugal-uuid.git # cl-frugal-uuid
+git clone https://github.com/ak-coram/cl-trivial-clock # cl-trivial-clock
 #+end_src
 
 
@@ -78,6 +79,23 @@ brew install ffmpeg
 #+begin_src shell
 apt get ffmpeg
 #+end_src
+
+**** gnuplot
+
+[[http://www.gnuplot.info][gnuplot]] is used e.g. for visualizing envelopes (cf. ~plot-envelope~).
+
+*MacOS (via homebrew):*
+
+#+begin_src shell
+brew install gnuplot
+#+end_src
+
+*Linux:*
+
+#+begin_src shell
+apt get gnuplot
+#+end_src
+
 
 ** Install apparence
 
@@ -181,4 +199,10 @@ If you want to run apparence's regression tests, call this function:
 
 #+begin_src lisp
 (asdf:test-system :apparence)
+#+end_src
+
+*Note:* You might need to install [[https://github.com/lispci/fiveam][fiveam]] before running the regression tests:
+
+#+begin_src lisp
+(ql:quickload :fiveam)
 #+end_src
