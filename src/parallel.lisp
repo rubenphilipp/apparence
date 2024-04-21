@@ -16,7 +16,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  14:56:33 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  15:49:54 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -201,9 +201,9 @@
 ;;;
 ;;; EXAMPLE
 #|
-(do-frames (i 20 :start 15 :verbose t)
-  (print i))
-
+(with-kernel ()
+  (do-frames (i 20 :start 15 :verbose t)
+    (print i)))
 ;; =>
 19 
 Frame: 1/5
