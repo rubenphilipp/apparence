@@ -6,7 +6,7 @@
 ;;; sequence2
 ;;;
 ;;; DESCRIPTION
-;;; An example using the with-timeline macro and easing functions.
+;;; An example using the timeline macro and easing functions.
 ;;;
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-03-30
 ;;;
-;;; $$ Last modified:  15:00:02 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  21:44:36 Sun Apr 21 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -50,7 +50,7 @@
                                              (imago::color-blue color)
                                              alpha)))
                    tmp-pn)))
-          (with-timeline ((frames->secs i) .2 :end 5.0)
+          (timeline ((frames->secs i) .2 :end 5.0)
             (let ((tmp-pn
                     (change-alpha pn
                                   ;; fade in and out
