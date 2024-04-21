@@ -48,12 +48,90 @@
  CLASS HIERARCHY
  none. no classes defined
 
- $$ Last modified:  14:46:45 Sun Apr 21 2024 CEST
+ $$ Last modified:  14:54:05 Sun Apr 21 2024 CEST
+</pre>
+
+<hr />
+<a name="parallel2fdo2dframes"></a>
+<a name="robo51"></a><h2>parallel/do-frames [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">parallel</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-20
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro (parallely) iterates through the given number of frames.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - var. the accessor for the current frame index as a symbol.
+ - end. an integer indicating the last frame of the sequence.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :start. An integer indicating the start frame of the sequence to be
+   processed. Default = 0
+ - :frame-counter-accessor. A symbol which can be used in the body of the
+   form to access the value of the frame counter (always starting from 1).
+   This could be used e.g. to track the progress of the process.
+   Default = 'frame-counter
+ - :stopwatch?. A boolean indicating whether to measure the running time of
+   the kernel (when T; via with-stopwatch). Default = t
+ - :sw-start-accessor. The accessor (symbol) to the stopwatch start time.
+   Default = kernel-start
+ - :sw-delta-fun. The function-name (symbol) for the delta-function
+   (cf. with-stopwatch). Default = 'kernel-delta
+ - :sw-reset-fun. The function-name (symbol) for the reset-function
+   (cf. with-stopwatch). Default = 'kernel-reset
+ - :verbose. A boolean indicating whether additional information should be
+   printed. When T, the progress of the process as well as its duration (in
+   secs) will be printed. Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :verbose)
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The return value of the body form. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>do-frames</strong> (i 20 :start 15 :verbose t)
+  (print i))
+
+;; =&gt;
+19 
+Frame: 1/5
+Duration: 0 sec
+
+18 
+Frame: 2/5
+Duration: 0 sec
+
+17 
+Frame: 3/5
+Duration: 0 sec
+
+16 
+Frame: 4/5
+Duration: 0 sec
+
+15 
+Frame: 5/5
+Duration: 0 sec
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>do-frames</strong> ((var end &amp;key
+                                (start 0)
+                                (frame-counter-accessor 'frame-counter)
+                                (stopwatch? t)
+                                (sw-start-accessor 'kernel-start)
+                                (sw-delta-fun 'kernel-delta)
+                                (sw-reset-fun 'kernel-reset)
+                                (verbose (<a href="./globals_lisp.html#robo28">get-apr-config</a> :verbose)))
+                     &amp;body body)
 </pre>
 
 <hr />
 <a name="parallel2finit2dkernel"></a>
-<a name="robo51"></a><h2>parallel/init-kernel [ Functions ]</h2>
+<a name="robo52"></a><h2>parallel/init-kernel [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">parallel</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -69,7 +147,7 @@
 <pre> A number indicating the amount of workers to initialize the kernel with.
 
  NB: The kernel should always be destroyed before quitting the program (or
-     via <a href="#robo52">shutdown-kernel</a>. 
+     via <a href="#robo53">shutdown-kernel</a>. 
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
@@ -87,7 +165,7 @@
 
 <hr />
 <a name="parallel2fshutdown2dkernel"></a>
-<a name="robo52"></a><h2>parallel/shutdown-kernel [ Functions ]</h2>
+<a name="robo53"></a><h2>parallel/shutdown-kernel [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">parallel</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -112,7 +190,7 @@
 
 <hr />
 <a name="parallel2fwith2dkernel"></a>
-<a name="robo53"></a><h2>parallel/with-kernel [ Generics ]</h2>
+<a name="robo54"></a><h2>parallel/with-kernel [ Generics ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">parallel</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -183,7 +261,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/parallel.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-21 14:47:32</p>
+<p>Generated from ./src/parallel.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-21 14:54:35</p>
 </div> <!-- footer -->
 </body>
 </html>

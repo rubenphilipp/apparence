@@ -203,8 +203,8 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
  - :id. The id of the new <a href="#robo11">image</a> object.
- - :width. The width of the <a href="#robo11">image</a> (in px). Cf. <a href="./svg_lisp.html#robo60">svg-&gt;png</a>.
- - :height. The height of the <a href="#robo11">image</a> (in px). Cf. <a href="./svg_lisp.html#robo60">svg-&gt;png</a>.
+ - :width. The width of the <a href="#robo11">image</a> (in px). Cf. <a href="./svg_lisp.html#robo61">svg-&gt;png</a>.
+ - :height. The height of the <a href="#robo11">image</a> (in px). Cf. <a href="./svg_lisp.html#robo61">svg-&gt;png</a>.
  - :tmp-dir. A path to a directory where the temp-files are stored.
    Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :default-tmp-dir)
  - :default-interpolation. The default interpolation method (used e.g. when
@@ -213,7 +213,7 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((<a href="./canvas_lisp.html#robo9">canvas</a> (cl-<a href="./svg_lisp.html#robo7">svg</a>::<a href="./svg_lisp.html#robo59">make-svg-toplevel</a> 'cl-<a href="./svg_lisp.html#robo7">svg</a>:<a href="./svg_lisp.html#robo7">svg</a>-1.1-toplevel
+<pre class="source">(let ((<a href="./canvas_lisp.html#robo9">canvas</a> (cl-<a href="./svg_lisp.html#robo7">svg</a>::<a href="./svg_lisp.html#robo60">make-svg-toplevel</a> 'cl-<a href="./svg_lisp.html#robo7">svg</a>:<a href="./svg_lisp.html#robo7">svg</a>-1.1-toplevel
 :width 400
 :height 300))
 (<a href="#robo11">image</a> nil))
@@ -222,8 +222,8 @@ data: #&lt;RGB-IMAGE (200x300) {7006D1DCB3}&gt;
 :width 100 :height (* 100 4/3)
 :fill "rgba(90,90,90,1)"))
 (setf <a href="#robo11">image</a> (<strong>make-image-from-svg</strong> <a href="./canvas_lisp.html#robo9">canvas</a>))
-(<a href="./canvas_lisp.html#robo21">write-png</a> <a href="#robo11">image</a> :outfile "/tmp/<a href="#robo11">image</a>.png")
-(<a href="./utilities_lisp.html#robo81">system-open-file</a> "/tmp/<a href="#robo11">image</a>.png"))
+(<a href="#robo42">write-png</a> <a href="#robo11">image</a> :outfile "/tmp/<a href="#robo11">image</a>.png")
+(<a href="./utilities_lisp.html#robo82">system-open-file</a> "/tmp/<a href="#robo11">image</a>.png"))
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defun <strong>make-image-from-svg</strong> (<a href="./svg_lisp.html#robo7">svg</a> &amp;key
@@ -442,7 +442,7 @@ data: #&lt;RGB-IMAGE (300x600) {7006A8E413}&gt;
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/image.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-21 14:47:32</p>
+<p>Generated from ./src/image.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-21 14:54:35</p>
 </div> <!-- footer -->
 </body>
 </html>

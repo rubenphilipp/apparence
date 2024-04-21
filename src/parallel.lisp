@@ -16,7 +16,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  14:46:45 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  14:54:05 Sun Apr 21 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -162,7 +162,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****** do-frames
+;;; ****** parallel/do-frames
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
@@ -257,8 +257,8 @@ Duration: 0 sec
                                           :reset-fun ,sw-reset-fun)
                            ,@body
                            ,(when verbose
-                              `(format t "~%Frame: ~a/~a~%~
-                                          Duration: ~a sec~%"
+                              `(format t "~&Frame: ~a/~a~%~
+                                          Duration: ~a sec~%~%"
                                        ,frame-counter-accessor (- ,nd ,st)
                                        (,sw-delta-fun)))
                            (incf ,frame-counter-accessor))
