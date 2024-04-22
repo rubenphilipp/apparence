@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  21:52:48 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  22:48:04 Mon Apr 22 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -110,13 +110,13 @@
 ;;; EXAMPLE
 #|
 (let* ((seq-length 3.5)
-(seq-frames (secs->frames seq-length)))
-(remove nil
-(loop for i from 1 to seq-frames
-collect
-(in-timeline ((frames->secs i) 1.0 :duration 1.0
-:tl-time-acc tl-time)
-(list tl-time tl-start tl-end tl-duration)))))
+       (seq-frames (secs->frames seq-length)))
+  (remove nil
+          (loop for i from 1 to seq-frames
+                collect
+                (in-timeline ((frames->secs i) 1.0 :duration 1.0
+                                                   :tl-time-acc tl-time)
+                             (list tl-time tl-start tl-end tl-duration)))))
 
 ;; =>
 ((0.0 1.0 2.0 1.0) (0.03999996 1.0 2.0 1.0) (0.08000004 1.0 2.0 1.0)
