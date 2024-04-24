@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  19:00:47 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  23:22:06 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -777,7 +777,15 @@
                                           :surface-height 10.218488)))
         (is (= (y-scaler ps1) (y-scaler ps2)))))
 
-
+;;; test-with-imago-color
+;;; RP  Wed Apr 24 23:21:07 2024
+(test test-with-imago-color
+      (let ((cv (make-canvas 200 300 :color '(200 128 21 50))))
+        (do-imago-pixels (cv color x y)
+          (with-imago-color (color :a alpha :r red :g green :b blue)
+            (setf color (make-color blue (+ red 10) red 90))))
+        (write-png cv :outfile "/tmp/apparence/test-with-imago-color.png"))
+      (is (probe-file "/tmp/apparence/test-with-imago-color.png")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF tests.lisp
