@@ -4,7 +4,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:59:43 Wed Apr 24 2024 CEST
+$$ Last modified:  22:01:53 Wed Apr 24 2024 CEST
 #+end_comment
 
 *Please note:* This program is at a very early stage and under
