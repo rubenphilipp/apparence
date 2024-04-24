@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  17:09:45 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  17:18:34 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -386,10 +386,12 @@
   ;;; ****
   (compose-op (color1 color2)
     (rgba-list->color
-     (list (abs (- (first a) (first b)))
-           (abs (- (second a) (second b)))
-           (abs (- (third a) (third b)))
-           (abs (fourth b))))))
+     (if (zerop (fourth a))
+         b
+         (list (abs (- (first a) (first b)))
+               (abs (- (second a) (second b)))
+               (abs (- (third a) (third b)))
+               (max (fourth a) (fourth b)))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
