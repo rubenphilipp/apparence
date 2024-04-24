@@ -17,7 +17,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> seq -> image-file-seq
 ;;;
-;;; $$ Last modified:  15:37:26 Sat Apr  6 2024 CEST
+;;; $$ Last modified:  22:32:05 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -346,7 +346,11 @@ data: #<RGB-IMAGE (500x300) {7008616523}>
         (when warn?
           (warn "image-file-seq::get-image: No data for frame ~a." datum)))
     image))
-    
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun image-file-seq-p (thing)
+  (typep thing 'image-file-seq))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF image-file-seq.lisp

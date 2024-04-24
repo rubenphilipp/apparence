@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface -> cylinder-mantle
 ;;;
-;;; $$ Last modified:  21:36:55 Sun Mar 10 2024 CET
+;;; $$ Last modified:  22:32:40 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -252,6 +252,11 @@ data: #<RGB-IMAGE (8192x2770) {7009314413}>
       (setf x (fround-to-digits x round-to-digits))
       (setf y (fround-to-digits y round-to-digits)))
     (list x y)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun cylinder-mantle-p (thing)
+  (typep thing 'cylinder-mantle))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF cylinder-mantle.lisp
