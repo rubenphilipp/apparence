@@ -54,7 +54,7 @@
 
 <hr />
 <a name="image2dfile2dseq2fget2dframe"></a>
-<a name="robo30"></a><h2>image-file-seq/get-frame [ Methods ]</h2>
+<a name="robo39"></a><h2>image-file-seq/get-frame [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">image-file-seq</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -83,7 +83,7 @@
 <pre> The pathname of the respective <a href="./image_lisp.html#robo11">image</a> file. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((ifs (<a href="#robo32">make-image-file-seq-from-dir</a> "/tmp/tl-<a href="./seq_lisp.html#robo16">seq</a>/" :pattern "*.jpg")))
+<pre class="source">(let ((ifs (<a href="#robo41">make-image-file-seq-from-dir</a> "/tmp/tl-<a href="./seq_lisp.html#robo16">seq</a>/" :pattern "*.jpg")))
   (<strong>get-frame</strong> ifs 2 :in-seconds t))
 ;; =&gt; #P"/tmp/tl-<a href="./seq_lisp.html#robo16">seq</a>/0060.jpg"
 </pre>
@@ -99,7 +99,7 @@
 
 <hr />
 <a name="image2dfile2dseq2fget2dimage"></a>
-<a name="robo31"></a><h2>image-file-seq/get-image [ Methods ]</h2>
+<a name="robo40"></a><h2>image-file-seq/get-image [ Methods ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">image-file-seq</a> ] [ <a href="./robo_methods.html#robo_top_of_doc">Methods</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -109,7 +109,7 @@
 <pre> 2024-04-06
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> Like <a href="#robo30">get-frame</a>, this method tries to retrieve an <a href="./image_lisp.html#robo11">image</a> file from an
+<pre> Like <a href="#robo39">get-frame</a>, this method tries to retrieve an <a href="./image_lisp.html#robo11">image</a> file from an
  <a href="#robo12">image-file-seq</a> at a given datum/index. Instead of returning the pathname of
  this file, it will instantiate and return an <a href="./image_lisp.html#robo11">image</a> object.
 </pre>
@@ -123,7 +123,7 @@
  - :id. The id of the <a href="./image_lisp.html#robo11">image</a> object.
  - :default-interpolation. The default interpolation method (used e.g. when
    changing the <a href="./image_lisp.html#robo11">image</a> dimensions via the (setf ...) methods.
-   Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :default-interpolation)
+   Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :default-interpolation)
  - :in-seconds. When T, the unit of datum will be interpreted as seconds,
    otherwise it will be treated as a frame index.
  - :warn? When T, prints additional warnings (e.g. when the frame does not
@@ -131,7 +131,7 @@
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let ((ifs (<a href="#robo32">make-image-file-seq-from-dir</a> "/tmp/tl-<a href="./seq_lisp.html#robo16">seq</a>/" :pattern "*.jpg")))
+<pre class="source">(let ((ifs (<a href="#robo41">make-image-file-seq-from-dir</a> "/tmp/tl-<a href="./seq_lisp.html#robo16">seq</a>/" :pattern "*.jpg")))
   (<strong>get-image</strong> ifs 1 :in-seconds t))
 ;; =&gt;
 IMAGE: width: 500, height: 300
@@ -144,14 +144,14 @@ data: #&lt;RGB-IMAGE (500x300) {7008616523}&gt;
                       &amp;key
                         id
                         (default-interpolation
-                         (<a href="./globals_lisp.html#robo28">get-apr-config</a> :default-interpolation))
+                         (<a href="./globals_lisp.html#robo37">get-apr-config</a> :default-interpolation))
                         in-seconds
                         warn?)
 </pre>
 
 <hr />
 <a name="image2dfile2dseq2fmake2dimage2dfile2dseq2dfrom2ddir"></a>
-<a name="robo32"></a><h2>image-file-seq/make-image-file-seq-from-dir [ Functions ]</h2>
+<a name="robo41"></a><h2>image-file-seq/make-image-file-seq-from-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">image-file-seq</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -175,7 +175,7 @@ data: #&lt;RGB-IMAGE (500x300) {7008616523}&gt;
  - :id. The id of the <a href="#robo12">image-file-seq</a>
  - :fps. The frame rate related to the <a href="./image_lisp.html#robo11">image</a> file sequence in the directory.
    This value will also be used to derive the duration (in secs) of the
-   <a href="#robo12">image-file-seq</a>. Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps)
+   <a href="#robo12">image-file-seq</a>. Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :fps)
  - :pattern. The search pattern used to determine files to be included in the
    <a href="#robo12">image-file-seq</a>. Default = "*.png"
 </pre>
@@ -190,13 +190,13 @@ data: #&lt;RGB-IMAGE (500x300) {7008616523}&gt;
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defun <strong>make-image-file-seq-from-dir</strong> (path &amp;key
                                       id
-                                      (fps (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps))
+                                      (fps (<a href="./globals_lisp.html#robo37">get-apr-config</a> :fps))
                                       (pattern "*.png"))
 </pre>
 
 <hr />
 <a name="image2dfile2dseq2fmake2dimage2dfile2dseq2dfrom2dvideo"></a>
-<a name="robo33"></a><h2>image-file-seq/make-image-file-seq-from-video [ Functions ]</h2>
+<a name="robo42"></a><h2>image-file-seq/make-image-file-seq-from-video [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">image-file-seq</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -220,7 +220,7 @@ data: #&lt;RGB-IMAGE (500x300) {7008616523}&gt;
 <pre> keyword-arguments:
  - :<a href="./image_lisp.html#robo11">image</a>-files-dir. The directory where the <a href="./image_lisp.html#robo11">image</a> files retrieved from the
    video file will be stored. When NIL, a path relative to the
-   (<a href="./globals_lisp.html#robo28">get-apr-config</a> :default-tmp-dir) will be generated.
+   (<a href="./globals_lisp.html#robo37">get-apr-config</a> :default-tmp-dir) will be generated.
  - :id. The id of the <a href="#robo12">image-file-seq</a> object.
  - :pattern. The search pattern used to determine files to be included in the
    <a href="#robo12">image-file-seq</a>. NB: This should be "in sync" with the nomenclature/suffix
@@ -228,20 +228,20 @@ data: #&lt;RGB-IMAGE (500x300) {7008616523}&gt;
  - :outfile-pattern. The filename pattern used for generating names for the
    output <a href="./image_lisp.html#robo11">image</a> files. Default = "%04d.png"
  - :fps. The frame rate used to extract images from the video file.
-   Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps)
+   Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :fps)
  - :start. The datum in the video file to start <a href="./image_lisp.html#robo11">image</a> extraction, in seconds.
    Default = 0
  - :num-frames. An integer indicating the number of frames to extract from
    the :start datum. When NIL, the video will be processed until the end.
  - :verbose. Print more information on the process.
-   Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :verbose)
+   Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :verbose)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The new <a href="#robo12">image-file-seq</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((ifs (<strong>make-image-file-seq-from-video</strong> "/tmp/test.mp4" :fps 30)))
-  (<a href="#robo30">get-frame</a> ifs 20))
+  (<a href="#robo39">get-frame</a> ifs 20))
 ;; =&gt; #P"/tmp/apparence/f36a9a14-4873-4f23-8ee7-f9b9860e43cf/0020.png"
 
 ;; NOTE: There is also a "shortcut" to this function:
@@ -269,15 +269,15 @@ data: ((1 . /tmp/apparence/1057a8ef-5579-4080-a3df-89dd74dba05d/0001.png)
                                          (pattern "*.png")
                                          ;; inherited from video-&gt;<a href="./image_lisp.html#robo11">image</a>-<a href="./seq_lisp.html#robo16">seq</a>:
                                          (outfile-pattern "%04d.png")
-                                         (fps (<a href="./globals_lisp.html#robo28">get-apr-config</a> :fps))
+                                         (fps (<a href="./globals_lisp.html#robo37">get-apr-config</a> :fps))
                                          (start 0)
                                          num-frames
-                                         (verbose (<a href="./globals_lisp.html#robo28">get-apr-config</a> :verbose)))
+                                         (verbose (<a href="./globals_lisp.html#robo37">get-apr-config</a> :verbose)))
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/image-file-seq.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-24 11:33:59</p>
+<p>Generated from ./src/image-file-seq.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-24 17:02:49</p>
 </div> <!-- footer -->
 </body>
 </html>

@@ -55,7 +55,7 @@
  <a href="./image_lisp.html#robo11">image</a>-width).
  
  NB: Altering the <strong>projection</strong>-width and -height after initialization will
-     <a href="./image_lisp.html#robo39">resize</a> the <a href="./image_lisp.html#robo11">image</a> applying the given scaling-factors. Changing the
+     <a href="./image_lisp.html#robo48">resize</a> the <a href="./image_lisp.html#robo11">image</a> applying the given scaling-factors. Changing the
      scaling factors, though, will not change the dimensions of the <a href="./image_lisp.html#robo11">image</a>
      but those of the <strong>projection</strong>. Finally, changing the <a href="./image_lisp.html#robo11">image</a> dimensions will
      change the <strong>projection</strong>-width and/or -height. 
@@ -71,7 +71,7 @@
 
 <hr />
 <a name="projection2fmake2dprojection"></a>
-<a name="robo56"></a><h2>projection/make-projection [ Functions ]</h2>
+<a name="robo59"></a><h2>projection/make-projection [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">projection</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -94,7 +94,7 @@
  <a href="./image_lisp.html#robo11">image</a>-width).
  
  NB: Altering the <a href="#robo14">projection</a>-width and -height after initialization will
-     <a href="./image_lisp.html#robo39">resize</a> the <a href="./image_lisp.html#robo11">image</a> applying the given scaling-factors. Changing the
+     <a href="./image_lisp.html#robo48">resize</a> the <a href="./image_lisp.html#robo11">image</a> applying the given scaling-factors. Changing the
      scaling factors, though, will not change the dimensions of the <a href="./image_lisp.html#robo11">image</a>
      but those of the <a href="#robo14">projection</a>. Finally, changing the <a href="./image_lisp.html#robo11">image</a> dimensions will
      change the <a href="#robo14">projection</a>-width and/or -height.
@@ -134,13 +134,13 @@
  - :id. The id of the <a href="./image_lisp.html#robo11">image</a> object.
  - :default-interpolation. The default interpolation method (used e.g. when
    changing the <a href="./image_lisp.html#robo11">image</a> dimensions via the (setf ...) methods.
-   Default = (<a href="./globals_lisp.html#robo28">get-apr-config</a> :default-interpolation)
+   Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :default-interpolation)
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The new <a href="#robo14">projection</a> object. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(let* ((img (<a href="./image_lisp.html#robo38">make-rgb-image</a> 200 300))
+<pre class="source">(let* ((img (<a href="./image_lisp.html#robo47">make-rgb-image</a> 200 300))
        (pn (<strong>make-projection</strong> img :x-scaler 2
                                 :y-scaler 2)))
   pn)
@@ -160,12 +160,12 @@ data: #&lt;RGB-IMAGE (200x300) {700ED06133}&gt;
                                     <a href="#robo14">projection</a>-height
                                     id
                                     (default-interpolation
-                                     (<a href="./globals_lisp.html#robo28">get-apr-config</a> :default-interpolation)))
+                                     (<a href="./globals_lisp.html#robo37">get-apr-config</a> :default-interpolation)))
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-24 11:33:59</p>
+<p>Generated from ./src/projection.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-24 17:02:49</p>
 </div> <!-- footer -->
 </body>
 </html>
