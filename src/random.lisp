@@ -18,7 +18,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  00:03:57 Tue Mar  5 2024 CET
+;;; $$ Last modified:  23:52:07 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -56,14 +56,17 @@
 ;;;
 ;;; ARGUMENTS
 ;;; none.
+;;;
+;;; OPTIONAL ARGUMENTS
+;;; - A pcg-seed. Default = (get-apr-config :pcg-seed)
 ;;; 
 ;;; RETURN VALUE
 ;;; The reset pcg object. 
 ;;; 
 ;;; SYNOPSIS
-(defun reset-pcg ()
+(defun reset-pcg (&optional (seed (get-apr-config :pcg-seed)))
   ;;; ****
-  (setf *pcg* (pcg:make-pcg :seed (get-apr-config :pcg-seed))))
+  (setf *pcg* (pcg:make-pcg :seed seed)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
