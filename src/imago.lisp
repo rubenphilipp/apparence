@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  18:08:30 Wed Mar 27 2024 CET
+;;; $$ Last modified:  16:54:43 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -46,235 +46,43 @@
 (defun rgba-list->color (list)
   ;;; ****
   (unless (rgba-list-p list)
-    (error "imago::rgba-list->color: The list is not a rgba-list."))
+    (error "imago::rgba-list->color: The list ~a is not a rgba-list."
+           list))
   (let ((vals (mapcar #'float->8bit list)))
     (imago::make-color (first vals)
                        (second vals)
                        (third vals)
                        (fourth vals))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; to be used with imago::compose
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****** imago/compose-op
+;;; ****f* imago/color->rgba-list
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
 ;;; CREATED
-;;; 2024-03-26
+;;; 2024-04-24
 ;;; 
 ;;; DESCRIPTION
-;;; This macro is a shortcut to apply a compositing operator (e.g. a-over-b-op)
-;;; to two imago-colors, as demanded by imago::compose. It converts both colors
-;;; to rgba-lists (cf. rgba-list-p) to be used in the actual compose-operator
-;;; and provides them in the body of the macro (accessible via the accessors as
-;;; defined in the key arguments).
-;;;
-;;; The function a-over-b-fun illustrates a use case of this macro. 
-;;;
-;;; Note: In order to pass the resulting value back to imago::compose, it is
-;;;       necessary to apply the function rgba-list->color to the resulting
-;;;       value (if it is an rgba-list); cf. a-over-b-fun. 
+;;; This function converts an imago-color to an rgba-list. 
 ;;;
 ;;; ARGUMENTS
-;;; - The first imago-color (i.e. the dest-, in Porter/Duff-terms the B-color).
-;;; - The second imago-color (i.e. the src-, in Porter/Duff-terms the A-color).
+;;; The imago-color to convert. 
 ;;; 
-;;; OPTIONAL ARGUMENTS
-;;; - :a-accessor. The accessor for the a color in the body (this is the value
-;;;   of color2, as color1 is the dest and color2 is the src). Default = a.
-;;; - :b-accessor. The accessor for the b color in the body (this is the value
-;;;   of color1, as color1 is the dest and color2 is the src). Default = b.
+;;; RETURN VALUE
+;;; A rgba-list. 
 ;;;
 ;;; EXAMPLE
 #|
-(let ((c1 (imago::make-color 23 45 19 22))
-      (c2 (imago::make-color 83 15 44 255)))
-  (compose-op (c1 c2 :a-accessor a :b-accessor b)
-    (print a)
-    (print b)))
-;; => (in the REPL)
-;; (0.3254902 0.17254902 0.058823533 1.0) 
-;; (0.09019608 0.07450981 0.1764706 0.08627451) 
+(color->rgba-list (make-color 23 148 23 255))
 |#
 ;;; SYNOPSIS
-(defmacro compose-op ((color1 color2
-                       &key
-                         ;; Color a and be are the colors in the Porter/Duff
-                         ;; sense, not in imago's logic.
-                         ;; The colors are rgba-lists. 
-                         (a-accessor 'a)
-                         (b-accessor 'b))
-                      &body body)
+(defun color->rgba-list (color)
   ;;; ****
-  `(multiple-value-bind (a1 r1 g1 b1) (imago::color-argb ,color1)
-     (multiple-value-bind (a2 r2 g2 b2) (imago::color-argb ,color2)
-       ;; in imago::compose, color1 is the dest and color2 the src, thus
-       ;; values are changed (i.e. 1 = b, 2 = a)
-       (let ((,a-accessor (mapcar #'8bit->float (list r2 g2 b2 a2)))
-             (,b-accessor (mapcar #'8bit->float (list r1 g1 b1 a1))))
-         ,@body))))
-         
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* imago/a-over-b-fun
-;;; AUTHOR
-;;; Ruben Philipp <me@rubenphilipp.com>
-;;;
-;;; CREATED
-;;; 2024-03-27
-;;; 
-;;; DESCRIPTION
-;;; This is the compositing function A Over B to be used for example in
-;;; imago::compose. 
-;;;
-;;; ARGUMENTS
-;;; Two imago-colors. 
-;;; 
-;;; RETURN VALUE
-;;; A new imago-color. 
-;;;
-;;; SYNOPSIS
-(defun a-over-b-fun (color1 color2)
-  ;;; ****
-  (compose-op (color1 color2)
-    (rgba-list->color (a-over-b-op a b))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* imago/a-in-b-fun
-;;; AUTHOR
-;;; Ruben Philipp <me@rubenphilipp.com>
-;;;
-;;; CREATED
-;;; 2024-03-27
-;;; 
-;;; DESCRIPTION
-;;; This is the compositing function A In B to be used for example in
-;;; imago::compose. 
-;;;
-;;; ARGUMENTS
-;;; Two imago-colors. 
-;;; 
-;;; RETURN VALUE
-;;; A new imago-color. 
-;;;
-;;; SYNOPSIS
-(defun a-in-b-fun (color1 color2)
-  ;;; ****
-  (compose-op (color1 color2)
-    (rgba-list->color (a-in-b-op a b))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* imago/a-out-b-fun
-;;; AUTHOR
-;;; Ruben Philipp <me@rubenphilipp.com>
-;;;
-;;; CREATED
-;;; 2024-03-27
-;;; 
-;;; DESCRIPTION
-;;; This is the compositing function A Out B to be used for example in
-;;; imago::compose. 
-;;;
-;;; ARGUMENTS
-;;; Two imago-colors. 
-;;; 
-;;; RETURN VALUE
-;;; A new imago-color. 
-;;;
-;;; SYNOPSIS
-(defun a-out-b-fun (color1 color2)
-  ;;; ****
-  (compose-op (color1 color2)
-    (rgba-list->color (a-out-b-op a b))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* imago/a-xor-b-fun
-;;; AUTHOR
-;;; Ruben Philipp <me@rubenphilipp.com>
-;;;
-;;; CREATED
-;;; 2024-03-27
-;;; 
-;;; DESCRIPTION
-;;; This is the compositing function A Xor B to be used for example in
-;;; imago::compose. 
-;;;
-;;; ARGUMENTS
-;;; Two imago-colors. 
-;;; 
-;;; RETURN VALUE
-;;; A new imago-color. 
-;;;
-;;; SYNOPSIS
-(defun a-xor-b-fun (color1 color2)
-  ;;; ****
-  (compose-op (color1 color2)
-    (rgba-list->color (a-xor-b-op a b))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* imago/a-atop-b-fun
-;;; AUTHOR
-;;; Ruben Philipp <me@rubenphilipp.com>
-;;;
-;;; CREATED
-;;; 2024-03-27
-;;; 
-;;; DESCRIPTION
-;;; This is the compositing function A Atop B to be used for example in
-;;; imago::compose. 
-;;;
-;;; ARGUMENTS
-;;; Two imago-colors. 
-;;; 
-;;; RETURN VALUE
-;;; A new imago-color. 
-;;;
-;;; SYNOPSIS
-(defun a-atop-b-fun (color1 color2)
-  ;;; ****
-  (compose-op (color1 color2)
-    (rgba-list->color (a-atop-b-op a b))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* imago/apr-default-compose-fun
-;;; AUTHOR
-;;; Ruben Philipp <me@rubenphilipp.com>
-;;;
-;;; CREATED
-;;; 2024-03-26
-;;; 
-;;; DESCRIPTION
-;;; This is the default compose operator, to be used, e.g. via imago::compose.
-;;; By default, this uses the Porter/Duff A-Over-B algorithm for generating the
-;;; the resulting color.
-;;;
-;;; This function is meant to be used with the imago::compose function.
-;;;
-;;; ARGUMENTS
-;;; Two imago-colors, where color1 is the dest (B), and color2 is the src (A)
-;;; color (cf. compose-op).
-;;; 
-;;; RETURN VALUE
-;;; An imago-color (integer). 
-;;;
-;;; EXAMPLE
-#|
-(let ((c1 (imago::make-color 23 45 19 22))
-      (c2 (imago::make-color 83 15 44 255)))
-  (apr-default-compose-fun c1 c2))
-;; => 4283640847
-|#
-;;; SYNOPSIS
-(defun apr-default-compose-fun (color1 color2)
-  ;;; ****
-  (funcall #'a-over-b-fun color1 color2))
-  ;; (compose-op (color1 color2 :a-accessor a :b-accessor b)
-  ;;   (rgba-list->color (a-over-b-op a b)))
-    
-
+  (multiple-value-bind (a r g b)
+      (imago::color-argb color)
+    (mapcar #'8bit->float (list r g b a))))
+  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF imago.lisp

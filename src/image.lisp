@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  21:14:31 Sat Apr 20 2024 CEST
+;;; $$ Last modified:  16:39:30 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -644,7 +644,9 @@ data: #<RGB-IMAGE (200x300) {7006D1DCB3}>
       (when (and complete? (or
                             (< (width tmp-src) (width dest))
                             (< (height tmp-src) (height dest))))
-        (setf tmp-src2 (make-rgb-image (width dest) (height dest)))
+        (setf tmp-src2 (make-rgb-image (width dest) (height dest)
+                                       :initial-color
+                                       (make-color 255 255 255 0)))
         (compose tmp-src2 tmp-src
                  :dest-x dest-x :dest-y dest-y
                  :src-x src-x :src-y src-y
