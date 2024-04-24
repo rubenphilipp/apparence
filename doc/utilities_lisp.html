@@ -83,8 +83,48 @@
 </pre>
 
 <hr />
+<a name="utilities2ffiles2dfrom2ddir"></a>
+<a name="robo66"></a><h2>utilities/files-from-dir [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-24
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Returns a list of files contained in the given directory. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The directory containing the desired files. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :pattern. A string being a search pattern. If nil, all files will be
+   listed. Default = NIL.
+ - :hidden? A boolean indicating whether hidden files (those starting with
+   a dot) should be included in the list (when T). Default = NIL. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> A list with the file pathnames in the directory. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>files-from-dir</strong> "~/Desktop/graphic-notation/" :pattern "*.png")
+;; =&gt;
+(#P"/Users/someuser/Desktop/graphic-notation/1_imp.png"
+ #P"/Users/someuser/Desktop/graphic-notation/2_env.png"
+ #P"/Users/someuser/Desktop/graphic-notation/3_evnt.png")
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>files-from-dir</strong> (dir &amp;key
+                             pattern
+                             hidden?)
+</pre>
+
+<hr />
 <a name="utilities2ffround2dto2ddigits"></a>
-<a name="robo66"></a><h2>utilities/fround-to-digits [ Functions ]</h2>
+<a name="robo67"></a><h2>utilities/fround-to-digits [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -116,7 +156,7 @@
 
 <hr />
 <a name="utilities2fget2drandom2duuid"></a>
-<a name="robo67"></a><h2>utilities/get-random-uuid [ Functions ]</h2>
+<a name="robo68"></a><h2>utilities/get-random-uuid [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -149,7 +189,7 @@
 
 <hr />
 <a name="utilities2fimage2dseq2d3evideo"></a>
-<a name="robo68"></a><h2>utilities/image-seq-&gt;video [ Functions ]</h2>
+<a name="robo69"></a><h2>utilities/image-seq-&gt;video [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -199,7 +239,7 @@
 
 <hr />
 <a name="utilities2finterpolate2deasing"></a>
-<a name="robo69"></a><h2>utilities/interpolate-easing [ Functions ]</h2>
+<a name="robo70"></a><h2>utilities/interpolate-easing [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -245,7 +285,7 @@
 
 <hr />
 <a name="utilities2fload2dfrom2dsame2ddir"></a>
-<a name="robo70"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
+<a name="robo71"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -271,7 +311,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsame2ddir"></a>
-<a name="robo71"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
+<a name="robo72"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -300,7 +340,7 @@
 
 <hr />
 <a name="utilities2fpath2dfrom2dsrc2ddir"></a>
-<a name="robo72"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
+<a name="robo73"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -327,7 +367,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelope"></a>
-<a name="robo73"></a><h2>utilities/plot-envelope [ Functions ]</h2>
+<a name="robo74"></a><h2>utilities/plot-envelope [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -360,7 +400,7 @@
 
 <hr />
 <a name="utilities2fplot2denvelopes"></a>
-<a name="robo74"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
+<a name="robo75"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -406,7 +446,7 @@
 
 <hr />
 <a name="utilities2fradians2d3edegrees"></a>
-<a name="robo75"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
+<a name="robo76"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -434,7 +474,7 @@
 
 <hr />
 <a name="utilities2frgb2dp"></a>
-<a name="robo76"></a><h2>utilities/rgb-p [ Functions ]</h2>
+<a name="robo77"></a><h2>utilities/rgb-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -462,7 +502,7 @@
 
 <hr />
 <a name="utilities2frgba2dp"></a>
-<a name="robo77"></a><h2>utilities/rgba-p [ Functions ]</h2>
+<a name="robo78"></a><h2>utilities/rgba-p [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -492,7 +532,7 @@
 
 <hr />
 <a name="utilities2fshell"></a>
-<a name="robo78"></a><h2>utilities/shell [ Functions ]</h2>
+<a name="robo79"></a><h2>utilities/shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -525,7 +565,7 @@
 
 <hr />
 <a name="utilities2fsimple2dshell"></a>
-<a name="robo79"></a><h2>utilities/simple-shell [ Functions ]</h2>
+<a name="robo80"></a><h2>utilities/simple-shell [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -535,14 +575,14 @@
 <pre> 2023-07-16
 </pre>
 <p class="item_name">DESCRIPTION</p>
-<pre> Run a <a href="#robo78">shell</a> command from lisp and return the exit code.
+<pre> Run a <a href="#robo79">shell</a> command from lisp and return the exit code.
 </pre>
 <p class="item_name">ARGUMENTS</p>
-<pre> - The <a href="#robo78">shell</a> command (i.e., most likely, path to the binary)
+<pre> - The <a href="#robo79">shell</a> command (i.e., most likely, path to the binary)
  
  OPTIONAL ARGUMENTS:
  rest:
- - The arguments to the <a href="#robo78">shell</a> program.
+ - The arguments to the <a href="#robo79">shell</a> program.
 </pre>
 <p class="item_name">RETURN VALUE</p>
 <pre> The the exit-code of the process.
@@ -553,7 +593,7 @@
 
 <hr />
 <a name="utilities2fsvg2dfile2d3epng"></a>
-<a name="robo80"></a><h2>utilities/svg-file-&gt;png [ Functions ]</h2>
+<a name="robo81"></a><h2>utilities/svg-file-&gt;png [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -595,7 +635,7 @@
 
 <hr />
 <a name="utilities2fsvg2dfiles2d3epng"></a>
-<a name="robo81"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
+<a name="robo82"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -653,7 +693,7 @@
 
 <hr />
 <a name="utilities2fsystem2dopen2dfile"></a>
-<a name="robo82"></a><h2>utilities/system-open-file [ Functions ]</h2>
+<a name="robo83"></a><h2>utilities/system-open-file [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -677,7 +717,7 @@
 
 <hr />
 <a name="utilities2ftrailing2dslash"></a>
-<a name="robo83"></a><h2>utilities/trailing-slash [ Functions ]</h2>
+<a name="robo84"></a><h2>utilities/trailing-slash [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -702,7 +742,7 @@
 
 <hr />
 <a name="utilities2fvideo2d3eimage2dseq"></a>
-<a name="robo84"></a><h2>utilities/video-&gt;image-seq [ Functions ]</h2>
+<a name="robo85"></a><h2>utilities/video-&gt;image-seq [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -752,7 +792,7 @@
 
 <hr />
 <a name="utilities2fwith2dstopwatch"></a>
-<a name="robo85"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
+<a name="robo86"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -812,7 +852,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-21 21:54:10</p>
+<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-24 11:33:59</p>
 </div> <!-- footer -->
 </body>
 </html>

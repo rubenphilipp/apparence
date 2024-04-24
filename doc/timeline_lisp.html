@@ -47,7 +47,7 @@
  CLASS HIERARCHY
  none. no classes defined. 
 
- $$ Last modified:  21:52:48 Sun Apr 21 2024 CEST
+ $$ Last modified:  22:48:04 Mon Apr 22 2024 CEST
 </pre>
 
 <hr />
@@ -113,13 +113,13 @@
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let* ((<a href="./seq_lisp.html#robo16">seq</a>-length 3.5)
-(<a href="./seq_lisp.html#robo16">seq</a>-frames (secs-&gt;frames <a href="./seq_lisp.html#robo16">seq</a>-length)))
-(remove nil
-(loop for i from 1 to <a href="./seq_lisp.html#robo16">seq</a>-frames
-collect
-(<strong>in-timeline</strong> ((frames-&gt;secs i) 1.0 :duration 1.0
-:tl-time-acc tl-time)
-(list tl-time tl-start tl-end tl-duration)))))
+       (<a href="./seq_lisp.html#robo16">seq</a>-frames (secs-&gt;frames <a href="./seq_lisp.html#robo16">seq</a>-length)))
+  (remove nil
+          (loop for i from 1 to <a href="./seq_lisp.html#robo16">seq</a>-frames
+                collect
+                (<strong>in-timeline</strong> ((frames-&gt;secs i) 1.0 :duration 1.0
+                                                   :tl-time-acc tl-time)
+                             (list tl-time tl-start tl-end tl-duration)))))
 
 ;; =&gt;
 ((0.0 1.0 2.0 1.0) (0.03999996 1.0 2.0 1.0) (0.08000004 1.0 2.0 1.0)
@@ -154,7 +154,7 @@ collect
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/timeline.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-21 21:54:10</p>
+<p>Generated from ./src/timeline.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-24 11:33:59</p>
 </div> <!-- footer -->
 </body>
 </html>
