@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  23:04:17 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  23:19:28 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -85,7 +85,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****** imago/do-image-pixels
+;;; ****** imago/do-imago-pixels
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
 ;;;
@@ -107,7 +107,7 @@
 ;;; Any form. 
 ;;; 
 ;;; SYNOPSIS
-(defmacro do-image-pixels ((image color x y)
+(defmacro do-imago-pixels ((image color x y)
                            &body body)
   ;;; ****
   `(let ((img (cond ((or (image-p ,image)
@@ -116,10 +116,50 @@
                     ((or (projection-surface-p ,image)
                          (canvas-p ,image))
                      (data (data ,image)))
-                    (t (error "imago::do-image-pixels: No method for an ~
+                    (t (error "imago::do-imago-pixels: No method for an ~
                                object of type ~a." (type-of ,image))))))
      (imago:do-image-pixels (img ,color ,x ,y)
        ,@body)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****** imago/with-imago-color
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-04-24
+;;; 
+;;; DESCRIPTION
+;;; This macro binds the values of an imago-color to the given symbols.
+;;; The example illustrates a possible use case. 
+;;;
+;;; ARGUMENTS
+;;; - The color of an imago-image (e.g. retrieved via do-imago-pixels).
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :a, :r, :g, and :b. The ARGB accessor symbols.
+;;; 
+;;; BODY
+;;; Any form. 
+;;;
+;;; EXAMPLE
+#|
+(let ((cv (make-canvas 200 300 :color '(200 128 21 50))))
+  (do-imago-pixels (cv color x y)
+    (with-imago-color (color :a alpha :r red :g green :b blue)
+      (setf color (make-color blue (+ red 10) red 90))))
+  (system-open-file (write-png cv)))
+|#
+;;; SYNOPSIS
+(defmacro with-imago-color ((color &key (a 'a) (r 'r) (g 'g) (b 'b))
+                            &body body)
+  ;;; ****
+  `(multiple-value-bind (,a ,r ,g ,b)
+       (imago::color-argb ,color)
+     ,@body))
   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
