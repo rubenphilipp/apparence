@@ -13,7 +13,7 @@
 ;;; Regression test suite for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:53:38 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  19:00:47 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -765,6 +765,17 @@
 (test test-image-file-seq-1
       (let* ((ifs (make-image-file-seq-from-video (test-pathname "test1.mp4"))))
         (is (typep (get-image ifs 2) 'image))))
+
+;;; test-ps-arithm-1
+;;; RP  Wed Apr 24 18:59:21 2024
+(test test-ps-arithm-1
+      (let ((ps1 (make-projection-surface :width 3808
+                                          :height 1024
+                                          :surface-width 38.0))
+            (ps2 (make-projection-surface :width 3808
+                                          :height 1024
+                                          :surface-height 10.218488)))
+        (is (= (y-scaler ps1) (y-scaler ps2)))))
 
 
 

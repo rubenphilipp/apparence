@@ -36,7 +36,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas -> projection-surface
 ;;;
-;;; $$ Last modified:  21:13:47 Sat Apr 20 2024 CEST
+;;; $$ Last modified:  18:57:28 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -163,7 +163,7 @@
         ((numberp (x-scaler ps))
          (setf (slot-value ps 'y-scaler) (x-scaler ps)
                (slot-value ps 'surface-height) (* (y-scaler ps)
-                                                  (surface-width ps))))
+                                                  (height ps))))
         (t (error "projection-surface::update: Neither an y-scaler nor a ~
                      surface-height are given."))))
 
