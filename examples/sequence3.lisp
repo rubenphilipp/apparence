@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-04-06
 ;;;
-;;; $$ Last modified:  15:00:53 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  18:29:39 Wed Apr 24 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -38,7 +38,7 @@
   (ensure-directories-exist outdir)
   (with-kernel ()
     (do-frames (i dur-frames :verbose t)
-      (let* ((outfile (format nil "~a~4,'0d.jpg" outdir i))
+      (let* ((outfile (outfile-from-counter i outdir :suffix ".jpg"))
              (tmp-ps (clone ps))
              (vid-img (get-image ifs (mod (frames->secs i) ifs-dur)
                                  :in-seconds t))

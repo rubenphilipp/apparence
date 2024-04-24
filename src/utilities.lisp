@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  10:16:18 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  18:29:45 Wed Apr 24 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -1198,7 +1198,54 @@
                (return (sort result #'< :key #'car))
                (return result))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/outfile-from-counter
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-04-24
+;;; 
+;;; DESCRIPTION
+
+;;; This function formats a pathstring for an outfile based on an output
+;;; directory and an incrementing counter (e.g. a frame index). 
+;;;
+;;; ARGUMENTS
+;;; - The counter as an integer.
+;;; - The outdirectory as a string. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :suffix. The outfile suffix (with the preceding dot), as a string.
+;;;   Default = ".png"
+;;; - :num-digits. The number of (zero) digits included in output filename. 
+;;;   Default = 4.
+;;; 
+;;; RETURN VALUE
+;;; The outfile path as a string. 
+;;;
+;;; EXAMPLE
+#|
+(outfile-from-counter 12 "/tmp/sequence/" :suffix ".jpg")
+;; => "/tmp/sequence/0012.jpg"
+|#
+;;; SYNOPSIS
+
+(defun outfile-from-counter (counter outdir &key
+                                              (suffix ".png")
+                                              (num-digits 4))
+  ;;; ****
+  (let ((outdir (trailing-slash outdir)))
+    (format nil (concatenate 'string
+                             "~a~"
+                             (write-to-string num-digits)
+                             ",'0d"
+                             suffix)
+            outdir counter)))
+          
            
 
 

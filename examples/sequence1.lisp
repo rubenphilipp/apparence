@@ -15,7 +15,7 @@
 ;;; CREATED
 ;;; 2024-03-01
 ;;;
-;;; $$ Last modified:  14:58:39 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  18:28:59 Wed Apr 24 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -51,7 +51,7 @@
         (let* ((azim (interpl i azim-env-sc :base 1.12))
                (y (interpl i y-env-sc :base 1.16))
                (start-time (get-universal-time))
-               (outfile (format nil "~a~4,'0d.jpg" outdir i))
+               (outfile (outfile-from-counter i outdir :suffix ".jpg"))
                (new-width (* (projection-width pn) .3))
                ;; this cloning is okay as it does not excessively strain
                ;; performance

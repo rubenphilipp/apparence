@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-03-30
 ;;;
-;;; $$ Last modified:  21:53:47 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  18:29:16 Wed Apr 24 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -38,7 +38,7 @@
   (ensure-directories-exist outdir)
   (with-kernel ()
     (do-frames (i dur-frames :verbose t)
-      (let ((outfile (format nil "~a~4,'0d.jpg" outdir i))
+      (let ((outfile (outfile-from-counter i outdir :suffix ".jpg"))
             (ps2 (clone ps))
             (pn-x '(2 15))
             (pn-y '(5 20)))
