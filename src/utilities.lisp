@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  21:09:58 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  23:30:29 Wed Apr 24 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -1004,6 +1004,7 @@
 ;;;   Default = "libx264"
 ;;; - :pixel-format. The pixel format ffmpeg should use for creating the video.
 ;;;   Default = "yuv420p"
+;;; - :overwrite? When T, any existing file will be overwritten. Default = T
 ;;; - :verbose. Prints additional messages, when T.
 ;;;   Default = (get-apr-config :verbose)
 ;;; 
@@ -1020,6 +1021,7 @@
                           (glob-pattern "*.png")
                           (video-codec "libx264")
                           (pixel-format "yuv420p")
+                          (overwrite? t)
                           (verbose (get-apr-config :verbose)))
   ;;; ****
   (let* ((path (uiop:native-namestring
@@ -1030,8 +1032,10 @@
                         "-pattern_type" "glob"
                         "-i" (concatenate 'string path glob-pattern)
                         "-c:v" video-codec
-                        "-pix_fmt" pixel-format
-                        outfile)))
+                        "-pix_fmt" pixel-format)))
+    (when overwrite?
+      (setf command (append command (list "-y"))))
+    (setf command (append command (list outfile)))
     (when verbose
       (format t "~%Started converting image-seq in ~a to video ~a...~%"
               path outfile))
