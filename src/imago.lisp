@@ -15,7 +15,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  16:54:43 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  23:04:17 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -82,6 +82,44 @@
   (multiple-value-bind (a r g b)
       (imago::color-argb color)
     (mapcar #'8bit->float (list r g b a))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****** imago/do-image-pixels
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-04-24
+;;; 
+;;; DESCRIPTION
+;;; This macro maps over the pixel values in an apparence object containing
+;;; pixel data (e.g. an imago-image) an binds the color, x and y value to the
+;;; respective value of the pixel (cf. imago:do-image-pixels). 
+;;;
+;;; ARGUMENTS
+;;; - An apparence object.
+;;; - A symbol to bind the imago:color to.
+;;; - A symbol to bind the x-coordinate to.
+;;; - A symbol to bind the y-coordinate to.
+;;; 
+;;; BODY
+;;; Any form. 
+;;; 
+;;; SYNOPSIS
+(defmacro do-image-pixels ((image color x y)
+                           &body body)
+  ;;; ****
+  `(let ((img (cond ((or (image-p ,image)
+                         (projection-p ,image))
+                     (data ,image))
+                    ((or (projection-surface-p ,image)
+                         (canvas-p ,image))
+                     (data (data ,image)))
+                    (t (error "imago::do-image-pixels: No method for an ~
+                               object of type ~a." (type-of ,image))))))
+     (imago:do-image-pixels (img ,color ,x ,y)
+       ,@body)))
   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

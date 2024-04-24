@@ -13,7 +13,7 @@
 ;;; Package definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  18:11:59 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  22:28:16 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -33,7 +33,7 @@
    :color-blue
    :color-alpha
    :color-argb
-   :do-image-pixels
+   ;;:do-image-pixels
    ;;:resize
    ;;:scale
    ;;:copy
