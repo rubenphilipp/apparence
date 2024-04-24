@@ -4,10 +4,10 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  22:26:15 Wed Apr 24 2024 CEST
+$$ Last modified:  22:26:39 Wed Apr 24 2024 CEST
 #+end_comment
 
-*Please note:* This program is at a very early stage of development. Thus, API
+*Please note:* This program is at an early stage of development. Thus, API
 changes are likely.
 
 * Overview
