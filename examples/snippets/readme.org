@@ -1,0 +1,12 @@
+# -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "en") -*-
+#+Category: apr
+#+title: apparence snippets
+#+author: Ruben Philipp
+#+date: 2024-04-24
+#+startup: showall
+
+#+begin_comment
+$$ Last modified:  21:56:10 Wed Apr 24 2024 CEST
+#+end_comment
+
+These snippets could be studies or used with the [[https://github.com/rubenphilipp/aby/][aby-mode]] for Emacs. 
