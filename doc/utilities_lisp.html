@@ -858,6 +858,8 @@
 </pre>
 <p class="item_name">OPTIONAL ARGUMENTS</p>
 <pre> keyword-arguments:
+ - :print-total. Print the delta time after the body (when T)?
+   Default = NIL
  - :start-accessor. The accessor (symbol) to the start time.
    Default = 'sw-start
  - :delta-fun. The function-name (symbol) for the delta-function (see above).
@@ -866,7 +868,7 @@
    Default = 'sw-reset
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(<strong>with-stopwatch</strong> ()
+<pre class="source">(<strong>with-stopwatch</strong> (:print-delta t)
   (sleep 1)
   (sw-delta t)
   (sleep 1)
@@ -883,6 +885,7 @@
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmacro <strong>with-stopwatch</strong> ((&amp;key
+                             print-total
                              (start-accessor 'sw-start)
                              (delta-fun 'sw-delta)
                              (reset-fun 'sw-reset))
@@ -891,7 +894,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-24 18:30:28</p>
+<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-24 21:56:39</p>
 </div> <!-- footer -->
 </body>
 </html>
