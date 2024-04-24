@@ -10,12 +10,13 @@
 ;;; 2024-03-26
 ;;; 
 ;;; PURPOSE
-;;; Implementation of functionality related to the imago library. 
+;;; Implementation of functionality related to the imago library.
+;;; NB: The local nickname for the imago lib in :apparence is :mgo.
 ;;;
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined. 
 ;;;
-;;; $$ Last modified:  23:19:28 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  01:06:07 Thu Apr 25 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -160,7 +161,52 @@
   `(multiple-value-bind (,a ,r ,g ,b)
        (imago::color-argb ,color)
      ,@body))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; RP  Thu Apr 25 01:05:58 2024
+(defun color-deviation-poly (color &key (deviation 128))
+  ;;; ****
+  (unless (and (integerp deviation)
+               (<= deviation 255)
+               (> deviation 0))
+    (error "imago::color-deviation-poly: The deviation must be <= 255 and ~
+            > 0 and of type integer."))
+  (with-imago-color (color)
+    (apply #'make-color
+           (append (mapcar #'(lambda (c)
+                       (max 0
+                            (min 255
+                                 (+ c (*
+                                       (expt -1 (pcg-random 2))
+                                       (pcg-random deviation))))))
+                           (list r g b))
+                   (list a)))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; RP  Thu Apr 25 01:06:06 2024
+(defun color-deviation-avg (color &key (deviation 128))
+  ;;; ****
+  (unless (and (integerp deviation)
+               (<= deviation 255)
+               (> deviation 0))
+    (error "imago::color-deviation-mono: The deviation must be <= 255 and ~
+            > 0 and of type integer."))
+  (with-imago-color (color)
+    (let* ((col-val (floor (/ (+ r g b) 3)))
+           (col (max 0
+                     (min 255
+                          (+ col-val
+                             (* (expt -1 (pcg-random 2))
+                                (pcg-random deviation)))))))
+      (apply #'make-color
+             (list col col col a)))))
   
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF imago.lisp
