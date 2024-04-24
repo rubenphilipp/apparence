@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  08:33:30 Fri Apr 19 2024 CEST
+;;; $$ Last modified:  10:16:18 Wed Apr 24 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -129,6 +129,52 @@
                (concatenate 'string
                             "src/"
                             file))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/files-from-dir
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-04-24
+;;; 
+;;; DESCRIPTION
+;;; Returns a list of files contained in the given directory. 
+;;;
+;;; ARGUMENTS
+;;; The directory containing the desired files. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :pattern. A string being a search pattern. If nil, all files will be
+;;;   listed. Default = NIL.
+;;; - :hidden? A boolean indicating whether hidden files (those starting with
+;;;   a dot) should be included in the list (when T). Default = NIL. 
+;;; 
+;;; RETURN VALUE
+;;; A list with the file pathnames in the directory. 
+;;;
+;;; EXAMPLE
+#|
+(files-from-dir "~/Desktop/graphic-notation/" :pattern "*.png")
+;; =>
+(#P"/Users/someuser/Desktop/graphic-notation/1_imp.png"
+ #P"/Users/someuser/Desktop/graphic-notation/2_env.png"
+ #P"/Users/someuser/Desktop/graphic-notation/3_evnt.png")
+|#
+;;; SYNOPSIS
+(defun files-from-dir (dir &key
+                             pattern
+                             hidden?)
+  ;;; ****
+  (let* ((dir (trailing-slash dir))
+         (files (if pattern
+                    (uiop:directory-files dir pattern)
+                    (uiop:directory-files dir))))
+    (unless hidden?
+      (setf files (remove-if #'uiop:hidden-pathname-p files)))
+    files))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****f* utilities/simple-shell
