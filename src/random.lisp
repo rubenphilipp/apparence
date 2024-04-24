@@ -18,7 +18,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  23:52:07 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  00:00:04 Thu Apr 25 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -91,7 +91,9 @@
 ;;; - :inclusive
 ;;;   "If inclusive? is also given, a random number in [bound, max] is chosen"
 ;;;   [1]
-;;; - :reset. When T, the global state is reset to the default pcg-seed. 
+;;; - :reset. When T, the global state is reset to the value defined in :seed.
+;;; - :seed. A seeding value used when :reset = T.
+;;;   Default = (get-apr-config :pcg-seed)
 ;;; 
 ;;; RETURN VALUE
 ;;; A random number. 
@@ -101,10 +103,11 @@
 (pcg-random 100)
 |#
 ;;; SYNOPSIS
-(defun pcg-random (bound &key max inclusive reset)
+(defun pcg-random (bound &key max inclusive reset
+                           (seed (get-apr-config :pcg-seed)))
   ;;; ****
   (when reset
-    (reset-pcg))
+    (reset-pcg seed))
   (pcg:pcg-random *pcg* bound max inclusive))
 
 
