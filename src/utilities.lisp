@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  18:29:45 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  21:09:58 Wed Apr 24 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -681,6 +681,8 @@
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
+;;; - :print-total. Print the delta time after the body (when T)?
+;;;   Default = NIL
 ;;; - :start-accessor. The accessor (symbol) to the start time.
 ;;;   Default = 'sw-start
 ;;; - :delta-fun. The function-name (symbol) for the delta-function (see above).
@@ -690,7 +692,7 @@
 ;;;
 ;;; EXAMPLE
 #|
-(with-stopwatch ()
+(with-stopwatch (:print-delta t)
   (sleep 1)
   (sw-delta t)
   (sleep 1)
@@ -707,6 +709,7 @@
 |#
 ;;; SYNOPSIS
 (defmacro with-stopwatch ((&key
+                             print-total
                              (start-accessor 'sw-start)
                              (delta-fun 'sw-delta)
                              (reset-fun 'sw-reset))
@@ -720,7 +723,9 @@
                     delta)))
             (,reset-fun ()
               (setf ,start-accessor (get-universal-time))))
-       ,@body)))
+       ,@body
+       (when ,print-total
+         (format t "~&Total duration: ~a sec~%~%" (,delta-fun))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
