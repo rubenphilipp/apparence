@@ -19,7 +19,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> canvas
 ;;;
-;;; $$ Last modified:  21:23:39 Sat Apr 20 2024 CEST
+;;; $$ Last modified:  11:33:33 Wed Apr 24 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -274,10 +274,14 @@ data: #<RGB-IMAGE (100x200) {700EE3E293}>
 ;;; 
 ;;; OPTIONAL ARGUMENTS
 ;;; keyword-arguments:
-;;; - :height. The height of the image object on the canvas. If non-NIL, the
-;;;   image will be cropped to the given height (in px).
+;;; - :height. The height of the image object. If non-NIL, the image will be
+;;;   cropped to the given height (in px). Note: This argument does not resize
+;;;   the image but will rather aid to select the section in the image (cf.
+;;;   scale for resizing). 
 ;;; - :width. The width of the image object on the canvas. If non-NIL, the
-;;;   image will be cropped to the given width (in px).
+;;;   image will be cropped to the given width (in px). Note: This argument
+;;;   does not resize the image but will rather aid to select the section in
+;;;   the image (cf. scale for resizing). 
 ;;; - :src-y. The y coordinate within the image object used when cropped as the
 ;;;   left origin. Default = 0
 ;;; - :src-x. The x coordinate within the image object used when cropped as the
