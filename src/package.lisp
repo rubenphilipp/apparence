@@ -13,13 +13,15 @@
 ;;; Package definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  22:28:16 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  00:10:00 Thu Apr 25 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :cl-user)
 
 (defpackage :apparence
+  (:local-nicknames
+   (:mgo :imago))
   (:use :common-lisp)
   (:nicknames :apr)
   (:import-from
