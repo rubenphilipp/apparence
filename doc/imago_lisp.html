@@ -42,12 +42,13 @@
 <pre> 2024-03-26
 </pre>
 <p class="item_name">PURPOSE</p>
-<pre> Implementation of functionality related to the <strong>imago</strong> library. 
+<pre> Implementation of functionality related to the <strong>imago</strong> library.
+ NB: The local nickname for the <strong>imago</strong> lib in :apparence is :mgo.
 
  CLASS HIERARCHY
  none. no classes defined. 
 
- $$ Last modified:  16:54:43 Wed Apr 24 2024 CEST
+ $$ Last modified:  01:06:07 Thu Apr 25 2024 CEST
 </pre>
 
 <hr />
@@ -78,8 +79,38 @@
 </pre>
 
 <hr />
+<a name="imago2fdo2dimago2dpixels"></a>
+<a name="robo53"></a><h2>imago/do-imago-pixels [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-24
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro maps over the pixel values in an apparence object containing
+ pixel data (e.g. an <a href="#robo2">imago</a>-<a href="./image_lisp.html#robo11">image</a>) an binds the color, x and y value to the
+ respective value of the pixel (cf. <a href="#robo2">imago</a>:do-<a href="./image_lisp.html#robo11">image</a>-pixels). 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - An apparence object.
+ - A symbol to bind the <a href="#robo2">imago</a>:color to.
+ - A symbol to bind the x-coordinate to.
+ - A symbol to bind the y-coordinate to.
+ 
+ BODY
+ Any form. 
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>do-imago-pixels</strong> ((<a href="./image_lisp.html#robo11">image</a> color x y)
+                           &amp;body body)
+</pre>
+
+<hr />
 <a name="imago2frgba2dlist2d3ecolor"></a>
-<a name="robo53"></a><h2>imago/rgba-list-&gt;color [ Functions ]</h2>
+<a name="robo54"></a><h2>imago/rgba-list-&gt;color [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -104,9 +135,46 @@
 <pre class="source">(defun <strong>rgba-list-&gt;color</strong> (list)
 </pre>
 
+<hr />
+<a name="imago2fwith2dimago2dcolor"></a>
+<a name="robo55"></a><h2>imago/with-imago-color [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-24
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro binds the values of an <a href="#robo2">imago</a>-color to the given symbols.
+ The example illustrates a possible use case. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The color of an <a href="#robo2">imago</a>-<a href="./image_lisp.html#robo11">image</a> (e.g. retrieved via do-<a href="#robo2">imago</a>-pixels).
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :a, :r, :g, and :b. The ARGB accessor symbols.
+ 
+ BODY
+ Any form. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((cv (<a href="./canvas_lisp.html#robo19">make-canvas</a> 200 300 :color '(200 128 21 50))))
+  (<a href="#robo53">do-imago-pixels</a> (cv color x y)
+    (<strong>with-imago-color</strong> (color :a alpha :r red :g green :b blue)
+      (setf color (make-color blue (+ red 10) red 90))))
+  (<a href="./utilities_lisp.html#robo90">system-open-file</a> (<a href="./image_lisp.html#robo51">write-png</a> cv)))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>with-imago-color</strong> ((color &amp;key (a 'a) (r 'r) (g 'g) (b 'b))
+                            &amp;body body)
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-24 21:56:39</p>
+<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-26 00:29:05</p>
 </div> <!-- footer -->
 </body>
 </html>
