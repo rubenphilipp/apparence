@@ -16,7 +16,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  22:28:57 Thu Apr 25 2024 CEST
+;;; $$ Last modified:  00:26:24 Fri Apr 26 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -195,6 +195,8 @@
 ;;; - :verbose. A boolean indicating whether additional information should be
 ;;;   printed. When T, the progress of the process as well as its duration (in
 ;;;   secs) will be printed. Default = (get-apr-config :verbose)
+;;; - :test-frame. To be used for testing purposes. When the value is set to
+;;;   an integer, just the respective frame will be rendered. 
 ;;; 
 ;;; RETURN VALUE
 ;;; The return value of the body form. 
@@ -236,7 +238,8 @@ Duration: 0 sec
                                 (sw-start-accessor 'kernel-start)
                                 (sw-delta-fun 'kernel-delta)
                                 (sw-reset-fun 'kernel-reset)
-                                (verbose (get-apr-config :verbose)))
+                                (verbose (get-apr-config :verbose))
+                                test-frame)
                      &body body)
   ;;; ****
   (with-gensyms (st nd)
@@ -252,6 +255,9 @@ Duration: 0 sec
                (unless (and (integerp ,st) (<= 0 ,st) (< ,st ,nd))
                  (error "parallel::do-frames: start must be of type integer, ~
                          > 0 and < end."))
+               (when (integerp ,test-frame)
+                 (setf ,nd (1+ ,test-frame)
+                       ,st ,test-frame))
                (lparallel:pdotimes (,var (- ,nd ,st))
                  (let ((,var (+ ,var ,st)))
                    ,(if stopwatch?

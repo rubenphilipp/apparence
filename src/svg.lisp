@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  22:51:07 Thu Apr 25 2024 CEST
+;;; $$ Last modified:  23:56:40 Thu Apr 25 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -211,6 +211,7 @@
   (unless (xy-list-p xy-list)
     (error "svg::xy-list->polygon-points: The xy-list is malformed."))
   (format nil "~{~{~a,~a~}~^ ~}" xy-list))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF svg.lisp
