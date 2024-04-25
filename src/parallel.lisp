@@ -16,7 +16,7 @@
 ;;; CLASS HIERARCHY
 ;;; none. no classes defined
 ;;;
-;;; $$ Last modified:  00:26:24 Fri Apr 26 2024 CEST
+;;; $$ Last modified:  00:37:07 Fri Apr 26 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -196,7 +196,8 @@
 ;;;   printed. When T, the progress of the process as well as its duration (in
 ;;;   secs) will be printed. Default = (get-apr-config :verbose)
 ;;; - :test-frame. To be used for testing purposes. When the value is set to
-;;;   an integer, just the respective frame will be rendered. 
+;;;   an integer, just the respective frame will be rendered; start and end
+;;;   will be ignored. 
 ;;; 
 ;;; RETURN VALUE
 ;;; The return value of the body form. 
