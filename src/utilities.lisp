@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  20:07:49 Thu Apr 25 2024 CEST
+;;; $$ Last modified:  20:20:48 Thu Apr 25 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -1254,37 +1254,6 @@
                              ",'0d"
                              suffix)
             outdir counter)))
-          
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ****f* utilities/compile-and-load
-;;; AUTHOR
-;;; Ruben Philipp <me@rubenphilipp.com>
-;;;
-;;; CREATED
-;;; 2024-04-25
-;;; 
-;;; DESCRIPTION
-;;; This function compiles a given file (e.g. to a fasl) and loads the compiled
-;;; file. 
-;;;
-;;; ARGUMENTS
-;;; The file to the lisp source file. 
-;;; 
-;;; OPTIONAL ARGUMENTS
-;;; keyword-arguments:
-;;; - :output-file. A path to the output-file (e.g. the .fasl) as a string or
-;;;   pathname. Default = ""
-;;; 
-;;; SYNOPSIS
-(defun compile-and-load (file &key (output-file ""))
-  ;;; ****
-  (unless (or (pathnamep output-file)
-              (stringp output-file))
-    (error "utilities::compile-and-load: The output-file must be of type ~
-            string or pathname."))
-  (load (compile-file file :output-file output-file)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF utilities.lisp
