@@ -25,6 +25,7 @@
             (write-png tmp-ps :outfile outfile)
             (format t "File: ~a~%" outfile)))))
     ;; convert the image sequence to a video file
+    (format t "~&Converting to video... ~%")
     (image-seq->video outdir (format nil "~avid.mp4"
                                      (trailing-slash outdir))
                       :glob-pattern "*.png")))

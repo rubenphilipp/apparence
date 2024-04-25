@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  18:16:35 Fri Apr  5 2024 CEST
+;;; $$ Last modified:  22:51:07 Thu Apr 25 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -130,6 +130,13 @@
     (delete-file tmpfile)
     outfile))
 
+;;; this is a simplified shorthand-version of svg->png
+;;; RP  Thu Apr 25 22:33:21 2024
+(defmethod write-png ((img cl-svg::svg-toplevel)
+                      &key (outfile "/tmp/image.png"))
+  ;;; ****
+  (svg->png img :outfile outfile))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****f* svg/make-svg-toplevel
@@ -173,6 +180,37 @@
   (apply #'cl-svg:make-svg-toplevel
          (append (list class :width width :height height)
                  args)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* svg/xy-list->polygon-points
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-04-25
+;;; 
+;;; DESCRIPTION
+;;; This function formats an xy-list to a string of svg polygon points. 
+;;;
+;;; ARGUMENTS
+;;; An xy-list.
+;;; 
+;;; RETURN VALUE
+;;; The polygon-points as a list. 
+;;;
+;;; EXAMPLE
+#|
+(xy-list->polygon-points '((0 5) (10 5) (15 8)))
+;;; => "0,5 10,5 15,8"
+|#
+;;; SYNOPSIS
+(defun xy-list->polygon-points (xy-list)
+  ;;; ****
+  (unless (xy-list-p xy-list)
+    (error "svg::xy-list->polygon-points: The xy-list is malformed."))
+  (format nil "~{~{~a,~a~}~^ ~}" xy-list))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF svg.lisp

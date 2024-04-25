@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  20:20:48 Thu Apr 25 2024 CEST
+;;; $$ Last modified:  22:48:57 Thu Apr 25 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -468,16 +468,22 @@
         collect (list x y)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; RP  Thu Apr 25 22:48:09 2024
+
+(defun xy-list-p (thing)
+  (every #'(lambda (x)
+             (and (listp x)
+                  (eq 2 (length x))))
+         thing))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Returns an envelope from a list of xy-lists.
 #|
 (xy-list->env '((0 1) (20 -5) (100 -80)))
 ;; => (0 1 20 -5 100 -80)
 |#
 (defun xy-list->env (xy-list)
-  (unless (every #'(lambda (x)
-                     (and (listp x)
-                          (eq 2 (length x))))
-                 xy-list)
+  (unless (xy-list-p xy-list)
     (error "utilities::xy-list->env: The xy-list is malformed."))
   (loop for val in xy-list
         append (list (first val) (second val))))
