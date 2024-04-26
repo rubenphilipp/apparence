@@ -6,7 +6,7 @@
 ;;; init
 ;;;
 ;;; DESCRIPTION
-;;; This initialized apparence. 
+;;; This initializes apparence. 
 ;;;
 ;;; AUTHOR
 ;;; Ruben Philipp <me@rubenphilipp.com>
@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-04-26
 ;;;
-;;; $$ Last modified:  23:12:00 Fri Apr 26 2024 CEST
+;;; $$ Last modified:  23:13:48 Fri Apr 26 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
