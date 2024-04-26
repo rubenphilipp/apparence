@@ -6,7 +6,7 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  23:16:40 Fri Apr 26 2024 CEST
+$$ Last modified:  23:18:11 Fri Apr 26 2024 CEST
 #+end_comment
 
 This document describes the installation process of apparence using [[https://www.quicklisp.org][Quicklisp]].
@@ -126,8 +126,8 @@ Especially if you've installed ffmpeg et al. via homebrew, you might want to
 tell apparence the proper paths to the binary files. If you don't know where
 they are located, try – for example – ~which ffprobe~ in your shell which should
 return the path to the respective program. You, then, might want to add the
-following lines to your Lisp init file (e.g. ~\~/.sbclrc~ in SBCL) or to
-apparence's init file (~\~/.aprinit.lisp~). The latter will be loaded by default.
+following lines to your Lisp init file (e.g. \~/.sbclrc in SBCL) or to
+apparence's init file (\~/.aprinit.lisp). The latter will be loaded by default.
 
 #+begin_src lisp
 (ql:quickload :apparence)
