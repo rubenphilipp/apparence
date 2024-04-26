@@ -13,16 +13,14 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  22:46:24 Fri Apr 26 2024 CEST
+;;; $$ Last modified:  23:12:26 Fri Apr 26 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :asdf-user)
 
 (defmethod perform :after ((op load-op) apparence)
-  (pushnew :apparence cl-user::*features*)
-  ;; load init file if exists
-  (load "~/aprrc.lisp" :if-does-not-exist nil))
+  (pushnew :apparence cl-user::*features*))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -69,7 +67,8 @@
                (:file "projection")
                (:file "projection-surface")
                (:file "cylinder-mantle")
-               ;; export needs to be done lastly
+               ;; these need to be done lastly
+               (:file "init")
                (:file "export-symbols")))
 
 
