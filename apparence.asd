@@ -13,8 +13,17 @@
 ;;; System definition for apparence. 
 ;;;
 ;;;
-;;; $$ Last modified:  21:46:18 Sun Apr 21 2024 CEST
+;;; $$ Last modified:  22:46:24 Fri Apr 26 2024 CEST
 ;;; ****
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(in-package :asdf-user)
+
+(defmethod perform :after ((op load-op) apparence)
+  (pushnew :apparence cl-user::*features*)
+  ;; load init file if exists
+  (load "~/aprrc.lisp" :if-does-not-exist nil))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defsystem "apparence"
