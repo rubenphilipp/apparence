@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  22:48:57 Thu Apr 25 2024 CEST
+;;; $$ Last modified:  21:03:43 Mon May  6 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -522,7 +522,7 @@
     (when new-plot? (vgplot::new-plot))
     (vgplot::plot (mapcar #'first gnuplot-data)
                   (mapcar #'second gnuplot-data)
-                  label)))
+                  (if label label ""))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
