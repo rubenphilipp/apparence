@@ -1,0 +1,14 @@
+# -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "de") -*-
+#+CATEGORY: apr
+#+title: apparence Emacs
+#+author: Ruben Philipp
+#+date: 2024-05-06
+#+startup: showall 
+
+#+begin_comment
+$$ Last modified:  21:15:19 Mon May  6 2024 CEST
+#+end_comment
+
+
+This directory contains various Emacs functions to be used in conjunction with
+apparence. 
