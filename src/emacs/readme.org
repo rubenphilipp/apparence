@@ -1,4 +1,4 @@
-# -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "de") -*-
+# -*- eval: (flyspell-mode); eval: (ispell-change-dictionary "en") -*-
 #+CATEGORY: apr
 #+title: apparence Emacs
 #+author: Ruben Philipp
@@ -6,9 +6,26 @@
 #+startup: showall 
 
 #+begin_comment
-$$ Last modified:  21:15:19 Mon May  6 2024 CEST
+$$ Last modified:  21:55:24 Mon May  6 2024 CEST
 #+end_comment
-
 
 This directory contains various Emacs functions to be used in conjunction with
 apparence. 
+
+* Install
+
+In order to install the ~apr-mode~, you might want to add the following lines
+to your Emacs config file (e.g. ~.emacs~).
+
+#+begin_src elisp
+(add-to-list 'load-path "/path/to/apparence/src/emacs/")
+(require 'apr-mode)
+#+end_src
+
+Additionally, you might want to add the following header to all lisp files you
+want to use the apr-mode with.
+
+#+begin_src lisp
+;;; -*- eval: (apr-mode) -*-
+#+end_src
+
