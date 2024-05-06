@@ -42,7 +42,7 @@
 ;;; Emacs minor mode for apparence.
 ;;;
 ;;;
-;;; $$ Last modified:  21:49:07 Mon May  6 2024 CEST
+;;; $$ Last modified:  22:24:32 Mon May  6 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -56,6 +56,7 @@
   :lighter "apparence"
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "C-c p e") 'apr-plot-envelope)
+            (define-key map (kbd "C-c <escape> p e") 'apr-plot-envelope-new)
             map))
 
 

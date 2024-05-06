@@ -14,7 +14,7 @@
 ;;; PURPOSE
 ;;; This module implements plotting capabilities for the apr-mode. 
 ;;;
-;;; $$ Last modified:  21:48:23 Mon May  6 2024 CEST
+;;; $$ Last modified:  22:24:26 Mon May  6 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -38,7 +38,8 @@
 ;;; none
 ;;; 
 ;;; OPTIONAL ARGUMENTS
-;;; A list to be tested. Must be provided as a string. 
+;;; - A list to be tested. Must be provided as a string.
+;;; - A boolean indicating whether to open a new plot window. 
 ;;; 
 ;;; RETURN VALUE
 ;;; The return value from the evaluation of the lisp form. 
@@ -48,7 +49,7 @@
  (apr-plot-envelope "'(0 30 45 70 100 89)")
 ]
 ;;; SYNOPSIS
-(defun apr-plot-envelope (&optional env-list)
+(defun apr-plot-envelope (&optional env-list new-plot?)
 ;;; ****
   "Reads the last expression from a buffer and calls apr:plot-envelope"
   (interactive)
@@ -57,10 +58,19 @@
                      (sly-last-expression)))
          (cl-expr (concat "(apr::plot-envelope "
                           env-list
+                          (if new-plot?
+                              " :new-plot? t"
+                            "")
                           ")")))
     (sly-eval `(cl:eval
                 (cl:read-from-string ,cl-expr))
               "apparence")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun apr-plot-envelope-new ()
+  (interactive)
+  (apr-plot-envelope (sly-last-expression) t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
