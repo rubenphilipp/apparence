@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  21:03:43 Mon May  6 2024 CEST
+;;; $$ Last modified:  23:23:23 Tue May 21 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -266,7 +266,8 @@
 ;;; SYNOPSIS
 (defun system-open-file (file)
   ;;; ****
-  (shell "/usr/bin/open" file))
+  (let ((fl (uiop:native-namestring file)))
+    (shell "/usr/bin/open" fl)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
