@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  22:30:50 Wed Apr 24 2024 CEST
+;;; $$ Last modified:  00:34:19 Thu Jun 27 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -371,6 +371,13 @@ data: #<RGB-IMAGE (400x400) {70067BAB33}>
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmethod crop ((img image) x y width height)
+  ;;; ****
+  (setf (data img)
+        (imago::crop (data img) x y width height)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; ****m* image/scale
 ;;; AUTHOR
@@ -398,19 +405,19 @@ data: #<RGB-IMAGE (400x400) {70067BAB33}>
 ;;;
 ;;; EXAMPLE
 #|
-(let ((img (make-rgb-image 200 300)))
-(scale img 1.5 2.0))
-;;; =>
-IMAGE: width: 300, height: 600
-NAMED-OBJECT: id: NIL, tag: NIL, 
-data: #<RGB-IMAGE (300x600) {7006A8E413}>
-**********
+(let ((img (make-rgb-image 200 300)))   ; ; ; ;
+(scale img 1.5 2.0))                    ; ; ; ;
+;;; =>                                  ; ; ; ;
+IMAGE: width: 300, height: 600          ; ; ; ;
+NAMED-OBJECT: id: NIL, tag: NIL,        ; ; ; ;
+data: #<RGB-IMAGE (300x600) {7006A8E413}> ; ; ; ;
+**********                              ; ; ; ;
 |#
 ;;; SYNOPSIS
 (defmethod scale ((img image) width-factor height-factor
                   &key (interpolation
                         (get-apr-config :default-interpolation)))
-  ;;; ****
+;;; ****
   (setf (data img) (imago::scale (data img) width-factor height-factor
                                  :interpolation interpolation))
   img)
