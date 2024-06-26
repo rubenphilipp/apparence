@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  00:41:31 Thu Jun 27 2024 CEST
+;;; $$ Last modified:  00:56:13 Thu Jun 27 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -372,10 +372,50 @@ data: #<RGB-IMAGE (400x400) {70067BAB33}>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; RP  Thu Jun 27 00:41:31 2024
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****m* image/crop
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-06-27
+;;; 
+;;; DESCRIPTION
+;;; Crop an image object according to the given pixel coordinates. 
+;;;
+;;; ARGUMENTS
+;;; - The image object
+;;; - x
+;;; - y
+;;; - width
+;;; - height
+;;; 
+;;; RETURN VALUE
+;;; The cropped image obj.
+;;;
+;;; EXAMPLE
+#|
+;;; remove a border from images
+(let* ((images (files-from-dir (path-from-same-dir "img/") :pattern "*.png"))
+       ;; cut coords
+       (x 177)
+       (y 119)
+       (outdir "/tmp/praat/"))
+  (ensure-directories-exist outdir)
+  (loop for image in images
+        for img = (make-image-from-png (namestring image))
+        do
+           (crop img x y (- (width img) (* 2 x)) (- (height img) (* 2 y)))
+           (write-png img :outfile (concatenate 'string
+                                                outdir
+                                                (file-namestring image)))))
+|#
+;;; SYNOPSIS
 (defmethod crop ((img image) x y width height)
 ;;; ****
   (setf (data img)
-        (imago::crop (data img) x y width height)))
+        (imago::crop (data img) x y width height))
+  img)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
