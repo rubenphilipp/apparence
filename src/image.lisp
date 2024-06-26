@@ -21,7 +21,7 @@
 ;;; CLASS HIERARCHY
 ;;; named-object -> image
 ;;;
-;;; $$ Last modified:  00:34:19 Thu Jun 27 2024 CEST
+;;; $$ Last modified:  00:41:31 Thu Jun 27 2024 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -371,8 +371,9 @@ data: #<RGB-IMAGE (400x400) {70067BAB33}>
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; RP  Thu Jun 27 00:41:31 2024
 (defmethod crop ((img image) x y width height)
-  ;;; ****
+;;; ****
   (setf (data img)
         (imago::crop (data img) x y width height)))
 
