@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  22:55:39 Wed Oct 16 2024 CEST
+;;; $$ Last modified:  23:05:15 Wed Oct 16 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -494,13 +494,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Returns a list of xy-lists from an envelope.
 #|
-(env->xy-list '(0 20 20 -5 60 80 100 0)) ; ; ; ;
-;; => ((0 20) (20 -5) (60 80) (100 0))  ; ; ; ;
+(env->xy-list '(0 20 20 -5 60 80 100 0)) 
+;; => ((0 20) (20 -5) (60 80) (100 0)) 
 |#
-(defun env->xy-list (env &key (sort #'<))
+(defun env->xy-list (env &key (sort nil))
   (unless (evenp (length env))
     (error "utilities::env->xy-list: The envelope is malformed."))
-  (unless (functionp sort)
+  (unless (or (functionp sort) (null sort))
     (error "utilities::env->xy-list: sort must be of type function."))
   (let ((res (loop for x in env by #'cddr and y in (rest env) by #'cddr
                    collect (list x y))))
