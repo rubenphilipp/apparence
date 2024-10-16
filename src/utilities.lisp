@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  23:23:23 Tue May 21 2024 CEST
+;;; $$ Last modified:  22:53:44 Wed Oct 16 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -457,16 +457,56 @@
               thing)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/sort-env
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-10-16
+;;; 
+;;; DESCRIPTION
+;;; This function sorts an envelope.
+;;;
+;;; ARGUMENTS
+;;; The envelope list to sort. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :predicate. A function used to sort the list. Default = #'<
+;;; 
+;;; RETURN VALUE
+;;; The sorted envelope list. 
+;;;
+;;; EXAMPLE
+#|
+(sort-env '(4 .2 2 6 80 2 43 4 99 4 1 10 100 0))
+;; => (1 10 2 6 4 0.2 43 4 80 2 99 4 100 0)
+|#
+;;; SYNOPSIS
+(defun sort-env (env &key (predicate #'<))
+;;; ****
+  (unless (functionp predicate)
+    (error "utilities::sort-env: predicate must be of type function."))
+  (xy-list->env
+   (sort (env->xy-list env) predicate :key #'car)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Returns a list of xy-lists from an envelope.
 #|
-(env->xy-list '(0 20 20 -5 60 80 100 0))
-;; => ((0 20) (20 -5) (60 80) (100 0))
+(env->xy-list '(0 20 20 -5 60 80 100 0)) ; ; ; ;
+;; => ((0 20) (20 -5) (60 80) (100 0))  ; ; ; ;
 |#
-(defun env->xy-list (env)
+(defun env->xy-list (env &key (sort #'<))
   (unless (evenp (length env))
     (error "utilities::env->xy-list: The envelope is malformed."))
-  (loop for x in env by #'cddr and y in (rest env) by #'cddr
-        collect (list x y)))
+  (unless (functionp sort)
+    (error "utilities::env->xy-list: sort must be of type function."))
+  (let ((res (loop for x in env by #'cddr and y in (rest env) by #'cddr
+                   collect (list x y))))
+    (if sort
+        (sort res sort :key #'car)
+        res)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; RP  Thu Apr 25 22:48:09 2024
