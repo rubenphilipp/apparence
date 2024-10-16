@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  22:53:44 Wed Oct 16 2024 CEST
+;;; $$ Last modified:  22:55:39 Wed Oct 16 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -488,7 +488,7 @@
   (unless (functionp predicate)
     (error "utilities::sort-env: predicate must be of type function."))
   (xy-list->env
-   (sort (env->xy-list env) predicate :key #'car)))
+   (env->xy-list env :sort predicate)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
