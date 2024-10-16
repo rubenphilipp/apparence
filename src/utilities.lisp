@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  23:05:15 Wed Oct 16 2024 CEST
+;;; $$ Last modified:  23:32:55 Wed Oct 16 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -1301,6 +1301,64 @@
                              ",'0d"
                              suffix)
             outdir counter)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/perpendicular-distance
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-10-16
+;;; 
+;;; DESCRIPTION
+;;; Calculate the perpendicular distance between a line and a point.
+;;;
+;;; ARGUMENTS
+;;; - The line. Must be a two-item list, each item containing the xy-coordinates
+;;;   of the starting and end point of the line. E.g.: '((0 0) (2 3))
+;;; - The point. Must be a two-item list with the coordinates of the point.
+;;;   E.g.: '(2 2)
+;;; 
+;;; 
+;;; RETURN VALUE
+;;; The perpendicular distance. 
+;;;
+;;; EXAMPLE
+#|
+(perpendicular-distance '((0 0) (10 0)) '(2 2))
+;; => 2.0
+|#
+;;; SYNOPSIS
+(defun perpendicular-distance (line point)
+;;; ****
+  (unless (and (listp line)
+               (= 2 (length line))
+               (every #'listp line)
+               (every #'(lambda (x)
+                          (= 2 (length x)))
+                      line))
+    (error "utilities::perpendicular-distance: line must be a two-item list ~
+            with each item being a two-item list."))
+  (unless (and (listp point)
+               (= 2 (length point)))
+    (error "utilities::perpendicular-distance: point must be a two-item list."))
+  (let* ((p1 (first line))
+         (p2 (second line))
+         (x1 (first p1))
+         (y1 (second p1))
+         (x2 (first p2))
+         (y2 (second p2))
+         (x0 (first point))
+         (y0 (second point)))
+    (/ (abs
+        (+ (- (* (- y2 y1) x0)
+              (* (- x2 x1) y0))
+           (- (* x2 y1) (* y2 x1))))
+       (sqrt
+        (+ (expt (- y2 y1) 2)
+           (expt (- x2 x1) 2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; EOF utilities.lisp
