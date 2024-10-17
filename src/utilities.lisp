@@ -14,7 +14,7 @@
 ;;; CREATED
 ;;; 2024-02-23
 ;;;
-;;; $$ Last modified:  23:32:55 Wed Oct 16 2024 CEST
+;;; $$ Last modified:  14:54:57 Thu Oct 17 2024 CEST
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :apparence)
@@ -497,7 +497,37 @@
 (env->xy-list '(0 20 20 -5 60 80 100 0)) 
 ;; => ((0 20) (20 -5) (60 80) (100 0)) 
 |#
-(defun env->xy-list (env &key (sort nil))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/env->xy-list
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-10-16
+;;; 
+;;; DESCRIPTION
+;;; This function converts an envelope-list of the form '(x1 y1 x2 y2 ...) to
+;;; a nested list of x,y-pairs of the form '((x1 y1) (x2 y2) ...). 
+;;;
+;;; ARGUMENTS
+;;; The envelope to be transformed. 
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :sort. Whether to sort the envelope by its x-values. Must be either NIL or
+;;;   a function (e.g. #'<). Default = NIL.
+;;; 
+;;; RETURN VALUE
+;;; The x,y-list. 
+;;;
+;;; EXAMPLE
+#|
+(env->xy-list '(0 2.4 4 1.3 40 3.3 100 0.1))
+;; => ((0 2.4) (4 1.3) (40 3.3) (100 0.1))
+|#
+;;; SYNOPSIS
+(defun env->xy-list (env &key sort)
+  ;;; ****
   (unless (evenp (length env))
     (error "utilities::env->xy-list: The envelope is malformed."))
   (unless (or (functionp sort) (null sort))
@@ -518,12 +548,120 @@
          thing))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Returns an envelope from a list of xy-lists.
+;;; ****f* utilities/douglas-peucker
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-10-16
+;;; 
+;;; DESCRIPTION
+;;; Implementation of the (Ramer-)Douglas–Peucker algorithm. This algorithm
+;;; reduces the number of points in an envelope
+;;; (cf. https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm). 
+;;;
+;;; ARGUMENTS
+;;; - The envelope. Must be a list with xy-pairs.
+;;; - The epsilon value. This value determines the degree of decimation by
+;;;   defining the maximum distance between the original points and the
+;;;   reduced/simplified envelope. The higher the value, the more the envelope
+;;;   will be simplified.  Must be a float >= 0.
+;;; 
+;;; OPTIONAL ARGUMENTS
+;;; keyword-arguments:
+;;; - :sort. A function (e.g. #'<) indicating whether to sort the list by its
+;;;   x-values before applying the algorithm. Default = NIL.
+;;; 
+;;; 
+;;; RETURN VALUE
+;;; Three values:
+;;; - The simplified envelope.
+;;; - The number of reduced/removed points.
+;;; - The reduction ratio in percent (0.0-1.0).
+;;;
+;;; EXAMPLE
 #|
-(xy-list->env '((0 1) (20 -5) (100 -80)))
-;; => (0 1 20 -5 100 -80)
+(let ((env '(0. 0.481 0.626 1.394 3.052 1.458 3.13 3.397
+             3.443 2.484 8.294 4.712 8.529 2.869 13.615
+             3.189 17.293 5.673 19.092 4.856 23.552 5.144
+             26.526 5.497 27.778 4.487 30.203 5.369 31.612
+             4.054 34.585 5.577 34.664 3.59 36.62 5.337 39.515
+             5.369 40.767 6.186 44.053 4.087 44.757 5.08 48.983
+             4.103 49.609 2.997 55.634 5.272 56.495 3.958 56.495
+             2.901 60.172 3.125 61.033 4.135 61.659 2.901 62.128
+             3.958 64.241 7.276 65.649 2.58 65.962 3.253 65.962
+             7.212 65.962 7.276 67.997 7.292 68.936 5.897 71.596
+             7.372 72.926 3.462 73.865 7.548 74.413 5.577 77.7 4.663
+             80.438 4.856 83.49 5.304 86.307 4.087 86.62 4.888 91.862
+             2.837 94.053 4.167 95.931 5.321 97.418 4.952 100. 4.167))
+      (epsilon 1.8))
+  (douglas-peucker env epsilon))
+
+;; =>
+;; (0 0.481 3.13 3.397 13.615 3.189 17.293 5.673 34.585 5.577 34.664 3.59 40.767
+;;  6.186 49.609 2.997 55.634 5.272 56.495 2.901 61.659 2.901 64.241 7.276
+;;  65.649 2.58 65.962 7.276 71.596 7.372 72.926 3.462 73.865 7.548 77.7 4.663
+;;  100 4.167)
 |#
+;;; SYNOPSIS
+(defun douglas-peucker (env epsilon &key sort)
+;;; ****
+  (unless (<= 0.0 epsilon)
+    (error "utilities::douglas-peucker: epsilon must be >= 0"))
+  (unless (evenp (length env))
+    (error "utilities::douglas-peucker: the envelope is malformed"))
+  (let* ((points (env->xy-list env :sort sort))
+         (max-distance 0)
+         (idx 0)
+         (num-pts (length points))
+         (result '()))
+    (loop for i from 1 to (- num-pts 2)
+          for distance = (perpendicular-distance
+                          (list (car points) (car (last points)))
+                          (nth i points))
+          do (when (> distance max-distance)
+               (setf idx i)
+               (setf max-distance distance)))
+    (if (> max-distance epsilon)
+        (let ((res1 (douglas-peucker (xy-list->env (butlast points
+                                                            (- num-pts
+                                                               (1+ idx))))
+                                     epsilon))
+              (res2 (douglas-peucker (xy-list->env (nthcdr idx points))
+                                     epsilon)))
+          (setf result (append (butlast res1 2) res2)))
+        (setf result (xy-list->env (cons (car points) (last points)))))
+    (let ((reduced-points (- num-pts (/ (length result) 2))))
+      (values result
+              reduced-points
+              (/ reduced-points num-pts)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ****f* utilities/xy-list->env
+;;; AUTHOR
+;;; Ruben Philipp <me@rubenphilipp.com>
+;;;
+;;; CREATED
+;;; 2024-10-16
+;;; 
+;;; DESCRIPTION
+;;; This function converts an xy-list of the form '((x1 y1) (x2 y2) ...) to
+;;; an envelope list of the form '(x1 y1 x2 y2 ...). Cf. env->xy-list. 
+;;;
+;;; ARGUMENTS
+;;; The xy-list to be converted. 
+;;; 
+;;; RETURN VALUE
+;;; The envelope. 
+;;;
+;;; EXAMPLE
+#|
+(xy-list->env '((0 3.4) (30 5.6) (80 4.4) (100 0.1))) ; ; ;
+;; => (0 3.4 30 5.6 80 4.4 100 0.1)     ; ; ;
+|#
+;;; SYNOPSIS
 (defun xy-list->env (xy-list)
+;;; ****
   (unless (xy-list-p xy-list)
     (error "utilities::xy-list->env: The xy-list is malformed."))
   (loop for val in xy-list
