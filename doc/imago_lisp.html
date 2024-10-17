@@ -53,7 +53,7 @@
 
 <hr />
 <a name="imago2fcolor2d3ergba2dlist"></a>
-<a name="robo52"></a><h2>imago/color-&gt;rgba-list [ Functions ]</h2>
+<a name="robo53"></a><h2>imago/color-&gt;rgba-list [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -80,7 +80,7 @@
 
 <hr />
 <a name="imago2fdo2dimago2dpixels"></a>
-<a name="robo53"></a><h2>imago/do-imago-pixels [ Generics ]</h2>
+<a name="robo54"></a><h2>imago/do-imago-pixels [ Generics ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -110,7 +110,7 @@
 
 <hr />
 <a name="imago2frgba2dlist2d3ecolor"></a>
-<a name="robo54"></a><h2>imago/rgba-list-&gt;color [ Functions ]</h2>
+<a name="robo55"></a><h2>imago/rgba-list-&gt;color [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -137,7 +137,7 @@
 
 <hr />
 <a name="imago2fwith2dimago2dcolor"></a>
-<a name="robo55"></a><h2>imago/with-imago-color [ Generics ]</h2>
+<a name="robo56"></a><h2>imago/with-imago-color [ Generics ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -162,10 +162,10 @@
 </pre>
 <p class="item_name">EXAMPLE</p>
 <pre class="source">(let ((cv (<a href="./canvas_lisp.html#robo19">make-canvas</a> 200 300 :color '(200 128 21 50))))
-  (<a href="#robo53">do-imago-pixels</a> (cv color x y)
+  (<a href="#robo54">do-imago-pixels</a> (cv color x y)
     (<strong>with-imago-color</strong> (color :a alpha :r red :g green :b blue)
       (setf color (make-color blue (+ red 10) red 90))))
-  (<a href="./utilities_lisp.html#robo90">system-open-file</a> (<a href="./image_lisp.html#robo51">write-png</a> cv)))
+  (<a href="./utilities_lisp.html#robo95">system-open-file</a> (<a href="./canvas_lisp.html#robo21">write-png</a> cv)))
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defmacro <strong>with-imago-color</strong> ((color &amp;key (a 'a) (r 'r) (g 'g) (b 'b))
@@ -174,7 +174,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-26 00:39:03</p>
+<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-10-17 15:02:00</p>
 </div> <!-- footer -->
 </body>
 </html>

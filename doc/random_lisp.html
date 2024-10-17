@@ -50,12 +50,12 @@
  CLASS HIERARCHY
  none. no classes defined
 
- $$ Last modified:  00:00:04 Thu Apr 25 2024 CEST
+ $$ Last modified:  00:21:41 Sun May 19 2024 CEST
 </pre>
 
 <hr />
 <a name="random2f2apcg"></a>
-<a name="robo62"></a><h2>random/*pcg [ Variables ]</h2>
+<a name="robo63"></a><h2>random/*pcg [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">random</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">NAME</p>
@@ -74,7 +74,7 @@
 
 <hr />
 <a name="random2fpcg2drandom"></a>
-<a name="robo63"></a><h2>random/pcg-random [ Functions ]</h2>
+<a name="robo64"></a><h2>random/pcg-random [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">random</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -98,6 +98,8 @@
    "If inclusive? is also given, a <a href="#robo5">random</a> number in [bound, max] is chosen"
    [1]
  - :reset. When T, the global state is reset to the value defined in :seed.
+ - :pcg. The pcg-object to be used for the <a href="#robo5">random</a>-generation.
+   Default = *pcg*. 
  - :seed. A seeding value used when :reset = T.
    Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :pcg-seed)
 </pre>
@@ -105,16 +107,17 @@
 <pre> A <a href="#robo5">random</a> number. 
 </pre>
 <p class="item_name">EXAMPLE</p>
-<pre class="source">(<strong>pcg-random</strong> 100)
+<pre class="source">(<strong>pcg-random</strong> 100)                        ; ;
 </pre>
 <p class="item_name">SYNOPSIS</p>
 <pre class="source">(defun <strong>pcg-random</strong> (bound &amp;key max inclusive reset
+                           (pcg *pcg*)
                            (seed (<a href="./globals_lisp.html#robo37">get-apr-config</a> :pcg-seed)))
 </pre>
 
 <hr />
 <a name="random2freset2dpcg"></a>
-<a name="robo64"></a><h2>random/reset-pcg [ Functions ]</h2>
+<a name="robo65"></a><h2>random/reset-pcg [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">random</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">AUTHOR</p>
@@ -142,7 +145,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/random.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-04-26 00:39:03</p>
+<p>Generated from ./src/random.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2024-10-17 15:02:00</p>
 </div> <!-- footer -->
 </body>
 </html>
