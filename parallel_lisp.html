@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<script src="./robodoc.js"></script>
+<title>parallel.lisp</title>
+<!-- Source: ./src/parallel.lisp -->
+<!-- Generated with ROBODoc Version 4.99.45 (Mar  5 2025) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc"></a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./robo_sourcefiles.html#top">Sourcefiles</a>
+<a class="menuitem" href="./masterindex.html#top">Index</a>
+<a class="menuitem" href="./robo_generics.html#top">Generics</a>
+<a class="menuitem" href="./robo_classes.html#top">Classes</a>
+<a class="menuitem" href="./robo_functions.html#top">Functions</a>
+<a class="menuitem" href="./robo_modules.html#top">Modules</a>
+<a class="menuitem" href="./robo_methods.html#top">Methods</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<hr />
+<a name="apr2fparallel"></a>
+<a name="robo4"></a><h2>apr/parallel [ Modules ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_modules.html#robo_top_of_doc">Modules</a> ]</p>
+<p class="item_name">NAME</p>
+<pre> <strong>parallel</strong>
+</pre>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-04
+</pre>
+<p class="item_name">PURPOSE</p>
+<pre> Implementation of some methods related to <strong>parallel</strong> computing (via
+ lparallel).
+
+ CLASS HIERARCHY
+ none. no classes defined
+
+ $$ Last modified:  00:37:07 Fri Apr 26 2024 CEST
+</pre>
+
+<hr />
+<a name="parallel2fdo2dframes"></a>
+<a name="robo57"></a><h2>parallel/do-frames [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">parallel</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-20
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro (parallely) iterates through the given number of frames.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - var. the accessor for the current frame index as a symbol.
+ - end. an integer indicating the last frame of the sequence.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :start. An integer indicating the start frame of the sequence to be
+   processed. Default = 0
+ - :frame-counter-accessor. A symbol which can be used in the body of the
+   form to access the value of the frame counter (always starting from 1).
+   This could be used e.g. to track the progress of the process.
+   Default = 'frame-counter
+ - :stopwatch?. A boolean indicating whether to measure the running time of
+   the kernel (when T; via with-stopwatch). Default = t
+ - :sw-start-accessor. The accessor (symbol) to the stopwatch start time.
+   Default = kernel-start
+ - :sw-delta-fun. The function-name (symbol) for the delta-function
+   (cf. with-stopwatch). Default = 'kernel-delta
+ - :sw-reset-fun. The function-name (symbol) for the reset-function
+   (cf. with-stopwatch). Default = 'kernel-reset
+ - :verbose. A boolean indicating whether additional information should be
+   printed. When T, the progress of the process as well as its duration (in
+   secs) will be printed. Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :verbose)
+ - :test-frame. To be used for testing purposes. When the value is set to
+   an integer, just the respective frame will be rendered; start and end
+   will be ignored. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The return value of the body form. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<a href="#robo60">with-kernel</a> ()
+  (<strong>do-frames</strong> (i 20 :start 15 :verbose t)
+    (print i)))
+;; =&gt;
+19 
+Frame: 1/5
+Duration: 0 sec
+
+18 
+Frame: 2/5
+Duration: 0 sec
+
+17 
+Frame: 3/5
+Duration: 0 sec
+
+16 
+Frame: 4/5
+Duration: 0 sec
+
+15 
+Frame: 5/5
+Duration: 0 sec
+
+;;; Note: The seemingly arbitrary order of the processed frames is related to
+;;; the <a href="#robo4">parallel</a> processing. 
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>do-frames</strong> ((var end &amp;key
+                                (start 0)
+                                (frame-counter-accessor 'frame-counter)
+                                (stopwatch? t)
+                                (sw-start-accessor 'kernel-start)
+                                (sw-delta-fun 'kernel-delta)
+                                (sw-reset-fun 'kernel-reset)
+                                (verbose (<a href="./globals_lisp.html#robo37">get-apr-config</a> :verbose))
+                                test-frame)
+                     &amp;body body)
+</pre>
+
+<hr />
+<a name="parallel2finit2dkernel"></a>
+<a name="robo58"></a><h2>parallel/init-kernel [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">parallel</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-26
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function initializes a lparallel kernel with n workers. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> A number indicating the amount of workers to initialize the kernel with.
+
+ NB: The kernel should always be destroyed before quitting the program (or
+     via <a href="#robo59">shutdown-kernel</a>. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :name. A string as a name for the kernel. Default = "apparence kernel"
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The kernel object. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>init-kernel</strong> (serapeum:count-cpus))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>init-kernel</strong> (num-workers &amp;key (name "apparence kernel"))
+</pre>
+
+<hr />
+<a name="parallel2fshutdown2dkernel"></a>
+<a name="robo59"></a><h2>parallel/shutdown-kernel [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">parallel</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-26
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function destroys/shuts down the lparallel kernels. This is absolutely
+ necessary (e.g. for garbage collecting etc.). 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> none
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> Either T or NIL (cf. lparallel doc)
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>shutdown-kernel</strong> ()
+</pre>
+
+<hr />
+<a name="parallel2fwith2dkernel"></a>
+<a name="robo60"></a><h2>parallel/with-kernel [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">parallel</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-14
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro starts a lparallel kernel around the body and optionally
+ instantiates a stopwatch for measuring the kernel runtime
+ (cf. with-stopwatch).
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> none.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :num-workers. A number indicating the amount of workers to initialize the
+   kernel with. Default = (serapeum:count-cpus) -&gt; i.e. the number of
+   available CPU cores. 
+ - :kernel-name. A string as a name for the kernel.
+   Default = "apparence kernel"
+ - :stopwatch?. A boolean indicating whether to measure the running time of
+   the kernel (when T; via with-stopwatch). Default = t
+ - :sw-start-accessor. The accessor (symbol) to the stopwatch start time.
+   Default = kernel-start
+ - :sw-delta-fun. The function-name (symbol) for the delta-function
+   (cf. with-stopwatch). Default = 'kernel-delta
+ - :sw-reset-fun. The function-name (symbol) for the reset-function
+   (cf. with-stopwatch). Default = 'kernel-reset
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>with-kernel</strong> ()
+  (lparallel:pdotimes (i 10)
+    (print i)))
+;; =&gt;
+(PROGN
+ (INIT-KERNEL 12 :NAME "apparence kernel")
+ (WITH-STOPWATCH (:START-ACCESSOR KERNEL-START :DELTA-FUN KERNEL-DELTA
+                  :RESET-FUN KERNEL-RESET)
+   (LPARALLEL.COGNATE:PDOTIMES (I 10)
+     (PRINT I)))
+ (SHUTDOWN-KERNEL))
+
+;; without stopwatch
+(<strong>with-kernel</strong> (:stopwatch? nil)
+  (lparallel:pdotimes (i 10)
+(print i)))
+;; =&gt;
+(PROGN
+ (INIT-KERNEL 12 :NAME "apparence kernel")
+ (PROGN
+  (LPARALLEL.COGNATE:PDOTIMES (I 10)
+    (PRINT I)))
+ (SHUTDOWN-KERNEL))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>with-kernel</strong> ((&amp;key
+                          (num-workers (serapeum::count-cpus))
+                          (kernel-name "apparence kernel")
+                          (stopwatch? t)
+                          (sw-start-accessor 'kernel-start)
+                          (sw-delta-fun 'kernel-delta)
+                          (sw-reset-fun 'kernel-reset))
+                       &amp;body body)
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/parallel.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.45 on 2025-03-05 23:39:42</p>
+</div> <!-- footer -->
+</body>
+</html>

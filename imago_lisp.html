@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<script src="./robodoc.js"></script>
+<title>imago.lisp</title>
+<!-- Source: ./src/imago.lisp -->
+<!-- Generated with ROBODoc Version 4.99.45 (Mar  5 2025) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc"></a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./robo_sourcefiles.html#top">Sourcefiles</a>
+<a class="menuitem" href="./masterindex.html#top">Index</a>
+<a class="menuitem" href="./robo_generics.html#top">Generics</a>
+<a class="menuitem" href="./robo_classes.html#top">Classes</a>
+<a class="menuitem" href="./robo_functions.html#top">Functions</a>
+<a class="menuitem" href="./robo_modules.html#top">Modules</a>
+<a class="menuitem" href="./robo_methods.html#top">Methods</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<hr />
+<a name="apr2fimago"></a>
+<a name="robo2"></a><h2>apr/imago [ Modules ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_modules.html#robo_top_of_doc">Modules</a> ]</p>
+<p class="item_name">NAME</p>
+<pre> <strong>imago</strong>
+</pre>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-26
+</pre>
+<p class="item_name">PURPOSE</p>
+<pre> Implementation of functionality related to the <strong>imago</strong> library.
+ NB: The local nickname for the <strong>imago</strong> lib in :apparence is :mgo.
+
+ CLASS HIERARCHY
+ none. no classes defined. 
+
+ $$ Last modified:  01:06:07 Thu Apr 25 2024 CEST
+</pre>
+
+<hr />
+<a name="imago2fcolor2d3ergba2dlist"></a>
+<a name="robo53"></a><h2>imago/color-&gt;rgba-list [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-24
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts an <a href="#robo2">imago</a>-color to an rgba-list. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The <a href="#robo2">imago</a>-color to convert. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> A rgba-list. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>color-&gt;rgba-list</strong> (make-color 23 148 23 255))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>color-&gt;rgba-list</strong> (color)
+</pre>
+
+<hr />
+<a name="imago2fdo2dimago2dpixels"></a>
+<a name="robo54"></a><h2>imago/do-imago-pixels [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-24
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro maps over the pixel values in an apparence object containing
+ pixel data (e.g. an <a href="#robo2">imago</a>-<a href="./image_lisp.html#robo11">image</a>) an binds the color, x and y value to the
+ respective value of the pixel (cf. <a href="#robo2">imago</a>:do-<a href="./image_lisp.html#robo11">image</a>-pixels). 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - An apparence object.
+ - A symbol to bind the <a href="#robo2">imago</a>:color to.
+ - A symbol to bind the x-coordinate to.
+ - A symbol to bind the y-coordinate to.
+ 
+ BODY
+ Any form. 
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>do-imago-pixels</strong> ((<a href="./image_lisp.html#robo11">image</a> color x y)
+                           &amp;body body)
+</pre>
+
+<hr />
+<a name="imago2frgba2dlist2d3ecolor"></a>
+<a name="robo55"></a><h2>imago/rgba-list-&gt;color [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-26
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts a rgba-list (cf. rgba-list-p) to an <a href="#robo2">imago</a>::color.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The rgba-list to convert. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> An <a href="#robo2">imago</a>::color (which is not an object but an integer). 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>rgba-list-&gt;color</strong> '(.3 .4 .1 1)) ;; =&gt; 4283196953
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>rgba-list-&gt;color</strong> (list)
+</pre>
+
+<hr />
+<a name="imago2fwith2dimago2dcolor"></a>
+<a name="robo56"></a><h2>imago/with-imago-color [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">imago</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-24
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro binds the values of an <a href="#robo2">imago</a>-color to the given symbols.
+ The example illustrates a possible use case. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The color of an <a href="#robo2">imago</a>-<a href="./image_lisp.html#robo11">image</a> (e.g. retrieved via do-<a href="#robo2">imago</a>-pixels).
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :a, :r, :g, and :b. The ARGB accessor symbols.
+ 
+ BODY
+ Any form. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((cv (<a href="./canvas_lisp.html#robo19">make-canvas</a> 200 300 :color '(200 128 21 50))))
+  (<a href="#robo54">do-imago-pixels</a> (cv color x y)
+    (<strong>with-imago-color</strong> (color :a alpha :r red :g green :b blue)
+      (setf color (make-color blue (+ red 10) red 90))))
+  (<a href="./utilities_lisp.html#robo95">system-open-file</a> (<a href="./canvas_lisp.html#robo21">write-png</a> cv)))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>with-imago-color</strong> ((color &amp;key (a 'a) (r 'r) (g 'g) (b 'b))
+                            &amp;body body)
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/imago.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.45 on 2025-03-05 23:39:42</p>
+</div> <!-- footer -->
+</body>
+</html>

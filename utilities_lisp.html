@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<script src="./robodoc.js"></script>
+<title>utilities.lisp</title>
+<!-- Source: ./src/utilities.lisp -->
+<!-- Generated with ROBODoc Version 4.99.45 (Mar  5 2025) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc"></a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./robo_sourcefiles.html#top">Sourcefiles</a>
+<a class="menuitem" href="./masterindex.html#top">Index</a>
+<a class="menuitem" href="./robo_generics.html#top">Generics</a>
+<a class="menuitem" href="./robo_classes.html#top">Classes</a>
+<a class="menuitem" href="./robo_functions.html#top">Functions</a>
+<a class="menuitem" href="./robo_modules.html#top">Modules</a>
+<a class="menuitem" href="./robo_methods.html#top">Methods</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<hr />
+<a name="utilities2faspect2dratio"></a>
+<a name="robo71"></a><h2>utilities/aspect-ratio [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-23
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Returns the <strong>aspect-ratio</strong> (w/h) of a given <a href="./image_lisp.html#robo11">image</a>. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> An <a href="./image_lisp.html#robo11">image</a> object. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> none
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The aspect ratio. 
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>aspect-ratio</strong> (<a href="./image_lisp.html#robo11">image</a>)
+</pre>
+
+<hr />
+<a name="utilities2fdegrees2d3eradians"></a>
+<a name="robo72"></a><h2>utilities/degrees-&gt;radians [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-28
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts a value in degrees to its radian counterpart. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The value (degrees) to be converted. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The value in radians. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>degrees-&gt;radians</strong> -30)
+;; =&gt; -0.5235987755982988d0
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>degrees-&gt;radians</strong> (degrees)
+</pre>
+
+<hr />
+<a name="utilities2fdouglas2dpeucker"></a>
+<a name="robo73"></a><h2>utilities/douglas-peucker [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-10-16
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Implementation of the (Ramer-)Douglas–Peucker algorithm. This algorithm
+ reduces the number of points in an envelope
+ (cf. <a href="https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm)">https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm)</a>. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The envelope. Must be a list with xy-pairs.
+ - The epsilon value. This value determines the degree of decimation by
+   defining the maximum distance between the original points and the
+   reduced/simplified envelope. The higher the value, the more the envelope
+   will be simplified.  Must be a float &gt;= 0.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :sort. A function (e.g. #'&lt;) indicating whether to sort the list by its
+   x-values before applying the algorithm. Default = NIL.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> Three values:
+ - The simplified envelope.
+ - The number of reduced/removed points.
+ - The reduction ratio in percent (0.0-1.0).
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(let ((env '(0. 0.481 0.626 1.394 3.052 1.458 3.13 3.397
+             3.443 2.484 8.294 4.712 8.529 2.869 13.615
+             3.189 17.293 5.673 19.092 4.856 23.552 5.144
+             26.526 5.497 27.778 4.487 30.203 5.369 31.612
+             4.054 34.585 5.577 34.664 3.59 36.62 5.337 39.515
+             5.369 40.767 6.186 44.053 4.087 44.757 5.08 48.983
+             4.103 49.609 2.997 55.634 5.272 56.495 3.958 56.495
+             2.901 60.172 3.125 61.033 4.135 61.659 2.901 62.128
+             3.958 64.241 7.276 65.649 2.58 65.962 3.253 65.962
+             7.212 65.962 7.276 67.997 7.292 68.936 5.897 71.596
+             7.372 72.926 3.462 73.865 7.548 74.413 5.577 77.7 4.663
+             80.438 4.856 83.49 5.304 86.307 4.087 86.62 4.888 91.862
+             2.837 94.053 4.167 95.931 5.321 97.418 4.952 100. 4.167))
+      (epsilon 1.8))
+  (<strong>douglas-peucker</strong> env epsilon))
+
+;; =&gt;
+;; (0 0.481 3.13 3.397 13.615 3.189 17.293 5.673 34.585 5.577 34.664 3.59 40.767
+;;  6.186 49.609 2.997 55.634 5.272 56.495 2.901 61.659 2.901 64.241 7.276
+;;  65.649 2.58 65.962 7.276 71.596 7.372 72.926 3.462 73.865 7.548 77.7 4.663
+;;  100 4.167)
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>douglas-peucker</strong> (env epsilon &amp;key sort)
+</pre>
+
+<hr />
+<a name="utilities2fenv2d3exy2dlist"></a>
+<a name="robo74"></a><h2>utilities/env-&gt;xy-list [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-10-16
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts an envelope-list of the form '(x1 y1 x2 y2 ...) to
+ a nested list of x,y-pairs of the form '((x1 y1) (x2 y2) ...). 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The envelope to be transformed. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :sort. Whether to sort the envelope by its x-values. Must be either NIL or
+   a function (e.g. #'&lt;). Default = NIL.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The x,y-list. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>env-&gt;xy-list</strong> '(0 2.4 4 1.3 40 3.3 100 0.1))
+;; =&gt; ((0 2.4) (4 1.3) (40 3.3) (100 0.1))
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>env-&gt;xy-list</strong> (env &amp;key sort)
+</pre>
+
+<hr />
+<a name="utilities2ffiles2dfrom2ddir"></a>
+<a name="robo75"></a><h2>utilities/files-from-dir [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-24
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Returns a list of files contained in the given directory. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The directory containing the desired files. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :pattern. A string being a search pattern. If nil, all files will be
+   listed. Default = NIL.
+ - :hidden? A boolean indicating whether hidden files (those starting with
+   a dot) should be included in the list (when T). Default = NIL. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> A list with the file pathnames in the directory. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>files-from-dir</strong> "~/Desktop/graphic-notation/" :pattern "*.png")
+;; =&gt;
+(#P"/Users/someuser/Desktop/graphic-notation/1_imp.png"
+ #P"/Users/someuser/Desktop/graphic-notation/2_env.png"
+ #P"/Users/someuser/Desktop/graphic-notation/3_evnt.png")
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>files-from-dir</strong> (dir &amp;key
+                             pattern
+                             hidden?)
+</pre>
+
+<hr />
+<a name="utilities2ffround2dto2ddigits"></a>
+<a name="robo76"></a><h2>utilities/fround-to-digits [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-28
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function (f)rounds a floating point number to the given amount of
+ digits.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The floating point number.
+
+ OPTIONAL ARGUMENTS.
+ - An integer indicating the number of digits to be frounded to. Default = 0
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The rounded float. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>fround-to-digits</strong> 3.061616997868383 3)
+;; =&gt; 3.062
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>fround-to-digits</strong> (v &amp;optional (digits 0))
+</pre>
+
+<hr />
+<a name="utilities2fget2drandom2duuid"></a>
+<a name="robo77"></a><h2>utilities/get-random-uuid [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-04
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This method returns a UUIV v4 (<a href="./random_lisp.html#robo5">random</a> UUID), generated via frugal-uuid. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> none.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :string. A boolean indicating whether a string (t) or fuuid-object schould
+   be returned. Default = T
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The UUID as a string. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(get-<a href="./random_lisp.html#robo5">random</a>-uuid)
+;; =&gt; "31db7363-f393-4fbc-ad26-10ffb6339640"
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>get-random-uuid</strong> (&amp;key (string t))
+</pre>
+
+<hr />
+<a name="utilities2fimage2dseq2d3evideo"></a>
+<a name="robo78"></a><h2>utilities/image-seq-&gt;video [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-05
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts an <a href="./image_lisp.html#robo11">image</a>-<a href="./seq_lisp.html#robo16">seq</a> (which is a collection of images, where
+ each <a href="./image_lisp.html#robo11">image</a> represents a frame of a video) from a given path (which should
+ be the directory containing the <a href="./image_lisp.html#robo11">image</a> files) to a video file using ffmpeg.
+
+ NB: The files must be numerated according to their appearance in the video. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The path to the directory containing the images.
+ - The path to the video file which should be generated (usually a .mp4
+   file when using the default args).
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :fps. The frame-rate for the conversion. Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :fps)
+ - :glob-pattern. The search pattern for the files in the directory.
+   Default = "*.png"
+ - :video-codec. The video codec, ffmpeg should use for conversion.
+   Default = "libx264"
+ - :pixel-format. The pixel format ffmpeg should use for creating the video.
+   Default = "yuv420p"
+ - :overwrite? When T, any existing file will be overwritten. Default = T
+ - :verbose. Prints additional messages, when T.
+   Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :verbose)
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The path to the outfile. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>image-seq-&gt;video</strong> "/tmp/tl-<a href="./seq_lisp.html#robo16">seq</a>/" "/tmp/test.mp4" :glob-pattern "*.jpg")
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>image-seq-&gt;video</strong> (path outfile &amp;key
+                          (fps (<a href="./globals_lisp.html#robo37">get-apr-config</a> :fps))
+                          (glob-pattern "*.png")
+                          (video-codec "libx264")
+                          (pixel-format "yuv420p")
+                          (overwrite? t)
+                          (verbose (<a href="./globals_lisp.html#robo37">get-apr-config</a> :verbose)))
+</pre>
+
+<hr />
+<a name="utilities2finterpolate2deasing"></a>
+<a name="robo79"></a><h2>utilities/interpolate-easing [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-29
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function interpolates between two values using an easing function (e.g.
+ one of those proposed by Robert Penner). The x-range is defined by the
+ :duration argument.
+ The ease-fun must be a function accepting a number/float as its argument and
+ returning a number/float between 0. and 1. to be used as a factor for the
+ interpolation. You could use the easing functions from the easing <a href="./package_lisp.html#robo3">package</a>
+ by Danielo Vidovic (e.g. ease:in-sine). 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The x-/time-axis value.
+ - The start value.
+ - The end value.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :duration. A number indicating the duration of the easing. This implies
+   the value range for the x-argument. Default = 1.0
+ - :ease-fun. The function used for easing (see above).
+   Default = #'ease:in-sine
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The interpolated value. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>interpolate-easing</strong> 50 0 100 :duration 100
+                             :ease-fun #'ease:in-bounce)
+;; =&gt; 23.4375
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>interpolate-easing</strong> (x y-start y-end &amp;key
+                                             (duration 1.0)
+                                             (ease-fun #'ease:in-sine))
+</pre>
+
+<hr />
+<a name="utilities2fload2dfrom2dsame2ddir"></a>
+<a name="robo80"></a><h2>utilities/load-from-same-dir [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-26
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function loads a lisp file from the file relative to the directory of
+ the current file (cf. path-from-same-dir).
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - A string indicating the filename (or pathname) to the file relative to
+   the current lisp file.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The result of the #'load call.
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>load-from-same-dir</strong> (file)
+</pre>
+
+<hr />
+<a name="utilities2foutfile2dfrom2dcounter"></a>
+<a name="robo81"></a><h2>utilities/outfile-from-counter [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-24
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function formats a pathstring for an outfile based on an output
+ directory and an incrementing counter (e.g. a frame index). 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The counter as an integer.
+ - The outdirectory as a string. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :suffix. The outfile suffix (with the preceding dot), as a string.
+   Default = ".png"
+ - :num-digits. The number of (zero) digits included in output filename. 
+   Default = 4.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The outfile path as a string. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>outfile-from-counter</strong> 12 "/tmp/sequence/" :suffix ".jpg")
+;; =&gt; "/tmp/sequence/0012.jpg"
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>outfile-from-counter</strong> (counter outdir &amp;key
+                                              (suffix ".png")
+                                              (num-digits 4))
+</pre>
+
+<hr />
+<a name="utilities2fpath2dfrom2dsame2ddir"></a>
+<a name="robo82"></a><h2>utilities/path-from-same-dir [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2023-07-09
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function returns the full path to a file relative to the directory of
+ the current lisp file.
+ NB: This function is borrowed from Michael Edwards's <a href="./slippery-chicken_lisp.html#robo6">slippery-chicken</a>.
+ NB2: This function does not work with files which have been loaded via
+      ASDF/quicklisp.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - A string indicating the filename (or pathname) to the file relative to
+   the current lisp file.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> A string with the full path to the file.
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>path-from-same-dir</strong> (file)
+</pre>
+
+<hr />
+<a name="utilities2fpath2dfrom2dsrc2ddir"></a>
+<a name="robo83"></a><h2>utilities/path-from-src-dir [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2023-07-16
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function returns a path from the src dir. It is intended to be used
+ within the main lisp files.
+ NB: This function requires ASDF. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - A string indicating the filename (or pathname) to the file relative to
+   the src directory file.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> A string with the full path to the file.
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>path-from-src-dir</strong> (file)
+</pre>
+
+<hr />
+<a name="utilities2fperpendicular2ddistance"></a>
+<a name="robo84"></a><h2>utilities/perpendicular-distance [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-10-16
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Calculate the perpendicular distance between a line and a point.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The line. Must be a two-item list, each item containing the xy-coordinates
+   of the starting and end point of the line. E.g.: '((0 0) (2 3))
+ - The point. Must be a two-item list with the coordinates of the point.
+   E.g.: '(2 2)
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The perpendicular distance. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>perpendicular-distance</strong> '((0 0) (10 0)) '(2 2))
+;; =&gt; 2.0
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>perpendicular-distance</strong> (line point)
+</pre>
+
+<hr />
+<a name="utilities2fplot2denvelope"></a>
+<a name="robo85"></a><h2>utilities/plot-envelope [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-29
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function plots an envelope via vgplot (gnuplot). 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The envelope list to plot. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :label. A string used as a label for the plot. Could also contain
+   formatting information (cf. vgplot API).
+ - :new-plot?. When T, a new plot will be created. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> none
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>plot-envelope</strong> '(0 -100 30 0 60 40 70 40 85 0 100 10) :label "env1")
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>plot-envelope</strong> (env &amp;key label new-plot?)
+</pre>
+
+<hr />
+<a name="utilities2fplot2denvelopes"></a>
+<a name="robo86"></a><h2>utilities/plot-envelopes [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-29
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function plots multiple envelopes via vgplot (gnuplot). The envelopes
+ will be given as a list of envelope-lists. Additionally, a label can be
+ added to each envelope. The :labels have to be a list with vgplot
+ label-strings. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The list of envelope lists to plot. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :labels. A list with label-strings (cf. vplot-API).
+ - :new-plot?. When T, a new plot will be created.
+ - :x-axis-label. A label string for the x-axis.
+ - :y-axis-label. A label string for the y-axis. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The result of the vgplot:plot process. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>plot-envelopes</strong> '((0 -5 20 20 100 80)
+                  (0 -2.5 30 5 80 90 100 0)
+                  (0 -4 40 2 100 20.5))
+                :labels '("env1" "env2")
+                :x-axis-label "time (s)"
+                :y-axis-label "intensity")
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>plot-envelopes</strong> (envelopes &amp;key
+                                   labels
+                                   new-plot?
+                                   x-axis-label
+                                   y-axis-label)
+</pre>
+
+<hr />
+<a name="utilities2fradians2d3edegrees"></a>
+<a name="robo87"></a><h2>utilities/radians-&gt;degrees [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-28
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts radians to degrees.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The radian value to convert. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The value in degrees. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>radians-&gt;degrees</strong> (<a href="#robo72">degrees-&gt;radians</a> -90))
+;; =&gt; -90.0
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>radians-&gt;degrees</strong> (rad)
+</pre>
+
+<hr />
+<a name="utilities2frgb2dp"></a>
+<a name="robo88"></a><h2>utilities/rgb-p [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-28
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Tests if a given value is of type rgb-list. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The object to test. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> Either T or NIL. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>rgb-p</strong> '(255 125 254))
+;; =&gt; T
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>rgb-p</strong> (thing)
+</pre>
+
+<hr />
+<a name="utilities2frgba2dp"></a>
+<a name="robo89"></a><h2>utilities/rgba-p [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-28
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Tests if a given value is of type rgba-list. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The object to test. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> Either T or NIL. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>rgba-p</strong> '(255 125 254))
+;; =&gt; NIL
+(<strong>rgba-p</strong> '(125 222 2 230))
+;; =&gt; T
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>rgba-p</strong> (thing)
+</pre>
+
+<hr />
+<a name="utilities2fshell"></a>
+<a name="robo90"></a><h2>utilities/shell [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2023-07-16
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Runs a <strong>shell</strong> program and return the full result as a string or throws an
+ error when the call to the program fails.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The command (e.g. a path to a binary).
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> rest:
+ - The arguments to the <strong>shell</strong> program. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The result of the <strong>shell</strong> program call as a string.
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>shell</strong> "git" "-v")
+;; =&gt; "git version 2.40.1"
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>shell</strong> (command &amp;rest arguments)
+</pre>
+
+<hr />
+<a name="utilities2fsimple2dshell"></a>
+<a name="robo91"></a><h2>utilities/simple-shell [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2023-07-16
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Run a <a href="#robo90">shell</a> command from lisp and return the exit code.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The <a href="#robo90">shell</a> command (i.e., most likely, path to the binary)
+ 
+ OPTIONAL ARGUMENTS:
+ rest:
+ - The arguments to the <a href="#robo90">shell</a> program.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The the exit-code of the process.
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>simple-shell</strong> (command &amp;rest arguments)
+</pre>
+
+<hr />
+<a name="utilities2fsort2denv"></a>
+<a name="robo92"></a><h2>utilities/sort-env [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-10-16
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function sorts an envelope.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The envelope list to sort. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :predicate. A function used to sort the list. Default = #'&lt;
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The sorted envelope list. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>sort-env</strong> '(4 .2 2 6 80 2 43 4 99 4 1 10 100 0))
+;; =&gt; (1 10 2 6 4 0.2 43 4 80 2 99 4 100 0)
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>sort-env</strong> (env &amp;key (predicate #'&lt;))
+</pre>
+
+<hr />
+<a name="utilities2fsvg2dfile2d3epng"></a>
+<a name="robo93"></a><h2>utilities/svg-file-&gt;png [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-23
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function coverts a .<a href="./svg_lisp.html#robo7">svg</a> file to a .png file via Inkscape. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The path to the <a href="./svg_lisp.html#robo7">svg</a>-file. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :outfile. The output filename. Default = "/tmp/<a href="./image_lisp.html#robo11">image</a>.png"
+ - :dpi. The dpi for the png. Default = 96
+ - :width. The width of the resulting png file. When omitted, the width as
+   specified in the <a href="./svg_lisp.html#robo7">svg</a> will be used, or -- when the height is given -- the
+   width will be derived proportionally from the height (see :height). 
+ - :height. The height of the resulting png file. When omitted and no value
+   is set for :width, the size follow the specification in the <a href="./svg_lisp.html#robo7">svg</a>-object.
+   If ommited and width is set, the height will be proportionally derived
+   from the width (inkscapes default behaviour). 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The path to the png file. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>svg-file-&gt;png</strong> (<a href="./svg_lisp.html#robo7">svg</a>-file
+                      &amp;key
+                        (outfile "/tmp/<a href="./image_lisp.html#robo11">image</a>.png")
+                        (dpi 96)
+                        width
+                        height)
+</pre>
+
+<hr />
+<a name="utilities2fsvg2dfiles2d3epng"></a>
+<a name="robo94"></a><h2>utilities/svg-files-&gt;png [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-22
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts all <a href="./svg_lisp.html#robo7">svg</a> files in a directory to png files. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> none.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :indir. The input directory containing the <a href="./svg_lisp.html#robo7">svg</a> files.
+ - :outdir. The output directory for the pngs.
+ - :in-extension. The filename extansions for the <a href="./svg_lisp.html#robo7">svg</a>-files (without ".").
+   Default = "<a href="./svg_lisp.html#robo7">svg</a>"
+ - :dpi. The output dpi of the png files.
+ Inherited from with-kernel:
+ - :num-workers. A number indicating the amount of workers to initialize the
+   kernel with. Default = (serapeum:count-cpus) -&gt; i.e. the number of
+   available CPU cores. 
+ - :kernel-name. A string as a name for the kernel.
+   Default = "apparence kernel"
+ - :stopwatch?. A boolean indicating whether to measure the running time of
+   the kernel (when T; via with-stopwatch). Default = t
+ - :sw-start-accessor. The accessor (symbol) to the stopwatch start time.
+   Default = kernel-start
+ - :sw-delta-fun. The function-name (symbol) for the delta-function
+   (cf. with-stopwatch). Default = 'kernel-delta
+ - :sw-reset-fun. The function-name (symbol) for the reset-function
+   (cf. with-stopwatch). Default = 'kernel-reset
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The output directory namestring. 
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>svg-files-&gt;png</strong> (&amp;key
+                         indir outdir
+                         (in-extension "<a href="./svg_lisp.html#robo7">svg</a>")
+                         (dpi 300)
+                         width
+                         height
+                         ;; inherited from <a href="./parallel_lisp.html#robo60">with-kernel</a>
+                         (num-workers (serapeum::count-cpus))
+                         (kernel-name "apparence kernel")
+                         (stopwatch? t)
+                         (sw-start-accessor 'kernel-start)
+                         (sw-delta-fun 'kernel-delta)
+                         (sw-reset-fun 'kernel-reset))
+</pre>
+
+<hr />
+<a name="utilities2fsystem2dopen2dfile"></a>
+<a name="robo95"></a><h2>utilities/system-open-file [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-02-23
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> Open a file using the system's default program. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> A path to the file to open. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> A boolean indicating whether the operation succeeded. 
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>system-open-file</strong> (file)
+</pre>
+
+<hr />
+<a name="utilities2ftrailing2dslash"></a>
+<a name="robo96"></a><h2>utilities/trailing-slash [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2023-07-09
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function ensures that a (path) string ends with a trailing slash.
+ NB: This function is borrowed from Michael Edward's <a href="./slippery-chicken_lisp.html#robo6">slippery-chicken</a>.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> A string containing the path to be checked and corrected.
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The path with a trailing slash.
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>trailing-slash</strong> (path)
+</pre>
+
+<hr />
+<a name="utilities2fvideo2d3eimage2dseq"></a>
+<a name="robo97"></a><h2>utilities/video-&gt;image-seq [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-04-05
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts a video file (e.g. a mp4) to a sequence of images,
+ one for each frame, as specified by the :fps argument. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> - The path to the video-file which should be converted.
+ - The path to the directory where the resulting <a href="./image_lisp.html#robo11">image</a> files should be
+   located. 
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments
+ - :outfile-pattern. The pattern which will be used to generate the output
+   file-names. Default = "%04d.png"
+ - :fps. The frame-rate for the <a href="./image_lisp.html#robo11">image</a> conversion.
+   Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :fps)
+ - :start. The start offset in the video (in seconds). Default = 0
+ - :num-frames. The number of frames to generate (starting from the :start).
+   When NIL, all frames from :start will be converted to images. 
+   Default = NIL
+ - :verbose. Prints additional messages, when T.
+   Default = (<a href="./globals_lisp.html#robo37">get-apr-config</a> :verbose)
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The path to the output directory.
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>video-&gt;image-seq</strong> "/tmp/test.mp4" "/tmp/testseq/" :fps 25)
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>video-&gt;image-seq</strong> (vidfile outdir
+                         &amp;key
+                           (outfile-pattern "%04d.png")
+                           (fps (<a href="./globals_lisp.html#robo37">get-apr-config</a> :fps))
+                           ;; start offset in seconds
+                           (start 0)
+                           num-frames
+                           (verbose (<a href="./globals_lisp.html#robo37">get-apr-config</a> :verbose)))
+</pre>
+
+<hr />
+<a name="utilities2fwith2dstopwatch"></a>
+<a name="robo98"></a><h2>utilities/with-stopwatch [ Generics ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_generics.html#robo_top_of_doc">Generics</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-03-13
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This macro counts the time (in seconds) from the start of running the forms
+ in the body. The start time (i.e. the universal timestamp) can be retrieved
+ via the symbol :start-accessor (cf. arguments).
+ There are some local functions which allow to retrieve further information
+ or interact with the state of the "stopwatch":
+ - delta-fun (&amp;optional print?)
+   This local function returns the difference between start-time and current
+   time (i.e. the time spent for performing the forms).
+   When print? = T, the time will be printed via (print).
+ - reset-fun
+   This local function resets the start-time to the current timestamp.
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> none.
+</pre>
+<p class="item_name">OPTIONAL ARGUMENTS</p>
+<pre> keyword-arguments:
+ - :print-total. Print the delta time after the body (when T)?
+   Default = NIL
+ - :start-accessor. The accessor (symbol) to the start time.
+   Default = 'sw-start
+ - :delta-fun. The function-name (symbol) for the delta-function (see above).
+   Default = 'sw-delta
+ - :reset-fun. The function-name (symbol) for the reset-function (see above).
+   Default = 'sw-reset
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>with-stopwatch</strong> (:print-delta t)
+  (sleep 1)
+  (sw-delta t)
+  (sleep 1)
+  (print sw-start)
+  (sw-delta t)
+  (sw-reset)
+  (sleep 1)
+  (sw-delta))
+;; =&gt;
+1 
+3919355895 
+2 
+1
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defmacro <strong>with-stopwatch</strong> ((&amp;key
+                             print-total
+                             (start-accessor 'sw-start)
+                             (delta-fun 'sw-delta)
+                             (reset-fun 'sw-reset))
+                          &amp;body body)
+</pre>
+
+<hr />
+<a name="utilities2fxy2dlist2d3eenv"></a>
+<a name="robo99"></a><h2>utilities/xy-list-&gt;env [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">AUTHOR</p>
+<pre> Ruben Philipp &lt;me@rubenphilipp.com&gt;
+</pre>
+<p class="item_name">CREATED</p>
+<pre> 2024-10-16
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<pre> This function converts an xy-list of the form '((x1 y1) (x2 y2) ...) to
+ an envelope list of the form '(x1 y1 x2 y2 ...). Cf. <a href="#robo74">env-&gt;xy-list</a>. 
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<pre> The xy-list to be converted. 
+</pre>
+<p class="item_name">RETURN VALUE</p>
+<pre> The envelope. 
+</pre>
+<p class="item_name">EXAMPLE</p>
+<pre class="source">(<strong>xy-list-&gt;env</strong> '((0 3.4) (30 5.6) (80 4.4) (100 0.1))) ; ; ;
+;; =&gt; (0 3.4 30 5.6 80 4.4 100 0.1)     ; ; ;
+</pre>
+<p class="item_name">SYNOPSIS</p>
+<pre class="source">(defun <strong>xy-list-&gt;env</strong> (xy-list)
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/utilities.lisp with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.45 on 2025-03-05 23:39:42</p>
+</div> <!-- footer -->
+</body>
+</html>
