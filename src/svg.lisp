@@ -18,7 +18,7 @@
 ;;; no classes defined.
 ;;; some methods relate to cl-svg::svg-toplevel and others. 
 ;;;
-;;; $$ Last modified:  23:00:41 Tue May 21 2024 CEST
+;;; $$ Last modified:  00:43:22 Wed Sep  3 2025 CEST
 ;;; ****
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -117,9 +117,9 @@
                        width
                        height)
   ;;; ****
-  (let* ((tmpfile (format nil "~a~a.svg"
-                          (trailing-slash tmp-dir)
-                          (get-random-uuid))))
+  (let ((tmpfile (format nil "~a~a.svg"
+                         (trailing-slash tmp-dir)
+                         (get-random-uuid))))
     ;;; perform the conversion
     (ensure-directories-exist tmp-dir)
     (write-svg svg :outfile tmpfile)
