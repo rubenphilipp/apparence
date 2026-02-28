@@ -7,6 +7,16 @@
 $$ Last modified:  22:26:39 Wed Apr 24 2024 CEST
 #+end_comment
 
+* This Repository Has Moved!
+
+This repository has been moved to Codeberg in February 2026. 
+
+You'll find it here: https://codeberg.org/rubenphilipp/apparence
+
+-----
+
+** Description
+
 *Please note:* This program is at an early stage of development. Thus, API
 changes are likely.
 
